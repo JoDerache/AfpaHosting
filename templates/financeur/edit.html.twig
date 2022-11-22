@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Financeur{% endblock %}
+
+{% block body %}
+    <h1>Edit Financeur</h1>
+
+    {{ include('financeur/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_financeur_index') }}">back to list</a>
+
+    {{ include('financeur/_delete_form.html.twig') }}
+{% endblock %}
