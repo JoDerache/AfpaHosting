@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit PersonneAContacter{% endblock %}
+
+{% block body %}
+    <h1>Edit PersonneAContacter</h1>
+
+    {{ include('personne_a_contacter/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_personne_a_contacter_index') }}">back to list</a>
+
+    {{ include('personne_a_contacter/_delete_form.html.twig') }}
+{% endblock %}

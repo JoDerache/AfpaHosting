@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Travaux{% endblock %}
+
+{% block body %}
+    <h1>Travaux</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>IdTravaux</th>
+                <td>{{ travaux.idTravaux }}</td>
+            </tr>
+            <tr>
+                <th>DateDebut</th>
+                <td>{{ travaux.dateDebut ? travaux.dateDebut|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>DateFin</th>
+                <td>{{ travaux.dateFin ? travaux.dateFin|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>CommentaireTravaux</th>
+                <td>{{ travaux.commentaireTravaux }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_travaux_index') }}">back to list</a>
+
+    <a href="{{ path('app_travaux_edit', {'idTravaux': travaux.idTravaux}) }}">edit</a>
+
+    {{ include('travaux/_delete_form.html.twig') }}
+{% endblock %}
