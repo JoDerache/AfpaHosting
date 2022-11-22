@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}PersonneAContacter index{% endblock %}
+
+{% block body %}
+    <h1>PersonneAContacter index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>IdPersonneContact</th>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>Telephone</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for personne_a_contacter in personne_a_contacters %}
+            <tr>
+                <td>{{ personne_a_contacter.idPersonneContact }}</td>
+                <td>{{ personne_a_contacter.nom }}</td>
+                <td>{{ personne_a_contacter.prenom }}</td>
+                <td>{{ personne_a_contacter.telephone }}</td>
+                <td>
+                    <a href="{{ path('app_personne_a_contacter_show', {'idPersonneContact': personne_a_contacter.idPersonneContact}) }}">show</a>
+                    <a href="{{ path('app_personne_a_contacter_edit', {'idPersonneContact': personne_a_contacter.idPersonneContact}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_personne_a_contacter_new') }}">Create new</a>
+{% endblock %}
