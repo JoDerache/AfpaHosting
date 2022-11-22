@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bail{% endblock %}
+
+{% block body %}
+    <h1>Bail</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>IdBail</th>
+                <td>{{ bail.idBail }}</td>
+            </tr>
+            <tr>
+                <th>DateEntree</th>
+                <td>{{ bail.dateEntree ? bail.dateEntree|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>DateSortie</th>
+                <td>{{ bail.dateSortie ? bail.dateSortie|date('Y-m-d') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_bail_index') }}">back to list</a>
+
+    <a href="{{ path('app_bail_edit', {'idBail': bail.idBail}) }}">edit</a>
+
+    {{ include('bail/_delete_form.html.twig') }}
+{% endblock %}

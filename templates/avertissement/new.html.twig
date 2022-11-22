@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Avertissement{% endblock %}
+
+{% block body %}
+    <h1>Create new Avertissement</h1>
+
+    {{ include('avertissement/_form.html.twig') }}
+
+    <a href="{{ path('app_avertissement_index') }}">back to list</a>
+{% endblock %}

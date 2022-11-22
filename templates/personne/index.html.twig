@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Personne index{% endblock %}
+
+{% block body %}
+    <h1>Personne index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>IdPersonne</th>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>AdressePostale</th>
+                <th>Telephone</th>
+                <th>Mail</th>
+                <th>DateNaissance</th>
+                <th>Badge</th>
+                <th>NumeroBeneficiaire</th>
+                <th>IsBlacklisted</th>
+                <th>LieuNaissance</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for personne in personnes %}
+            <tr>
+                <td>{{ personne.idPersonne }}</td>
+                <td>{{ personne.nom }}</td>
+                <td>{{ personne.prenom }}</td>
+                <td>{{ personne.adressePostale }}</td>
+                <td>{{ personne.telephone }}</td>
+                <td>{{ personne.mail }}</td>
+                <td>{{ personne.dateNaissance ? personne.dateNaissance|date('Y-m-d') : '' }}</td>
+                <td>{{ personne.badge }}</td>
+                <td>{{ personne.numeroBeneficiaire }}</td>
+                <td>{{ personne.isBlacklisted ? 'Yes' : 'No' }}</td>
+                <td>{{ personne.lieuNaissance }}</td>
+                <td>
+                    <a href="{{ path('app_personne_show', {'idPersonne': personne.idPersonne}) }}">show</a>
+                    <a href="{{ path('app_personne_edit', {'idPersonne': personne.idPersonne}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="12">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_personne_new') }}">Create new</a>
+{% endblock %}

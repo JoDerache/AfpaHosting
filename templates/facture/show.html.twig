@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Facture{% endblock %}
+
+{% block body %}
+    <h1>Facture</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Annee</th>
+                <td>{{ facture.annee }}</td>
+            </tr>
+            <tr>
+                <th>NumeroFacture</th>
+                <td>{{ facture.numeroFacture }}</td>
+            </tr>
+            <tr>
+                <th>MontantTotal</th>
+                <td>{{ facture.montantTotal }}</td>
+            </tr>
+            <tr>
+                <th>MontantDejaReglee</th>
+                <td>{{ facture.montantDejaReglee }}</td>
+            </tr>
+            <tr>
+                <th>MontantAPercevoir</th>
+                <td>{{ facture.montantAPercevoir }}</td>
+            </tr>
+            <tr>
+                <th>DateDePaiement</th>
+                <td>{{ facture.dateDePaiement ? facture.dateDePaiement|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>DateFacturation</th>
+                <td>{{ facture.dateFacturation ? facture.dateFacturation|date('Y-m-d') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_facture_index') }}">back to list</a>
+
+    <a href="{{ path('app_facture_edit', {'annee': facture.annee}) }}">edit</a>
+
+    {{ include('facture/_delete_form.html.twig') }}
+{% endblock %}
