@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Bail{% endblock %}
+
+{% block body %}
+    <h1>Create new Bail</h1>
+
+    {{ include('bail/_form.html.twig') }}
+
+    <a href="{{ path('app_bail_index') }}">back to list</a>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Financeur index{% endblock %}
+
+{% block body %}
+    <h1>Financeur index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>IdFinanceur</th>
+                <th>Nom</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for financeur in financeurs %}
+            <tr>
+                <td>{{ financeur.idFinanceur }}</td>
+                <td>{{ financeur.nom }}</td>
+                <td>
+                    <a href="{{ path('app_financeur_show', {'idFinanceur': financeur.idFinanceur}) }}">show</a>
+                    <a href="{{ path('app_financeur_edit', {'idFinanceur': financeur.idFinanceur}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_financeur_new') }}">Create new</a>
+{% endblock %}

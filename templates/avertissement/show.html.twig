@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Avertissement{% endblock %}
+
+{% block body %}
+    <h1>Avertissement</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>IdAvertissement</th>
+                <td>{{ avertissement.idAvertissement }}</td>
+            </tr>
+            <tr>
+                <th>DateAvertissement</th>
+                <td>{{ avertissement.dateAvertissement ? avertissement.dateAvertissement|date('Y-m-d') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_avertissement_index') }}">back to list</a>
+
+    <a href="{{ path('app_avertissement_edit', {'idAvertissement': avertissement.idAvertissement}) }}">edit</a>
+
+    {{ include('avertissement/_delete_form.html.twig') }}
+{% endblock %}
