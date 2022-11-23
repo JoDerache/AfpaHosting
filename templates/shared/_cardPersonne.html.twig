@@ -1,0 +1,10 @@
+<div class="card" style="width: 250px;">
+    <img src="{{ asset('img/avatar.svg') }}" class="card-img-top" alt="...">
+    <div class="card-body">
+        <h5 class="card-text mt-2">{{ bail.idPersonne.nom }} {{ bail.idPersonne.prenom }}</h5>
+        <p class="card-text">{{ bail.numeroChambre.numeroChambre }}</p>
+        <button type="button" class="btn btn-outline-success" data-bs-toggle="modal"
+                data-bs-target="#exampleModal{{ loop.index }}">Infos
+        </button>
+    </div>
+</div>

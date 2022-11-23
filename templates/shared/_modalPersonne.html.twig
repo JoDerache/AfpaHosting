@@ -1,0 +1,61 @@
+<div class="modal fade" id="exampleModal{{ loop.index }}" tabindex="-1"
+     aria-labelledby="exampleModalLabel{{ loop.index }}"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"
+                    id="exampleModalLabel{{ loop.index }}">{{ bail.idPersonne.nom }} {{ bail.idPersonne.prenom }}</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Fermer"></button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">Adresse</span>
+                    <input type="text" class="form-control" readonly="readonly"
+                           placeholder="{{ bail.idPersonne.adressePostale }}"
+                           aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">Télephone</span>
+                    <input type="text" class="form-control" readonly="readonly"
+                           placeholder="{{ bail.idPersonne.telephone }}" aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">Mail</span>
+                    <input type="text" class="form-control" readonly="readonly"
+                           placeholder="{{ bail.idPersonne.mail }}" aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">Date de naissance</span>
+                    <input type="text" class="form-control" readonly="readonly"
+                           placeholder="{{ bail.idPersonne.dateNaissance ? bail.idPersonne.dateNaissance|date('d-m-Y') : '' }}"
+                           aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">Lieu de naissance</span>
+                    <input type="text" class="form-control" readonly="readonly"
+                           placeholder="{{ bail.idPersonne.lieuNaissance }}"
+                           aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">Numéro de badge</span>
+                    <input type="text" class="form-control" readonly="readonly"
+                           placeholder="{{ bail.idPersonne.badge }}" aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group mb-3">
+                                        <span class="input-group-text"
+                                              id="basic-addon1">Numéro de bénéficiaire</span>
+                    <input type="text" class="form-control" readonly="readonly"
+                           placeholder="{{ bail.idPersonne.numeroBeneficiaire }}"
+                           aria-describedby="basic-addon1">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                            data-bs-dismiss="modal">Fermer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

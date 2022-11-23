@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Bail;
 use App\Entity\Personne;
 use App\Form\PersonneType;
+use App\Repository\BailRepository;
 use App\Repository\PersonneRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,10 +16,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class PersonneController extends AbstractController
 {
     #[Route('/', name: 'app_personne_index', methods: ['GET'])]
-    public function index(PersonneRepository $personneRepository): Response
+    public function index(PersonneRepository $personneRepository, BailRepository $bailRepository): Response
     {
         return $this->render('personne/index.html.twig', [
             'personnes' => $personneRepository->findAll(),
+            'bails' => $bailRepository->findAll()
         ]);
     }
 
