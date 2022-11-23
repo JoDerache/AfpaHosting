@@ -7,10 +7,11 @@ use App\Entity\Personne;
 use App\Form\PersonneType;
 use App\Repository\BailRepository;
 use App\Repository\PersonneRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\ParticipationRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/personne')]
 class PersonneController extends AbstractController
@@ -48,6 +49,18 @@ class PersonneController extends AbstractController
     {
         return $this->render('personne/show.html.twig', [
             'personne' => $personne,
+        ]);
+    }
+
+    #[Route('/stagiaire{idPersonne}', name: 'app_personne_show', methods: ['GET'])]
+    public function showStudent(Personne $personne, ParticipationRepository $participationRepository): Response
+    {
+        // dd($participationRepository->findBy(['idPersonne'=>491]));
+    $participe = $participationRepository->findBy(['idPersonne'=>$personne->getIdPersonne()]);
+    // dd($participe);
+        return $this->render('personne/show2.html.twig', [
+            'personne' => $personne,
+            'participation' => $participe
         ]);
     }
 
