@@ -3,24 +3,78 @@
 {% block title %}Personne index{% endblock %}
 
 {% block body %}
-    <h1>Personne index</h1>
+
+<div class="container" id="hebergeContainer">
+
+    <!-- Barre de recherche + bouton ajouté -->
+    <div class="row justify-content-end">
+        <div class="col-lg-5 mt-4">
+            <input class="form-control me-2" type="search" placeholder="Search" id="searchBar">
+        </div>
+        <div class="col-lg-3 text-center d-flex align-items-center mt-3">
+            <a href="{{ path('app_personne_new') }}" id="addIncident"><h1><i class="bi bi-person-plus iconAdd">
+                </h1></i></a>
+        </div>
+    </div>
+
+    <!-- barre de filtre -->
+    <div class="container mt-5" id="filtre">
+        <div class="row">
+            <div class="col-lg-7">
+                <ul>
+                    <li><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">Présent cette
+                        semaine
+                    </li>
+                    <li><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">Présent ce
+                        mois
+                    </li>
+                    <li><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">Présent cette
+                        année
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-lg-4">
+                <select class="form-select">
+                    <option selected>Choisir un financeur</option>
+                    <option value="1">Tous</option>
+                    <option value="2">Exemple 1</option>
+                    <option value="3">Exemple 2</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!--Affichage des hébergés  -->
+    <div class="container mt-5 d-flex flex-wrap justify-content-center">
+
+            {% for bail in bails %}
+            <div class="col-lg-4">
+                {% include "shared/_cardPersonne.html.twig" %}
+            </div>
+            {% include "shared/_modalPersonne.html.twig" %}
+        {% endfor %}
+    </div>
+
+
+    {#  <h1>Personne index</h1>
 
     <table class="table">
         <thead>
-            <tr>
-                <th>IdPersonne</th>
-                <th>Nom</th>
-                <th>Prenom</th>
-                <th>AdressePostale</th>
-                <th>Telephone</th>
-                <th>Mail</th>
-                <th>DateNaissance</th>
-                <th>Badge</th>
-                <th>NumeroBeneficiaire</th>
-                <th>IsBlacklisted</th>
-                <th>LieuNaissance</th>
-                <th>actions</th>
-            </tr>
+        <tr>
+            <th>IdPersonne</th>
+            <th>Nom</th>
+            <th>Prenom</th>
+            <th>AdressePostale</th>
+            <th>Telephone</th>
+            <th>Mail</th>
+            <th>DateNaissance</th>
+            <th>Badge</th>
+            <th>NumeroBeneficiaire</th>
+            <th>IsBlacklisted</th>
+            <th>LieuNaissance</th>
+            <th>actions</th>
+        </tr>
         </thead>
         <tbody>
         {% for personne in personnes %}
@@ -47,7 +101,6 @@
             </tr>
         {% endfor %}
         </tbody>
-    </table>
+    </table> #}
 
-    <a href="{{ path('app_personne_new') }}">Create new</a>
-{% endblock %}
+    {% endblock %}
