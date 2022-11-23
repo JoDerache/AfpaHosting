@@ -2,6 +2,9 @@
 
 namespace App\Entity;
 
+use App\Entity\Personne;
+use App\Entity\Financeur;
+use App\Entity\Formations;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 

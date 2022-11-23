@@ -79,14 +79,15 @@ class AppFixtures extends Fixture
         }
         
         
-        // foreach ($personnes as $P) {
-        //     $participation = new Participation();
-        //     $participation->setDateEntree($this->faker->dateTimeBetween('2022-01-22', '2022-11-22'))
-        //         ->setDateSortie($this->faker->dateTimeBetween('2022-11-22', '2023-06-22'))
-        //         ->setIdFinanceur($listFinanceurs[mt_rand(0, count($listFinanceurs) - 1)])
-        //         ->setIdPersonne($P);
-        //     $manager->persist($participation);
-        // }
+        foreach ($personnes as $P) {
+            $participation = new Participation();
+            $participation->setDateEntree($this->faker->dateTimeBetween('2022-01-22', '2022-11-22'))
+                ->setDateSortie($this->faker->dateTimeBetween('2022-11-22', '2023-06-22'))
+                ->setIdFinanceur($listFinanceurs[mt_rand(0, count($listFinanceurs) - 1)])
+                ->setIdFormation($listFormations[mt_rand(0, count($listFormations) - 1)])
+                ->setIdPersonne($P);
+            $manager->persist($participation);
+        }
 
         $Listepayment=["espece", "cheque"];
         foreach($Listepayment as $Nompayment ){
