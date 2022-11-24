@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Login;
 use App\Entity\Personne;
 use App\Repository\LoginRepository;
 use App\Repository\PersonneRepository;
@@ -10,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class MainController extends AbstractController
@@ -25,20 +25,18 @@ class MainController extends AbstractController
     }
 
 
-
-
-
-
     #[Route('/main', name: 'main')]
-    public function index(LoginRepository $loginRepository,PersonneRepository $personneRepository, Request $request): Response
+    public function index(PersonneRepository $personneRepository, Request $request, UserInterface $user): Response
     {
-    
-        $session = $request->getSession();
-        
-        $user = $personneRepository->findOneBy(['numeroBeneficiaire' => $_POST['_username']]);
+        $utilisateur = $personneRepository->findOneBy(['numeroBeneficiaire' => $user->getUserIdentifier()]);
 
-        return $this->render('base.html.twig', [
-            'personne' => $user,
+        return $this->render('main/index.html.twig', [
+            'controller_name' => 'MainController',
+            'utilisateur' => $utilisateur
         ]);
     }
+
+
+
+
 }

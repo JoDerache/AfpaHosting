@@ -3,7 +3,6 @@
 }
 
 body {
-
     font-family: "Open Sans", sans-serif;
     background: #F1F1F1;
     color: black;
@@ -1369,5 +1368,5 @@ bi-plus-circle {
 /*===============================LOGIN==================================*/
 #div_login {
     margin-top: -200px;
-    margin-left: 100px;
+    margin-left: 250px;
 }

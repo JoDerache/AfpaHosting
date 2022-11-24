@@ -40,7 +40,7 @@ class Login implements  UserInterface, PasswordAuthenticatedUserInterface, Passw
      */
     private $mdp;
 
-     /**
+    /**
      * @var string
      *
      * @ORM\Column(name="role", type="string", length=100, nullable=false)
