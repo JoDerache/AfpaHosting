@@ -7,6 +7,7 @@ use App\Entity\Personne;
 use App\Form\PersonneType;
 use App\Repository\BailRepository;
 use App\Repository\PersonneRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\ParticipationRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -53,23 +54,27 @@ class PersonneController extends AbstractController
     // }
 
     #[Route('/{idPersonne}', name: 'app_personne_show', methods: ['GET'])]
-    public function showStudent(Personne $personne, PersonneRepository $personneRepository, ParticipationRepository $participationRepository, Request $request): Response
+    public function showStudent(Personne $personne, PersonneRepository $personneRepository, ParticipationRepository $participationRepository, Request $request, EntityManagerInterface $manager): Response
     {
         // dd($participationRepository->findBy(['idPersonne'=>491]));
     $participe = $participationRepository->findBy(['idPersonne'=>$personne->getIdPersonne()]);
     $participe2=end($participe);
     // dd($participe);
 
-    $form = $this->createForm(PersonneType::class, $personne);
+        $form = $this->createForm(PersonneType::class, $personne);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $personneRepository->save($personne, true);
 
-            return $this->redirectToRoute('app_personne_index', [], Response::HTTP_SEE_OTHER);
+            // $personne = $form->getData();
+            // $manager->persist($personne);
+            // $manager->flush();
+
+            return $this->redirectToRoute('app_personne_show', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('personne/profil_Herberge.html.twig', [
+        return $this->renderForm('personne/profil_Herberge.html.twig', [
             'personne' => $personne,
             'participation' => $participe2,
             'form' => $form
@@ -85,7 +90,7 @@ class PersonneController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $personneRepository->save($personne, true);
 
-            return $this->redirectToRoute('app_personne_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_personne_show', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('personne/edit.html.twig', [

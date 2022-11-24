@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-
+{% form_theme form 'foundation_5_layout.html.twig' %}
 {% block title %}Mon espaces{% endblock %}
 
 {% block body %}
@@ -81,28 +81,33 @@
                   <form name="personne" method="post">
                   {# {{ form_start(form) }} #}
                     <div class="row mb-3">
-                      <label for="Address" class="col-md-4 col-lg-3 col-form-label"></label>
+                      <label for="Address" class="col-md-4 col-lg-3 col-form-label">{{form_label(form.adressePostale)}}</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="address" type="text" class="form-control" id="Address" value="">
+
+                        <div class="form-control" id="Address"> {{form_widget(form.adressePostale)}} </div>
                       </div>
                     </div>
 
                     <div class="row mb-3">
-                      <label for="Phone" class="col-md-4 col-lg-3 col-form-label">Téléphone</label>
+                      <label for="Phone" class="col-md-4 col-lg-3 col-form-label">{{form_label(form.telephone)}}</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="phone" type="text" class="form-control" id="Phone" value="06 48 63 53 82">
+                        <div class="form-control" id="Address"> {{form_widget(form.telephone)}} </div>
                       </div>
                     </div>
 
                     <div class="row mb-3">
-                      <label for="Email" class="col-md-4 col-lg-3 col-form-label">Email</label>
+                      <label for="Email" class="col-md-4 col-lg-3 col-form-label">{{form_label(form.mail)}}</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="email" type="email" class="form-control" id="Email" value="k.anderson@example.com">
+                        <div class="form-control" id="Address"> {{form_widget(form.mail)}} </div>
                       </div>
                     </div>
 
                     <div class="text-center">
-                      <button type="submit" class="btn btn-danger card-btn">Sauvegarder</button>
+                      {{ form_row(form._token) }}
+
+			                <button type="submit" id="personne_submit" name="personne[submit]" class="btn btn-primary mt-4">Modifier mon ingrédient</button>
+
+
                     </div>
                   {# {{ form_end(form) }} #}
                   </form><!-- End Profile Edit Form -->
