@@ -29,11 +29,13 @@ class MainController extends AbstractController
 
 
 
-    #[Route('/main/{id}', name: 'main')]
-    public function index($id,LoginRepository $loginRepository,PersonneRepository $personneRepository, Request $request): Response
+    #[Route('/main', name: 'main')]
+    public function index(LoginRepository $loginRepository,PersonneRepository $personneRepository, Request $request): Response
     {
+    
+        $session = $request->getSession();
         
-        $user = $personneRepository->findOneBy(['idPersonne' => $id]); // ATTENTION, NE PAS PASSER L'ID DANS L'URL
+        $user = $personneRepository->findOneBy(['numeroBeneficiaire' => $_POST['_username']]);
 
         return $this->render('base.html.twig', [
             'personne' => $user,
