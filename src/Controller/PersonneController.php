@@ -69,7 +69,7 @@ class PersonneController extends AbstractController
             return $this->redirectToRoute('app_personne_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('personne/show2.html.twig', [
+        return $this->render('personne/profil_Herberge.html.twig', [
             'personne' => $personne,
             'participation' => $participe2,
             'form' => $form
