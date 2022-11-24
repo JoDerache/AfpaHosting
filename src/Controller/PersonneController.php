@@ -44,23 +44,35 @@ class PersonneController extends AbstractController
         ]);
     }
 
-    #[Route('/{idPersonne}', name: 'app_personne_show', methods: ['GET'])]
-    public function show(Personne $personne): Response
-    {
-        return $this->render('personne/show.html.twig', [
-            'personne' => $personne,
-        ]);
-    }
+    // #[Route('/{idPersonne}', name: 'app_personne_show', methods: ['GET'])]
+    // public function show(Personne $personne): Response
+    // {
+    //     return $this->render('personne/show.html.twig', [
+    //         'personne' => $personne,
+    //     ]);
+    // }
 
-    #[Route('/stagiaire{idPersonne}', name: 'app_personne_show', methods: ['GET'])]
-    public function showStudent(Personne $personne, ParticipationRepository $participationRepository): Response
+    #[Route('/{idPersonne}', name: 'app_personne_show', methods: ['GET'])]
+    public function showStudent(Personne $personne, PersonneRepository $personneRepository, ParticipationRepository $participationRepository, Request $request): Response
     {
         // dd($participationRepository->findBy(['idPersonne'=>491]));
     $participe = $participationRepository->findBy(['idPersonne'=>$personne->getIdPersonne()]);
+    $participe2=end($participe);
     // dd($participe);
+
+    $form = $this->createForm(PersonneType::class, $personne);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $personneRepository->save($personne, true);
+
+            return $this->redirectToRoute('app_personne_index', [], Response::HTTP_SEE_OTHER);
+        }
+
         return $this->render('personne/show2.html.twig', [
             'personne' => $personne,
-            'participation' => $participe
+            'participation' => $participe2,
+            'form' => $form
         ]);
     }
 
