@@ -11,17 +11,23 @@ use App\Repository\ParticipationRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/personne')]
 class PersonneController extends AbstractController
 {
     #[Route('/', name: 'app_personne_index', methods: ['GET'])]
-    public function index(PersonneRepository $personneRepository, BailRepository $bailRepository): Response
+    public function index(PersonneRepository $personneRepository, BailRepository $bailRepository, UserInterface $user): Response
     {
+        $utilisateur = $personneRepository->findOneBy(['numeroBeneficiaire' => $user->getUserIdentifier()]);
+
+
+
         return $this->render('personne/index.html.twig', [
             'personnes' => $personneRepository->findAll(),
-            'bails' => $bailRepository->findAll()
+            'bails' => $bailRepository->findAll(),
+            'utilisateur' => $utilisateur
         ]);
     }
 
