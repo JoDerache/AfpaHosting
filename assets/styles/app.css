@@ -1366,3 +1366,8 @@ bi-plus-circle {
 .iconAdd {
     color: black;
 }
+/*===============================LOGIN==================================*/
+#div_login {
+    margin-top: -200px;
+    margin-left: 100px;
+}
