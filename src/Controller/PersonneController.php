@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Bail;
 use App\Entity\Personne;
 use App\Form\PersonneType;
+use App\Form\UpdatePersonneType;
 use App\Repository\BailRepository;
 use App\Repository\PersonneRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -53,7 +54,7 @@ class PersonneController extends AbstractController
     //     ]);
     // }
 
-    #[Route('/{idPersonne}', name: 'app_personne_show', methods: ['GET'])]
+    #[Route('/{idPersonne}', name: 'app_personne_show', methods: ['GET', 'POST'])]
     public function showStudent(Personne $personne, PersonneRepository $personneRepository, ParticipationRepository $participationRepository, Request $request, EntityManagerInterface $manager): Response
     {
         // dd($participationRepository->findBy(['idPersonne'=>491]));
@@ -61,7 +62,7 @@ class PersonneController extends AbstractController
     $participe2=end($participe);
     // dd($participe);
 
-        $form = $this->createForm(PersonneType::class, $personne);
+        $form = $this->createForm(UpdatePersonneType::class, $personne);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -71,7 +72,11 @@ class PersonneController extends AbstractController
             // $manager->persist($personne);
             // $manager->flush();
 
-            return $this->redirectToRoute('app_personne_show', [], Response::HTTP_SEE_OTHER);
+            return $this->renderForm('personne/profil_Herberge.html.twig', [
+                'personne' => $personne,
+                'participation' => $participe2,
+                'form' => $form
+            ]);
         }
 
         return $this->renderForm('personne/profil_Herberge.html.twig', [
@@ -90,7 +95,7 @@ class PersonneController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $personneRepository->save($personne, true);
 
-            return $this->redirectToRoute('app_personne_show', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_personne_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('personne/edit.html.twig', [

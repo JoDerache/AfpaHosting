@@ -23,6 +23,7 @@ class PersonneType extends AbstractType
             ->add('isBlacklisted')
             ->add('lieuNaissance')
             ->add('idLogin')
+            // ->add('save')
         ;
     }
 
