@@ -1334,7 +1334,6 @@ bi-plus-circle {
 
 #hebergeContainer {
     background-color: white;
-    margin-top: -100px;
 }
 
 #incidentContainer {
@@ -1371,4 +1370,22 @@ bi-plus-circle {
 #div_login {
     margin-top: -200px;
     margin-left: 250px;
+}
+
+/*=================================BTN======================================*/
+.btn-primary {
+    --bs-btn-bg: #87bb34;
+    --bs-btn-border-color: #87bb34;
+    --bs-btn-hover-bg: #77a52c;
+    --bs-btn-hover-border-color: #77a52c;
+}
+.btn-secondary {
+    --bs-btn-bg: #b5b3b3;
+    --bs-btn-border-color: #b5b3b3;
+    --bs-btn-hover-bg: #8e8d8d;
+    --bs-btn-hover-border-color: #8e8d8d;
+}
+
+.select_choice{
+    width: 300px
 }

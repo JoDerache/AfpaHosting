@@ -8,9 +8,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Incident
  *
- * @ORM\Table(name="incident", indexes={@ORM\Index(name="incident_bail_FK", columns={"id_bail"}), @ORM\Index(name="incident_type_incident0_FK", columns={"id_type_incident"})})
- * @ORM\Entity(repositoryClass="App\Repository\IncidentRepository") 
- */
+ * @ORM\Table(name="incident", indexes={@ORM\Index(name="incident_type_incident0_FK", columns={"id_type_incident"}), @ORM\Index(name="incident_bail_FK", columns={"id_bail"})})
+ * @ORM\Entity(repositoryClass="App\Repository\IncidentRepository")  */
 class Incident
 {
     /**
@@ -37,16 +36,6 @@ class Incident
     private $commentaire;
 
     /**
-     * @var \Bail
-     *
-     * @ORM\ManyToOne(targetEntity="Bail")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_bail", referencedColumnName="id_bail")
-     * })
-     */
-    private $idBail;
-
-    /**
      * @var \TypeIncident
      *
      * @ORM\ManyToOne(targetEntity="TypeIncident")
@@ -55,6 +44,16 @@ class Incident
      * })
      */
     private $idTypeIncident;
+
+    /**
+     * @var \Bail
+     *
+     * @ORM\ManyToOne(targetEntity="Bail")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_bail", referencedColumnName="id_bail")
+     * })
+     */
+    private $idBail;
 
     public function getIdIncident(): ?int
     {
@@ -85,18 +84,6 @@ class Incident
         return $this;
     }
 
-    public function getIdBail(): ?Bail
-    {
-        return $this->idBail;
-    }
-
-    public function setIdBail(?Bail $idBail): self
-    {
-        $this->idBail = $idBail;
-
-        return $this;
-    }
-
     public function getIdTypeIncident(): ?TypeIncident
     {
         return $this->idTypeIncident;
@@ -105,6 +92,18 @@ class Incident
     public function setIdTypeIncident(?TypeIncident $idTypeIncident): self
     {
         $this->idTypeIncident = $idTypeIncident;
+
+        return $this;
+    }
+
+    public function getIdBail(): ?Bail
+    {
+        return $this->idBail;
+    }
+
+    public function setIdBail(?Bail $idBail): self
+    {
+        $this->idBail = $idBail;
 
         return $this;
     }

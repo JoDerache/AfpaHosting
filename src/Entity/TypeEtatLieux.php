@@ -8,8 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * TypeEtatLieux
  *
  * @ORM\Table(name="type_etat_lieux")
- * @ORM\Entity(repositoryClass="App\Repository\TypeEtatLieuxRepository") 
- */
+ * @ORM\Entity(repositoryClass="App\Repository\TypeEtatLieuxRepository")  */
 class TypeEtatLieux
 {
     /**

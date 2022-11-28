@@ -5,19 +5,23 @@ namespace App\Controller;
 use App\Entity\Chambre;
 use App\Form\ChambreType;
 use App\Repository\ChambreRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\PersonneRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/chambre')]
 class ChambreController extends AbstractController
 {
     #[Route('/', name: 'app_chambre_index', methods: ['GET'])]
-    public function index(ChambreRepository $chambreRepository): Response
+    public function index(ChambreRepository $chambreRepository, UserInterface $user, PersonneRepository $personneRepository): Response
     {
+        $utilisateur = $personneRepository->findOneBy(['numeroBeneficiaire' => $user->getUserIdentifier()]);
         return $this->render('chambre/index.html.twig', [
             'chambres' => $chambreRepository->findAll(),
+            'utilisateur' => $utilisateur
         ]);
     }
 

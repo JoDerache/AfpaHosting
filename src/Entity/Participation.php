@@ -2,16 +2,13 @@
 
 namespace App\Entity;
 
-use App\Entity\Personne;
-use App\Entity\Financeur;
-use App\Entity\Formations;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Participation
  *
- * @ORM\Table(name="participation", indexes={@ORM\Index(name="participation_personne0_FK", columns={"id_personne"}), @ORM\Index(name="participation_financeur1_FK", columns={"id_financeur"}), @ORM\Index(name="IDX_AB55E24FC0759D98", columns={"id_formation"})})
+ * @ORM\Table(name="participation", indexes={@ORM\Index(name="participation_financeur1_FK", columns={"id_financeur"}), @ORM\Index(name="participation_personne0_FK", columns={"id_personne"}), @ORM\Index(name="IDX_AB55E24FC0759D98", columns={"id_formation"})})
  * @ORM\Entity(repositoryClass="App\Repository\ParticipationRepository") 
  */
 class Participation
@@ -41,18 +38,6 @@ class Participation
     private $idFinanceur;
 
     /**
-     * @var \Formations
-     *
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
-     * @ORM\OneToOne(targetEntity="Formations")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_formation", referencedColumnName="id_formation")
-     * })
-     */
-    private $idFormation;
-
-    /**
      * @var \Personne
      *
      * @ORM\Id
@@ -63,6 +48,18 @@ class Participation
      * })
      */
     private $idPersonne;
+
+    /**
+     * @var \Formations
+     *
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\OneToOne(targetEntity="Formations")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_formation", referencedColumnName="id_formation")
+     * })
+     */
+    private $idFormation;
 
     public function getDateEntree(): ?\DateTimeInterface
     {
@@ -100,18 +97,6 @@ class Participation
         return $this;
     }
 
-    public function getIdFormation(): ?Formations
-    {
-        return $this->idFormation;
-    }
-
-    public function setIdFormation(?Formations $idFormation): self
-    {
-        $this->idFormation = $idFormation;
-
-        return $this;
-    }
-
     public function getIdPersonne(): ?Personne
     {
         return $this->idPersonne;
@@ -120,6 +105,18 @@ class Participation
     public function setIdPersonne(?Personne $idPersonne): self
     {
         $this->idPersonne = $idPersonne;
+
+        return $this;
+    }
+
+    public function getIdFormation(): ?Formations
+    {
+        return $this->idFormation;
+    }
+
+    public function setIdFormation(?Formations $idFormation): self
+    {
+        $this->idFormation = $idFormation;
 
         return $this;
     }

@@ -5,19 +5,24 @@ namespace App\Controller;
 use App\Entity\Incident;
 use App\Form\IncidentType;
 use App\Repository\IncidentRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\PersonneRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/incident')]
 class IncidentController extends AbstractController
 {
     #[Route('/', name: 'app_incident_index', methods: ['GET'])]
-    public function index(IncidentRepository $incidentRepository): Response
+    public function index(IncidentRepository $incidentRepository, UserInterface $user, PersonneRepository $personneRepository): Response
     {
+        $utilisateur = $personneRepository->findOneBy(['numeroBeneficiaire' => $user->getUserIdentifier()]);
+
         return $this->render('incident/index.html.twig', [
             'incidents' => $incidentRepository->findAll(),
+            'utilisateur' => $utilisateur
         ]);
     }
 
