@@ -1,111 +1,106 @@
 {% include 'base.html.twig' %}
 {% include 'shared/header.html.twig' %}
 {% include 'shared/sidebar.html.twig' %}
-
+    
 
 
 {% block title %}Personne index{% endblock %}
 
 {% block body %}
 <main id="main" class="main">
-<div class="container" id="hebergeContainer">
-
+    <div class="container" id="hebergeContainer">
     <!-- Barre de recherche + bouton ajouté -->
-    <div class="row justify-content-end">
-        <div class="col-lg-5 mt-4">
-            <input class="form-control me-2" type="search" placeholder="Search" id="searchBar">
+        <div class="row justify-content-end">
+            <div class="col-lg-5 mt-4">
+                <input class="form-control me-2" type="search" placeholder="Search" id="searchBar">
+            </div>
+            <div class="col-lg-3 text-center d-flex align-items-center mt-3">
+            <a href="#"  data-bs-toggle="modal" data-bs-target="#modal_ajouter">
+                <h1><i class="bi bi-person-plus iconAdd"></h1></i>
+            </a>
+            </div>
         </div>
-        <div class="col-lg-3 text-center d-flex align-items-center mt-3">
-            <a href="{{ path('app_personne_new') }}" id="addIncident"><h1><i class="bi bi-person-plus iconAdd">
-                </h1></i></a>
-        </div>
-    </div>
-
     <!-- barre de filtre -->
-    <div class="container mt-5" id="filtre">
-        <div class="row">
-            <div class="col-lg-7">
-                <ul>
-                    <li><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">Présent cette
-                        semaine
-                    </li>
-                    <li><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">Présent ce
-                        mois
-                    </li>
-                    <li><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">Présent cette
-                        année
-                    </li>
-                </ul>
-            </div>
-
-            <div class="col-lg-4">
-                <select class="form-select">
-                    <option selected>Choisir un financeur</option>
-                    <option value="1">Tous</option>
-                    <option value="2">Exemple 1</option>
-                    <option value="3">Exemple 2</option>
-                </select>
+        <div class="container mt-5" id="filtre">
+            <div class="row">
+                <div class="col-lg-7">
+                    <ul>
+                        <li>
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">Présent cette semaine
+                        </li>
+                        <li>
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">Présent ce mois
+                        </li>
+                        <li>
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">Présent cette année
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-lg-4">
+                    <select class="form-select">
+                        <option selected>Choisir un financeur</option>
+                        <option value="1">Tous</option>
+                        <option value="2">Exemple 1</option>
+                        <option value="3">Exemple 2</option>
+                    </select>
+                </div>
             </div>
         </div>
-    </div>
-
     <!--Affichage des hébergés  -->
-    <div class="container mt-5 d-flex flex-wrap justify-content-center">
-
+        <div class="container mt-5 d-flex flex-wrap justify-content-center">
             {% for bail in bails %}
-            <div class="col-lg-4">
-                {% include "shared/_cardPersonne.html.twig" %}
+                <div class="col-lg-4">
+                    {% include "shared/_cardPersonne.html.twig" %}
+                </div>
+                {% include "shared/_modalPersonne.html.twig" %}
+            {% endfor %}
+        </div>
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
             </div>
-            {% include "shared/_modalPersonne.html.twig" %}
+        {% endfor %}
+        {% for message in app.flashes('error') %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
         {% endfor %}
     </div>
 
+        
+</main>
+    {% endblock %}
+
+
+<div class="modal fade" id="modal_ajouter" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Ajouter un hébergé</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            {{ form_start(form) }}
+                {{form_row(form.login.numeroBeneficiaire)}}
+                {{form_row(form.login.role)}}
+                {{form_row(form.user.nom)}}
+                {{form_row(form.user.prenom)}}
+                {{form_row(form.user.adressePostale)}}
+                {{form_row(form.user.telephone)}}
+                {{form_row(form.user.mail)}}
+                {{form_row(form.user.dateNaissance)}}
+                {{form_row(form.user.badge)}}
+                {{form_row(form.user.lieuNaissance)}}
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+            {{form_row(form.submit)}}
+            {{ form_end(form) }}
+        </div>
+        </div>
+    </div>
 </div>
 
-    {#  <h1>Personne index</h1>
-
-    <table class="table">
-        <thead>
-        <tr>
-            <th>IdPersonne</th>
-            <th>Nom</th>
-            <th>Prenom</th>
-            <th>AdressePostale</th>
-            <th>Telephone</th>
-            <th>Mail</th>
-            <th>DateNaissance</th>
-            <th>Badge</th>
-            <th>NumeroBeneficiaire</th>
-            <th>IsBlacklisted</th>
-            <th>LieuNaissance</th>
-            <th>actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for personne in personnes %}
-            <tr>
-                <td>{{ personne.idPersonne }}</td>
-                <td>{{ personne.nom }}</td>
-                <td>{{ personne.prenom }}</td>
-                <td>{{ personne.adressePostale }}</td>
-                <td>{{ personne.telephone }}</td>
-                <td>{{ personne.mail }}</td>
-                <td>{{ personne.dateNaissance ? personne.dateNaissance|date('Y-m-d') : '' }}</td>
-                <td>{{ personne.badge }}</td>
-                <td>{{ personne.numeroBeneficiaire }}</td>
-                <td>{{ personne.isBlacklisted ? 'Yes' : 'No' }}</td>
-                <td>{{ personne.lieuNaissance }}</td>
-                <td>
-                    <a href="{{ path('app_personne_show', {'idPersonne': personne.idPersonne}) }}">show</a>
-                    <a href="{{ path('app_personne_edit', {'idPersonne': personne.idPersonne}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="12">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table> #}
-   </main>
-    {% endblock %}
+{% block javascripts %}
+    {{ encore_entry_script_tags('personne') }}
+{% endblock %}

@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Chambre
  *
  * @ORM\Table(name="chambre", indexes={@ORM\Index(name="chambre_etage_FK", columns={"numero_etage"})})
- * @ORM\Entity(repositoryClass="App\Repository\ChambreRepository") 
+ * @ORM\Entity
  */
 class Chambre
 {
@@ -44,47 +44,6 @@ class Chambre
      * })
      */
     private $numeroEtage;
-
-    public function getNumeroChambre(): ?int
-    {
-        return $this->numeroChambre;
-    }
-
-    public function getNumeroClefs(): ?string
-    {
-        return $this->numeroClefs;
-    }
-
-    public function setNumeroClefs(string $numeroClefs): self
-    {
-        $this->numeroClefs = $numeroClefs;
-
-        return $this;
-    }
-
-    public function isCondamne(): ?bool
-    {
-        return $this->condamne;
-    }
-
-    public function setCondamne(bool $condamne): self
-    {
-        $this->condamne = $condamne;
-
-        return $this;
-    }
-
-    public function getNumeroEtage(): ?Etage
-    {
-        return $this->numeroEtage;
-    }
-
-    public function setNumeroEtage(?Etage $numeroEtage): self
-    {
-        $this->numeroEtage = $numeroEtage;
-
-        return $this;
-    }
 
 
 }

@@ -2,14 +2,13 @@
 
 namespace App\Entity;
 
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Messages
  *
  * @ORM\Table(name="messages", indexes={@ORM\Index(name="messages_personne_FK", columns={"id_personne"})})
- * @ORM\Entity(repositoryClass="App\Repository\MessagesRepository") 
+ * @ORM\Entity
  */
 class Messages
 {
@@ -45,47 +44,6 @@ class Messages
      * })
      */
     private $idPersonne;
-
-    public function getIdMessage(): ?int
-    {
-        return $this->idMessage;
-    }
-
-    public function getContenu(): ?string
-    {
-        return $this->contenu;
-    }
-
-    public function setContenu(string $contenu): self
-    {
-        $this->contenu = $contenu;
-
-        return $this;
-    }
-
-    public function getDate(): ?\DateTimeInterface
-    {
-        return $this->date;
-    }
-
-    public function setDate(\DateTimeInterface $date): self
-    {
-        $this->date = $date;
-
-        return $this;
-    }
-
-    public function getIdPersonne(): ?Personne
-    {
-        return $this->idPersonne;
-    }
-
-    public function setIdPersonne(?Personne $idPersonne): self
-    {
-        $this->idPersonne = $idPersonne;
-
-        return $this;
-    }
 
 
 }
