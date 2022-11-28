@@ -8,8 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Formations
  *
  * @ORM\Table(name="formations")
- * @ORM\Entity
- */
+ * @ORM\Entity(repositoryClass="App\Repository\FormationsRepository")  */
 class Formations
 {
     /**
@@ -34,6 +33,35 @@ class Formations
      * @ORM\Column(name="numero_offre", type="integer", nullable=false)
      */
     private $numeroOffre;
+
+    public function getIdFormation(): ?int
+    {
+        return $this->idFormation;
+    }
+
+    public function getNomFormation(): ?string
+    {
+        return $this->nomFormation;
+    }
+
+    public function setNomFormation(string $nomFormation): self
+    {
+        $this->nomFormation = $nomFormation;
+
+        return $this;
+    }
+
+    public function getNumeroOffre(): ?int
+    {
+        return $this->numeroOffre;
+    }
+
+    public function setNumeroOffre(int $numeroOffre): self
+    {
+        $this->numeroOffre = $numeroOffre;
+
+        return $this;
+    }
 
 
 }

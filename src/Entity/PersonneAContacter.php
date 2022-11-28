@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * PersonneAContacter
  *
  * @ORM\Table(name="personne_a_contacter", indexes={@ORM\Index(name="personne_a_contacter_personne_FK", columns={"id_personne"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\PersonneAContacterRepository") 
  */
 class PersonneAContacter
 {
@@ -51,6 +51,59 @@ class PersonneAContacter
      * })
      */
     private $idPersonne;
+
+    public function getIdPersonneContact(): ?int
+    {
+        return $this->idPersonneContact;
+    }
+
+    public function getNom(): ?string
+    {
+        return $this->nom;
+    }
+
+    public function setNom(string $nom): self
+    {
+        $this->nom = $nom;
+
+        return $this;
+    }
+
+    public function getPrenom(): ?string
+    {
+        return $this->prenom;
+    }
+
+    public function setPrenom(string $prenom): self
+    {
+        $this->prenom = $prenom;
+
+        return $this;
+    }
+
+    public function getTelephone(): ?int
+    {
+        return $this->telephone;
+    }
+
+    public function setTelephone(int $telephone): self
+    {
+        $this->telephone = $telephone;
+
+        return $this;
+    }
+
+    public function getIdPersonne(): ?Personne
+    {
+        return $this->idPersonne;
+    }
+
+    public function setIdPersonne(?Personne $idPersonne): self
+    {
+        $this->idPersonne = $idPersonne;
+
+        return $this;
+    }
 
 
 }

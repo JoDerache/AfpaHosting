@@ -2,13 +2,14 @@
 
 namespace App\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Avertissement
  *
  * @ORM\Table(name="avertissement", uniqueConstraints={@ORM\UniqueConstraint(name="avertissement_incident_AK", columns={"id_incident"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\AvertissementRepository") 
  */
 class Avertissement
 {
@@ -37,6 +38,35 @@ class Avertissement
      * })
      */
     private $idIncident;
+
+    public function getIdAvertissement(): ?int
+    {
+        return $this->idAvertissement;
+    }
+
+    public function getDateAvertissement(): ?\DateTimeInterface
+    {
+        return $this->dateAvertissement;
+    }
+
+    public function setDateAvertissement(\DateTimeInterface $dateAvertissement): self
+    {
+        $this->dateAvertissement = $dateAvertissement;
+
+        return $this;
+    }
+
+    public function getIdIncident(): ?Incident
+    {
+        return $this->idIncident;
+    }
+
+    public function setIdIncident(?Incident $idIncident): self
+    {
+        $this->idIncident = $idIncident;
+
+        return $this;
+    }
 
 
 }

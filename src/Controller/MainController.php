@@ -29,7 +29,7 @@ class MainController extends AbstractController
     public function index(PersonneRepository $personneRepository, Request $request, UserInterface $user): Response
     {
         $utilisateur = $personneRepository->findOneBy(['numeroBeneficiaire' => $user->getUserIdentifier()]);
-
+// dd($utilisateur);
         return $this->render('main/index.html.twig', [
             'controller_name' => 'MainController',
             'utilisateur' => $utilisateur

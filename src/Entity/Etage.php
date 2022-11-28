@@ -8,8 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Etage
  *
  * @ORM\Table(name="etage")
- * @ORM\Entity
- */
+ * @ORM\Entity(repositoryClass="App\Repository\EtageRepository")  */
 class Etage
 {
     /**
@@ -27,6 +26,23 @@ class Etage
      * @ORM\Column(name="reserver_femme", type="boolean", nullable=false)
      */
     private $reserverFemme;
+
+    public function getNumeroEtage(): ?int
+    {
+        return $this->numeroEtage;
+    }
+
+    public function isReserverFemme(): ?bool
+    {
+        return $this->reserverFemme;
+    }
+
+    public function setReserverFemme(bool $reserverFemme): self
+    {
+        $this->reserverFemme = $reserverFemme;
+
+        return $this;
+    }
 
 
 }

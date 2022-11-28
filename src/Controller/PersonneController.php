@@ -36,7 +36,6 @@ class PersonneController extends AbstractController
     public function index(Request $request,PersonneRepository $personneRepository, BailRepository $bailRepository, UserInterface $user): Response
     {
         $utilisateur = $personneRepository->findOneBy(['numeroBeneficiaire' => $user->getUserIdentifier()]);
-
         $personne = new Personne();
         $login = new Login();
         $form = $this->createForm(UserFormType::class, ['user' => $personne, 'login' => $login]);
