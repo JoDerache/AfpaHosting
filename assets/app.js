@@ -265,7 +265,64 @@ import './bootstrap';
             }).observe(mainContainer);
         }, 200);
     }
-
-
 });
 
+
+var url = window.location.href
+var indexMain = url.indexOf('/main');
+var indexPersonne = url.indexOf('/personne');
+var indexFacture = url.indexOf('/facture');
+var indexChambre = url.indexOf('/chambre');
+var indexIncident = url.indexOf('/incident');
+var indexRdv = url.indexOf('/rdv');
+var indexDoc = url.indexOf('/#'); ///////////////////////////////////////////////////////////////// A MODIFIER
+var indexMess = url.indexOf('/#'); ///////////////////////////////////////////////////////////////// A MODIFIER
+
+if(indexMain != '-1'){
+    document.querySelector('#nav_accueil').classList.remove('collapsed')
+}
+else {
+    document.querySelector('#nav_accueil').classList.add('collapsed')
+}
+if(indexPersonne != '-1'){
+    document.querySelector('#nav_heberge').classList.remove('collapsed')
+}
+else {
+    document.querySelector('#nav_heberge').classList.add('collapsed')
+}
+if(indexFacture != '-1'){
+    document.querySelector('#nav_facture').classList.remove('collapsed')
+}
+else {
+    document.querySelector('#nav_facture').classList.add('collapsed')
+}
+if(indexChambre != '-1'){
+    document.querySelector('#nav_chambre').classList.remove('collapsed')
+}
+else {
+    document.querySelector('#nav_chambre').classList.add('collapsed')
+}
+if(indexIncident != '-1'){
+    document.querySelector('#nav_incident').classList.remove('collapsed')
+}
+else {
+    document.querySelector('#nav_incident').classList.add('collapsed')
+}
+if(indexRdv != '-1'){
+    document.querySelector('#nav_rdv').classList.remove('collapsed')
+}
+else {
+    document.querySelector('#nav_rdv').classList.add('collapsed')
+}
+if(indexDoc != '-1'){
+    document.querySelector('#nav_doc').classList.remove('collapsed')
+}
+else {
+    document.querySelector('#nav_doc').classList.add('collapsed')
+}
+if(indexMess != '-1'){
+    document.querySelector('#nav_message').classList.remove('collapsed')
+}
+else {
+    document.querySelector('#nav_message').classList.add('collapsed')
+}
