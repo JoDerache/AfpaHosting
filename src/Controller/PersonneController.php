@@ -7,6 +7,7 @@ use App\Entity\Login;
 use App\Entity\Personne;
 use App\Form\PersonneType;
 use App\Form\UserFormType;
+use App\Form\UpdatePersonneType;
 use App\Repository\BailRepository;
 use App\Repository\PersonneRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -75,7 +76,6 @@ class PersonneController extends AbstractController
         ]);
     }
 
-
     #[Route('/{idPersonne}', name: 'app_personne_show', methods: ['GET'])]
     public function show(Personne $personne): Response
     {
@@ -84,15 +84,35 @@ class PersonneController extends AbstractController
         ]);
     }
 
-    #[Route('/stagiaire{idPersonne}', name: 'app_personne_show', methods: ['GET'])]
-    public function showStudent(Personne $personne, ParticipationRepository $participationRepository): Response
+    #[Route('/{idPersonne}', name: 'app_personne_show', methods: ['GET', 'POST'])]
+    public function showStudent(Personne $personne, PersonneRepository $personneRepository, ParticipationRepository $participationRepository, Request $request, EntityManagerInterface $manager): Response
     {
         // dd($participationRepository->findBy(['idPersonne'=>491]));
     $participe = $participationRepository->findBy(['idPersonne'=>$personne->getIdPersonne()]);
+    $participe2=end($participe);
     // dd($participe);
-        return $this->render('personne/show2.html.twig', [
+
+        $form = $this->createForm(UpdatePersonneType::class, $personne);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $personneRepository->save($personne, true);
+
+            // $personne = $form->getData();
+            // $manager->persist($personne);
+            // $manager->flush();
+
+            return $this->renderForm('personne/profil_Herberge.html.twig', [
+                'personne' => $personne,
+                'participation' => $participe2,
+                'form' => $form
+            ]);
+        }
+
+        return $this->renderForm('personne/profil_Herberge.html.twig', [
             'personne' => $personne,
-            'participation' => $participe
+            'participation' => $participe2,
+            'form' => $form
         ]);
     }
 

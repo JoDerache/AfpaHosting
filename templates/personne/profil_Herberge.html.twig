@@ -1,8 +1,10 @@
-{% extends 'base.html.twig' %}
-
+{% include 'base.html.twig' %}
+{% include 'shared/header.html.twig' %}
+{% include 'shared/sidebar.html.twig' %}
 {% block title %}Mon espaces{% endblock %}
 
 {% block body %}
+<main id="main" class="main">
     <div class="pagetitle">
       <h1>Mon espace</h1>
       
@@ -41,22 +43,22 @@
 
                     <div class="row">
                     <div class="col-lg-3 col-md-4 label">Date de Naissance</div>
-                    <div class="col-lg-9 col-md-8">{{ personne.dateNaissance ? personne.dateNaissance|date('d/m/Y') : '' }}</div>
+                    <div class="col-lg-9 col-md-8">{{personne.dateNaissance ? personne.dateNaissance|date('d/m/Y') : '' }}</div>
                     </div>
 
                     <div class="row">
                     <div class="col-lg-3 col-md-4 label">Formation</div>
-                    <div class="col-lg-9 col-md-8">{{participation.0.idFormation.nomFormation}}</div>
+                    <div class="col-lg-9 col-md-8">{{participation.idFormation.nomFormation}}</div>
                     </div>
 
                     <div class="row">
                     <div class="col-lg-3 col-md-4 label">Date d'entrée en formation</div>
-                    <div class="col-lg-9 col-md-8">{{participation.0.dateEntree ? participation.0.dateEntree|date('d/m/Y') : '' }}</div>
+                    <div class="col-lg-9 col-md-8">{{participation.dateEntree ? participation.dateEntree|date('d/m/Y') : '' }}</div>
                     </div>
 
                     <div class="row">
                     <div class="col-lg-3 col-md-4 label">Date de fin de formation</div>
-                    <div class="col-lg-9 col-md-8">{{participation.0.dateSortie ? participation.0.dateSortie|date('d/m/Y') : '' }}</div>
+                    <div class="col-lg-9 col-md-8">{{participation.dateSortie ? participation.dateSortie|date('d/m/Y') : '' }}</div>
                     </div>
 
                     <div class="row">
@@ -78,31 +80,36 @@
                 <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
 
                   <!-- Profile Edit Form -->
-                  <form>
+                  <form name="personne" method="post">
+                  {{ form_start(form) }}
                     <div class="row mb-3">
-                      <label for="Address" class="col-md-4 col-lg-3 col-form-label">Lieu de résidence</label>
+                      <label for="Address" class="col-md-4 col-lg-3 col-form-label">{{form_label(form.adressePostale)}}</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="address" type="text" class="form-control" id="Address" value={{)}}>
+                       {{form_widget(form.adressePostale)}}
                       </div>
                     </div>
 
                     <div class="row mb-3">
-                      <label for="Phone" class="col-md-4 col-lg-3 col-form-label">Téléphone</label>
+                      <label for="Phone" class="col-md-4 col-lg-3 col-form-label">{{form_label(form.telephone)}}</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="phone" type="text" class="form-control" id="Phone" value="06 48 63 53 82">
+                        {{form_widget(form.telephone)}}
                       </div>
                     </div>
 
                     <div class="row mb-3">
-                      <label for="Email" class="col-md-4 col-lg-3 col-form-label">Email</label>
+                      <label for="Email" class="col-md-4 col-lg-3 col-form-label">{{form_label(form.mail)}}</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="email" type="email" class="form-control" id="Email" value="k.anderson@example.com">
+                      {{form_widget(form.mail)}}
                       </div>
                     </div>
 
                     <div class="text-center">
-                      <button type="submit" class="btn btn-danger card-btn">Sauvegarder</button>
+
+			                
+
+
                     </div>
+                  {{ form_end(form) }}
                   </form><!-- End Profile Edit Form -->
 
                 </div>
@@ -113,7 +120,7 @@
             </div>
       </div>
     </section>
-
+</main>
 
     <a href="{{ path('app_personne_index') }}">back to list</a>
 
