@@ -75,24 +75,6 @@ class PersonneController extends AbstractController
         ]);
     }
 
-    // #[Route('/new', name: 'app_personne_new', methods: ['GET', 'POST'])]
-    // public function new(Request $request, PersonneRepository $personneRepository ): Response
-    // {
-    //     $personne = new Personne();
-    //     $login = new Login();
-    //     $form = $this->createForm(UserFormType::class, ['user' => $personne, 'login' => $login]);
-    //     $form->handleRequest($request);
-
-    //     if ($form->isSubmitted() && $form->isValid()) {
-
-    //         return $this->redirectToRoute('app_personne_index', [], Response::HTTP_SEE_OTHER);
-    //     }
-
-    //     return $this->renderForm('personne/new.html.twig', [
-    //         'personne' => $personne,
-    //         'form' => $form,
-    //     ]);
-    // }
 
     #[Route('/{idPersonne}', name: 'app_personne_show', methods: ['GET'])]
     public function show(Personne $personne): Response
