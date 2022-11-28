@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-#[Route('/personne')]
+#[Route('/admin/personne')]
 class PersonneController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
@@ -47,7 +47,6 @@ class PersonneController extends AbstractController
         
         $login->setMdp(password_hash('Afpa'.$login->getNumeroBeneficiaire().'!', PASSWORD_ARGON2I));
         $this->entityManager->persist($login);
-
         $personne->setNumeroBeneficiaire($login->getNumeroBeneficiaire());
         $personne->setIdLogin($login);
         $personne->setIsBlacklisted(false);

@@ -24,14 +24,39 @@ class MainController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
+    #[Route('/redirection', name: 'redirection')]
+    public function redirection(PersonneRepository $personneRepository, Request $request, UserInterface $user): Response
+    {
+        $utilisateur = $personneRepository->findOneBy(['numeroBeneficiaire' => $user->getUserIdentifier()]);
+        $role = $utilisateur->getIdLogin()->getRole();
 
-    #[Route('/main', name: 'main')]
+        if($role == 'ROLE_ADMIN'){
+            return $this->redirectToRoute('main');
+        }
+        else{
+            return $this->redirectToRoute('main_user');
+        }
+    }
+
+
+    #[Route('/admin/main', name: 'main')]
     public function index(PersonneRepository $personneRepository, Request $request, UserInterface $user): Response
     {
         $utilisateur = $personneRepository->findOneBy(['numeroBeneficiaire' => $user->getUserIdentifier()]);
-        return $this->render('main/index.html.twig', [
+        return $this->render('main/admin_main.html.twig', [
+            'controller_name' => 'MainController',
+            'utilisateur' => $utilisateur
+        ]);
+    }
+    #[Route('/user/main', name: 'main_user')]
+    public function indexUser(PersonneRepository $personneRepository, Request $request, UserInterface $user): Response
+    {
+        $utilisateur = $personneRepository->findOneBy(['numeroBeneficiaire' => $user->getUserIdentifier()]);
+        return $this->render('main/heberger_main.html.twig', [
             'controller_name' => 'MainController',
             'utilisateur' => $utilisateur
         ]);
     }
 }
+
+

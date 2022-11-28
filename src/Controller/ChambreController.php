@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-#[Route('/chambre')]
+#[Route('/admin/chambre')]
 class ChambreController extends AbstractController
 {
     #[Route('/', name: 'app_chambre_index', methods: ['GET'])]

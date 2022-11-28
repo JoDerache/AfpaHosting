@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/avertissement')]
+#[Route('/admin/avertissement')]
 class AvertissementController extends AbstractController
 {
     #[Route('/', name: 'app_avertissement_index', methods: ['GET'])]

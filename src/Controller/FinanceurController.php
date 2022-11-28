@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/financeur')]
+#[Route('/admin/financeur')]
 class FinanceurController extends AbstractController
 {
     #[Route('/', name: 'app_financeur_index', methods: ['GET'])]

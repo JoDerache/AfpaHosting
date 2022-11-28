@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/bail')]
+#[Route('/admin/bail')]
 class BailController extends AbstractController
 {
     #[Route('/', name: 'app_bail_index', methods: ['GET'])]
