@@ -9,8 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * EtatDesLieux
  *
  * @ORM\Table(name="etat_des_lieux", indexes={@ORM\Index(name="etat_des_lieux_type_etat_lieux0_FK", columns={"id_type_etat_lieux"}), @ORM\Index(name="etat_des_lieux_bail_FK", columns={"id_bail"})})
- * @ORM\Entity(repositoryClass="App\Repository\EtatDesLieuxRepository") 
- */
+ * @ORM\Entity(repositoryClass="App\Repository\EtatDesLieuxRepository")  */
 class EtatDesLieux
 {
     /**
@@ -37,16 +36,6 @@ class EtatDesLieux
     private $commentaire;
 
     /**
-     * @var \TypeEtatLieux
-     *
-     * @ORM\ManyToOne(targetEntity="TypeEtatLieux")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_type_etat_lieux", referencedColumnName="id_type_etat_lieux")
-     * })
-     */
-    private $idTypeEtatLieux;
-
-    /**
      * @var \Bail
      *
      * @ORM\ManyToOne(targetEntity="Bail")
@@ -55,6 +44,16 @@ class EtatDesLieux
      * })
      */
     private $idBail;
+
+    /**
+     * @var \TypeEtatLieux
+     *
+     * @ORM\ManyToOne(targetEntity="TypeEtatLieux")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_type_etat_lieux", referencedColumnName="id_type_etat_lieux")
+     * })
+     */
+    private $idTypeEtatLieux;
 
     public function getIdEtatLieux(): ?int
     {
@@ -85,18 +84,6 @@ class EtatDesLieux
         return $this;
     }
 
-    public function getIdTypeEtatLieux(): ?TypeEtatLieux
-    {
-        return $this->idTypeEtatLieux;
-    }
-
-    public function setIdTypeEtatLieux(?TypeEtatLieux $idTypeEtatLieux): self
-    {
-        $this->idTypeEtatLieux = $idTypeEtatLieux;
-
-        return $this;
-    }
-
     public function getIdBail(): ?Bail
     {
         return $this->idBail;
@@ -105,6 +92,18 @@ class EtatDesLieux
     public function setIdBail(?Bail $idBail): self
     {
         $this->idBail = $idBail;
+
+        return $this;
+    }
+
+    public function getIdTypeEtatLieux(): ?TypeEtatLieux
+    {
+        return $this->idTypeEtatLieux;
+    }
+
+    public function setIdTypeEtatLieux(?TypeEtatLieux $idTypeEtatLieux): self
+    {
+        $this->idTypeEtatLieux = $idTypeEtatLieux;
 
         return $this;
     }

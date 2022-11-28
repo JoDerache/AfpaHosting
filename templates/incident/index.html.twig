@@ -6,6 +6,7 @@
 {% block title %}Incident index{% endblock %}
 
 {% block body %}
+<main id="main" class="main">
     <h1>Incident index</h1>
 
     <table class="table">
@@ -37,4 +38,5 @@
     </table>
 
     <a href="{{ path('app_incident_new') }}">Create new</a>
+    </main>
 {% endblock %}

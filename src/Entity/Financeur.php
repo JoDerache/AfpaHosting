@@ -8,8 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Financeur
  *
  * @ORM\Table(name="financeur")
- * @ORM\Entity(repositoryClass="App\Repository\FinanceurRepository") 
- */
+ * @ORM\Entity(repositoryClass="App\Repository\FinanceurRepository")  */
 class Financeur
 {
     /**

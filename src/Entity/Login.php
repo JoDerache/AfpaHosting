@@ -2,20 +2,18 @@
 
 namespace App\Entity;
 
-
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherAwareInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
-
 /**
  * Login
  *
- * @ORM\Table(name="login")
+ * @ORM\Table(name="login", uniqueConstraints={@ORM\UniqueConstraint(name="Existe", columns={"numero_beneficiaire"}), @ORM\UniqueConstraint(name="numero_beneficiaire", columns={"numero_beneficiaire"})})
  * @ORM\Entity(repositoryClass="App\Repository\LoginRepository") 
  */
-class Login implements  UserInterface, PasswordAuthenticatedUserInterface, PasswordHasherAwareInterface
+class Login implements UserInterface, PasswordAuthenticatedUserInterface, PasswordHasherAwareInterface
 {
     /**
      * @var int
@@ -29,7 +27,7 @@ class Login implements  UserInterface, PasswordAuthenticatedUserInterface, Passw
     /**
      * @var int
      *
-     * @ORM\Column(name="numero_beneficiaire", type="integer", nullable=false)
+     * @ORM\Column(name="numero_beneficiaire", type="integer", nullable=false,  unique=true)
      */
     private $numeroBeneficiaire;
 
@@ -43,42 +41,11 @@ class Login implements  UserInterface, PasswordAuthenticatedUserInterface, Passw
     /**
      * @var string
      *
-     * @ORM\Column(name="role", type="string", length=100, nullable=false)
+     * @ORM\Column(name="role", type="string", length=10, nullable=false)
      */
     private $role;
 
-    public function getIdLogin(): ?int
-    {
-        return $this->idLogin;
-    }
-
-    public function getNumeroBeneficiaire(): ?int
-    {
-        return $this->numeroBeneficiaire;
-    }
-
-    public function setNumeroBeneficiaire(int $numeroBeneficiaire): self
-    {
-        $this->numeroBeneficiaire = $numeroBeneficiaire;
-
-        return $this;
-    }
-
-    public function getMdp(): ?string
-    {
-        return $this->mdp;
-    }
-
-    public function setMdp(string $mdp): self
-    {
-        $this->mdp = $mdp;
-
-        return $this;
-    }
-
-
-
- //--------- UserInterface
+    //--------- UserInterface
     
     
     
@@ -185,36 +152,45 @@ class Login implements  UserInterface, PasswordAuthenticatedUserInterface, Passw
             return null; // use the default hasher
     
         }
-    
 
+        public function getIdLogin(): ?int
+        {
+            return $this->idLogin;
+        }
 
-    /**
-     * Get the value of role
-     *
-     * @return  string
-     */ 
-    public function getRole()
-    {
-        return $this->role;
-    }
+        public function getNumeroBeneficiaire(): ?int
+        {
+            return $this->numeroBeneficiaire;
+        }
 
-    /**
-     * Set the value of role
-     *
-     * @param  string  $role
-     *
-     * @return  self
-     */ 
-    public function setRole(string $role)
-    {
-        $this->role = $role;
+        public function setNumeroBeneficiaire(int $numeroBeneficiaire): self
+        {
+            $this->numeroBeneficiaire = $numeroBeneficiaire;
 
-        return $this;
-    }
+            return $this;
+        }
 
+        public function getMdp(): ?string
+        {
+            return $this->mdp;
+        }
 
-    public function __toString()
-    {
-        return $this->numeroBeneficiaire;
-    }
+        public function setMdp(string $mdp): self
+        {
+            $this->mdp = $mdp;
+
+            return $this;
+        }
+
+        public function getRole(): ?string
+        {
+            return $this->role;
+        }
+
+        public function setRole(string $role): self
+        {
+            $this->role = $role;
+
+            return $this;
+        }
 }

@@ -265,5 +265,7 @@ import './bootstrap';
             }).observe(mainContainer);
         }, 200);
     }
-})();
+
+
+});
 

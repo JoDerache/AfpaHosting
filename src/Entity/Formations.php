@@ -8,8 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Formations
  *
  * @ORM\Table(name="formations")
- * @ORM\Entity(repositoryClass="App\Repository\FormationsRepository") 
- */
+ * @ORM\Entity(repositoryClass="App\Repository\FormationsRepository")  */
 class Formations
 {
     /**
