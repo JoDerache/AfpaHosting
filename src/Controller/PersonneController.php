@@ -6,9 +6,11 @@ use App\Entity\Bail;
 use App\Entity\Login;
 use App\Entity\Personne;
 use App\Form\PersonneType;
+use App\Form\UpdatePasswordType;
 use App\Form\UserFormType;
 use App\Form\UpdatePersonneType;
 use App\Repository\BailRepository;
+use App\Repository\LoginRepository;
 use App\Repository\PersonneRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\ParticipationRepository;
@@ -85,7 +87,7 @@ class PersonneController extends AbstractController
     }
 
     #[Route('/{idPersonne}', name: 'app_personne_show', methods: ['GET', 'POST'])]
-    public function showStudent(Personne $personne, PersonneRepository $personneRepository, ParticipationRepository $participationRepository, Request $request, EntityManagerInterface $manager): Response
+    public function showStudent(Personne $personne, PersonneRepository $personneRepository, ParticipationRepository $participationRepository, Request $request, EntityManagerInterface $manager, ): Response
     {
         // dd($participationRepository->findBy(['idPersonne'=>491]));
     $participe = $participationRepository->findBy(['idPersonne'=>$personne->getIdPersonne()]);
@@ -109,6 +111,18 @@ class PersonneController extends AbstractController
             ]);
         }
 
+        // $formPW = $this->createForm(UpdatePasswordType::class, $login);
+        // $formPW->handleRequest($request);
+        // if ($formPW->isSubmitted() && $formPW->isValid()) {
+        //     $loginRepository->save($login, true);
+
+        //     return $this->renderForm('personne/profil_Herberge.html.twig', [
+        //         'login' => $login,
+        //         'form' => $formPW
+        //     ]);
+        // }
+
+        
         return $this->renderForm('personne/profil_Herberge.html.twig', [
             'personne' => $personne,
             'participation' => $participe2,
@@ -116,23 +130,54 @@ class PersonneController extends AbstractController
         ]);
     }
 
-    #[Route('/{idPersonne}/edit', name: 'app_personne_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Personne $personne, PersonneRepository $personneRepository): Response
+    #[Route('/{idPersonne}/newPW', name: 'app_personne_edit', methods: ['GET', 'POST'])]
+    public function editPW(Personne $personne, PersonneRepository $personneRepository, EntityManagerInterface $manager, LoginRepository $loginRepository, Request $request, ): Response
     {
-        $form = $this->createForm(PersonneType::class, $personne);
+        // dd($personne);
+        $idlogin = $personne->getIdLogin();
+        $loginUser = $loginRepository ->find($idlogin);
+        // dd($loginUser);
+    
+        
+        $form=$this->createForm(UpdatePasswordType::class, $loginUser);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $personneRepository->save($personne, true);
 
-            return $this->redirectToRoute('app_personne_index', [], Response::HTTP_SEE_OTHER);
-        }
 
-        return $this->renderForm('personne/edit.html.twig', [
-            'personne' => $personne,
-            'form' => $form,
-        ]);
+            return $this->renderForm('personne/profil_Herberge.html.twig', [
+                'personne' => $personne,
+                'form' => $form
+            ]);
+        }
+            return $this->renderForm('personne/testUpdatePassword.html.twig', [
+                'personne' => $personne,
+                'form' => $form
+            ]);
     }
+
+
+
+
+
+    // #[Route('/{idPersonne}/edit', name: 'app_personne_edit', methods: ['GET', 'POST'])]
+    // public function edit(Request $request, Personne $personne, PersonneRepository $personneRepository): Response
+    // {
+    //     $form = $this->createForm(PersonneType::class, $personne);
+    //     $form->handleRequest($request);
+
+    //     if ($form->isSubmitted() && $form->isValid()) {
+    //         $personneRepository->save($personne, true);
+
+    //         return $this->redirectToRoute('app_personne_index', [], Response::HTTP_SEE_OTHER);
+    //     }
+
+    //     return $this->renderForm('personne/edit.html.twig', [
+    //         'personne' => $personne,
+    //         'form' => $form,
+    //     ]);
+    // }
 
     #[Route('/{idPersonne}', name: 'app_personne_delete', methods: ['POST'])]
     public function delete(Request $request, Personne $personne, PersonneRepository $personneRepository): Response
