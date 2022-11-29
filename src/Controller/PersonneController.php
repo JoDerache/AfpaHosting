@@ -18,6 +18,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -98,6 +101,7 @@ class PersonneController extends AbstractController
 
     {
         // ##########Pour la mise à jours des information deprofil#####
+        $utilisateur = $personneRepository->findOneBy(['numeroBeneficiaire' => $user->getUserIdentifier()]);
 
         $participe = $participationRepository->findBy(['idPersonne'=>$personne->getIdPersonne()]);
         $participe2=end($participe);
@@ -111,7 +115,8 @@ class PersonneController extends AbstractController
             return $this->renderForm('personne/profil_Herberge.html.twig', [
                 'personne' => $personne,
                 'participation' => $participe2,
-                'form' => $form
+                'form' => $form,
+                'utilisateur'=>$utilisateur
             ]);
         }
 
@@ -119,15 +124,32 @@ class PersonneController extends AbstractController
         // dd($personne);
         $idlogin = $personne->getIdLogin();
         $loginUser = $loginRepository ->find($idlogin);
+        $login = $loginUser;
 
-        $form2=$this->createForm(UpdatePasswordType::class, $loginUser);
+        $user = array('oldMdpEmp' => '', 'mdpEmp' => '');
+        $form2 = $this->createFormBuilder($user)
+        ->add('oldMdpEmp', PasswordType::class, ['attr' => ['class' => 'form-control'] , 'label' => 'Mot de passe actuel'])
+        ->add('mdpEmp', RepeatedType::class, [
+            'type'=> PasswordType::class,
+            'first_options' => array('label' => 'Mot de passe'),
+            'second_options' => array('label'=> 'Confirmez le mot de passe'),
+            'invalid_message' => 'Les deux mots de passe doivent correspondre',
+            'options' => ['attr' => ['class' => 'form-control']],
+            ]) 
+        ->add('submit', SubmitType::class, ['attr' => ['id' => 'bouton', 'class' => 'btn btn-danger card-btn'], 'label' => 'Changer le mot de passe'])
+        ->getForm();
+
+
+
+
+        // $form2=$this->createForm(UpdatePasswordType::class, $loginUser);
         $form2->handleRequest($request);
 
         if ($form2->isSubmitted() && $form2->isValid()) {
             $data = $form2->getData();
-            // dd($data);
-            if ($hasher->isPasswordValid($loginUser,$data['mdp'])) {
-                $hash = $hasher->hashPassword($loginUser, $data['new_password']);
+            // dd($hasher->isPasswordValid($login,$data['oldMdpEmp']));
+            if ($hasher->isPasswordValid($login,$data['oldMdpEmp'])) {
+                $hash = $hasher->hashPassword($loginUser, $data['mdpEmp']);
                 $loginUser ->setMdp($hash);
                 $manager->persist($loginUser);
                 $manager->flush();
@@ -136,68 +158,66 @@ class PersonneController extends AbstractController
                     'success',
                     'Les informations de votre compte ont bien été modifiées.'
                 );
-                return $this->$this->renderForm('personne/profil_Herberge.html.twig', [
+                return $this->renderForm('personne/profil_Herberge.html.twig', [
                     'personne' => $personne,
                     'participation' => $participe2,
                     'form2' => $form2,
-                    'form' => $form
+                    'form' => $form,
+                    'utilisateur'=>$utilisateur
                 ]);
             } else {
                 $this->addFlash(
                     'warning',
                     'Le mot de passe renseigné est incorrect.'
                 );
+                
             }
-            return $this->renderForm('personne/profil_Herberge.html.twig', [
-                'personne' => $personne,
-                'participation' => $participe2,
-                'form2' => $form2,
-                'form' => $form
-            ]);
+            // return $this->redirectToRoute('app_financeur_index', [], Response::HTTP_SEE_OTHER);
+        
         }
         return $this->renderForm('personne/profil_Herberge.html.twig', [
             'personne' => $personne,
             'participation' => $participe2,
             'form' => $form
         ]);
-    }
+    }               
 
-    #[Route('/{idPersonne}/newPW', name: 'app_personne_edit', methods: ['GET', 'POST'])]
-    public function editPW(Personne $personne, PersonneRepository $personneRepository, EntityManagerInterface $manager, LoginRepository $loginRepository, Request $request, UserPasswordHasherInterface $hasher, ParticipationRepository $participationRepository ): Response
-    {
-        // dd($personne);
-        $idlogin = $personne->getIdLogin();
-        $loginUser = $loginRepository ->find($idlogin);
+    // #[Route('/{idPersonne}/newPW', name: 'app_personne_edit', methods: ['GET', 'POST'])]
+    // public function editPW(Personne $personne, PersonneRepository $personneRepository, EntityManagerInterface $manager, LoginRepository $loginRepository, Request $request, UserPasswordHasherInterface $hasher, ParticipationRepository $participationRepository ): Response
+    // {
+    //     // dd($personne);
+    //     $idlogin = $personne->getIdLogin();
+    //     $loginUser = $loginRepository ->find($idlogin);
 
-        $form=$this->createForm(UpdatePasswordType::class, $loginUser);
-        $form->handleRequest($request);
+    //     $form=$this->createForm(UpdatePasswordType::class, $loginUser);
+    //     $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            if ($hasher->isPasswordValid($loginUser, $form->getData()->getPassword())) {
-                // $user = $form->getData();
-                // $manager->persist($user);
-                // $manager->flush();
-                $loginRepository->save($loginUser, true);
-                $this->addFlash(
-                    'success',
-                    'Les informations de votre compte ont bien été modifiées.'
-                );
+    //     if ($form->isSubmitted() && $form->isValid()) {
+    //         if ($hasher->isPasswordValid($loginUser, $form->getData()->getPassword())) {
+    //             // $user = $form->getData();
+    //             // $manager->persist($user);
+    //             // $manager->flush();
+    //             $loginRepository->save($loginUser, true);
+    //             $this->addFlash(
+    //                 'success',
+    //                 'Les informations de votre compte ont bien été modifiées.'
+    //             );
 
-                return $this->redirect('/personne/495/');
-            } else {
-                $this->addFlash(
-                    'warning',
-                    'Le mot de passe renseigné est incorrect.'
-                );
-            }
+    //             return $this->redirect('/personne/495/');
+    //         } else {
+    //             $this->addFlash(
+    //                 'warning',
+    //                 'Le mot de passe renseigné est incorrect.'
+    //             );
+    //         }
 
-            return $this->redirect('/personne/495/');
-        }
-            return $this->renderForm('personne/testUpdatePassword.html.twig', [
-                'personne' => $personne,
-                'form' => $form
-            ]);
-    }
+    //         return $this->redirect('/personne/495/');
+    //     }
+    //         return $this->renderForm('personne/testUpdatePassword.html.twig', [
+    //             'personne' => $personne,
+    //             'form' => $form
+    //         ]);
+    // }
 
 
 
