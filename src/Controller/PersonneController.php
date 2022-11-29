@@ -96,91 +96,91 @@ class PersonneController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_personne_show', methods: ['GET', 'POST'])]
-    public function showStudent(Personne $personne, PersonneRepository $personneRepository, ParticipationRepository $participationRepository, Request $request, EntityManagerInterface $manager): Response
+    // #[Route('/{id}', name: 'app_personne_show', methods: ['GET', 'POST'])]
+    // public function showStudent(Personne $personne, PersonneRepository $personneRepository, ParticipationRepository $participationRepository, Request $request, EntityManagerInterface $manager): Response
 
-    {
-        // ##########Pour la mise à jours des information deprofil#####
-        $utilisateur = $personneRepository->findOneBy(['numeroBeneficiaire' => $user->getUserIdentifier()]);
+    // {
+    //     // ##########Pour la mise à jours des information deprofil#####
+    //     $utilisateur = $personneRepository->findOneBy(['numeroBeneficiaire' => $user->getUserIdentifier()]);
 
-        $participe = $participationRepository->findBy(['idPersonne'=>$personne->getIdPersonne()]);
-        $participe2=end($participe);
+    //     $participe = $participationRepository->findBy(['idPersonne'=>$personne->getIdPersonne()]);
+    //     $participe2=end($participe);
 
-        $form = $this->createForm(UpdatePersonneType::class, $personne);
-        $form->handleRequest($request);
+    //     $form = $this->createForm(UpdatePersonneType::class, $personne);
+    //     $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $personneRepository->save($personne, true);
+    //     if ($form->isSubmitted() && $form->isValid()) {
+    //         $personneRepository->save($personne, true);
 
-            return $this->renderForm('personne/profil_Herberge.html.twig', [
-                'personne' => $personne,
-                'participation' => $participe2,
-                'form' => $form,
-                'utilisateur'=>$utilisateur
-            ]);
-        }
+    //         return $this->renderForm('personne/profil_Herberge.html.twig', [
+    //             'personne' => $personne,
+    //             'participation' => $participe2,
+    //             'form' => $form,
+    //             'utilisateur'=>$utilisateur
+    //         ]);
+    //     }
 
-        // #########Pour l'édition du mot de passe###########
-        // dd($personne);
-        $idlogin = $personne->getIdLogin();
-        $loginUser = $loginRepository ->find($idlogin);
-        $login = $loginUser;
+    //     // #########Pour l'édition du mot de passe###########
+    //     // dd($personne);
+    //     $idlogin = $personne->getIdLogin();
+    //     $loginUser = $loginRepository ->find($idlogin);
+    //     $login = $loginUser;
 
-        $user = array('oldMdpEmp' => '', 'mdpEmp' => '');
-        $form2 = $this->createFormBuilder($user)
-        ->add('oldMdpEmp', PasswordType::class, ['attr' => ['class' => 'form-control'] , 'label' => 'Mot de passe actuel'])
-        ->add('mdpEmp', RepeatedType::class, [
-            'type'=> PasswordType::class,
-            'first_options' => array('label' => 'Mot de passe'),
-            'second_options' => array('label'=> 'Confirmez le mot de passe'),
-            'invalid_message' => 'Les deux mots de passe doivent correspondre',
-            'options' => ['attr' => ['class' => 'form-control']],
-            ]) 
-        ->add('submit', SubmitType::class, ['attr' => ['id' => 'bouton', 'class' => 'btn btn-danger card-btn'], 'label' => 'Changer le mot de passe'])
-        ->getForm();
-
-
+    //     $user = array('oldMdpEmp' => '', 'mdpEmp' => '');
+    //     $form2 = $this->createFormBuilder($user)
+    //     ->add('oldMdpEmp', PasswordType::class, ['attr' => ['class' => 'form-control'] , 'label' => 'Mot de passe actuel'])
+    //     ->add('mdpEmp', RepeatedType::class, [
+    //         'type'=> PasswordType::class,
+    //         'first_options' => array('label' => 'Mot de passe'),
+    //         'second_options' => array('label'=> 'Confirmez le mot de passe'),
+    //         'invalid_message' => 'Les deux mots de passe doivent correspondre',
+    //         'options' => ['attr' => ['class' => 'form-control']],
+    //         ]) 
+    //     ->add('submit', SubmitType::class, ['attr' => ['id' => 'bouton', 'class' => 'btn btn-danger card-btn'], 'label' => 'Changer le mot de passe'])
+    //     ->getForm();
 
 
-        // $form2=$this->createForm(UpdatePasswordType::class, $loginUser);
-        $form2->handleRequest($request);
 
-        if ($form2->isSubmitted() && $form2->isValid()) {
-            $data = $form2->getData();
-            // dd($hasher->isPasswordValid($login,$data['oldMdpEmp']));
-            if ($hasher->isPasswordValid($login,$data['oldMdpEmp'])) {
-                $hash = $hasher->hashPassword($loginUser, $data['mdpEmp']);
-                $loginUser ->setMdp($hash);
-                $manager->persist($loginUser);
-                $manager->flush();
-                // $loginRepository->save($loginUser, true);
-                $this->addFlash(
-                    'success',
-                    'Les informations de votre compte ont bien été modifiées.'
-                );
-                return $this->renderForm('personne/profil_Herberge.html.twig', [
-                    'personne' => $personne,
-                    'participation' => $participe2,
-                    'form2' => $form2,
-                    'form' => $form,
-                    'utilisateur'=>$utilisateur
-                ]);
-            } else {
-                $this->addFlash(
-                    'warning',
-                    'Le mot de passe renseigné est incorrect.'
-                );
+
+    //     // $form2=$this->createForm(UpdatePasswordType::class, $loginUser);
+    //     $form2->handleRequest($request);
+
+    //     if ($form2->isSubmitted() && $form2->isValid()) {
+    //         $data = $form2->getData();
+    //         // dd($hasher->isPasswordValid($login,$data['oldMdpEmp']));
+    //         if ($hasher->isPasswordValid($login,$data['oldMdpEmp'])) {
+    //             $hash = $hasher->hashPassword($loginUser, $data['mdpEmp']);
+    //             $loginUser ->setMdp($hash);
+    //             $manager->persist($loginUser);
+    //             $manager->flush();
+    //             // $loginRepository->save($loginUser, true);
+    //             $this->addFlash(
+    //                 'success',
+    //                 'Les informations de votre compte ont bien été modifiées.'
+    //             );
+    //             return $this->renderForm('personne/profil_Herberge.html.twig', [
+    //                 'personne' => $personne,
+    //                 'participation' => $participe2,
+    //                 'form2' => $form2,
+    //                 'form' => $form,
+    //                 'utilisateur'=>$utilisateur
+    //             ]);
+    //         } else {
+    //             $this->addFlash(
+    //                 'warning',
+    //                 'Le mot de passe renseigné est incorrect.'
+    //             );
                 
-            }
-            // return $this->redirectToRoute('app_financeur_index', [], Response::HTTP_SEE_OTHER);
+    //         }
+    //         // return $this->redirectToRoute('app_financeur_index', [], Response::HTTP_SEE_OTHER);
         
-        }
-        return $this->renderForm('personne/profil_Herberge.html.twig', [
-            'personne' => $personne,
-            'participation' => $participe2,
-            'form' => $form
-        ]);
-    }               
+    //     }
+    //     return $this->renderForm('personne/profil_Herberge.html.twig', [
+    //         'personne' => $personne,
+    //         'participation' => $participe2,
+    //         'form' => $form
+    //     ]);
+    // }               
 
     // #[Route('/{idPersonne}/newPW', name: 'app_personne_edit', methods: ['GET', 'POST'])]
     // public function editPW(Personne $personne, PersonneRepository $personneRepository, EntityManagerInterface $manager, LoginRepository $loginRepository, Request $request, UserPasswordHasherInterface $hasher, ParticipationRepository $participationRepository ): Response
