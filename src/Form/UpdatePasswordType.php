@@ -15,10 +15,18 @@ class UpdatePasswordType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('mdp', PasswordType::class, [
+                'label'=>'Ancien mot de passe',
+                'attr'=>[
+                    'class'=>'form-control',
+                    'placeholder' => ''
+                        ]
+            ])
+
             ->add('new_password', RepeatedType::class, [
                 'type'=>PasswordType::class,
                 'mapped'=>false, 
-                'invalid_message'=>'l\'adresse mail et la confimation doivent être indentique',
+                'invalid_message'=>'lles deux mots de passe doivent être indentique',
                 'required'=>true,
                 'first_options'=>[
                     'label'=>'Nouveau mot de passe',
