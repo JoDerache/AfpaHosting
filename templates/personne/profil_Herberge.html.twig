@@ -85,7 +85,7 @@
                     <div class="row mb-3">
                       <label for="Address" class="col-md-4 col-lg-3 col-form-label">{{form_label(form.adressePostale)}}</label>
                       <div class="col-md-8 col-lg-9">
-                       {{form_widget(form.adressePostale)}}
+                        {{form_widget(form.adressePostale)}}
                       </div>
                     </div>
 
@@ -102,12 +102,7 @@
                       {{form_widget(form.mail)}}
                       </div>
                     </div>
-
                     <div class="text-center">
-
-			                
-
-
                     </div>
                   {{ form_end(form) }}
                   </form><!-- End Profile Edit Form -->
@@ -119,23 +114,23 @@
                   {{ form_start(form2) }}
 
                     <div class="row mb-3">
-                        <label for="Email" class="col-md-4 col-lg-3 col-form-label">{{form_label(form2.mdp)}}</label>
+                        <label for="Email" class="col-md-4 col-lg-3 col-form-label">{{form_label(form2.oldMdpEmp)}}</label>
                         <div class="col-md-8 col-lg-9">
-                        {{form_widget(form2.mdp)}}
+                        {{form_widget(form2.oldMdpEmp)}}
                         </div>
                     </div>
 
                     <div class="row mb-3">
-                        <label for="Email" class="col-md-4 col-lg-3 col-form-label">{{form_label(form2.new_password.first)}}</label>
+                        <label for="Email" class="col-md-4 col-lg-3 col-form-label">{{form_label(form2.mdpEmp.first)}}</label>
                         <div class="col-md-8 col-lg-9">
-                        {{form_widget(form2.new_password.first)}}
+                        {{form_widget(form2.mdpEmp.first)}}
                         </div>
                     </div>
 
                     <div class="row mb-3">
-                        <label for="Email" class="col-md-4 col-lg-3 col-form-label">{{form_label(form2.new_password.second)}}</label>
+                        <label for="Email" class="col-md-4 col-lg-3 col-form-label">{{form_label(form2.mdpEmp.second)}}</label>
                         <div class="col-md-8 col-lg-9">
-                        {{form_widget(form2.new_password.second)}}
+                        {{form_widget(form2.mdpEmp.second)}}
                         </div>
                     </div>
 
@@ -153,7 +148,7 @@
 
     <a href="{{ path('app_personne_index') }}">back to list</a>
 
-    <a href="{{ path('app_personne_edit', {'idPersonne': personne.idPersonne}) }}">edit</a>
+    {# <a href="{{ path('app_personne_edit', {'idPersonne': personne.idPersonne}) }}">edit</a> #}
 
     {{ include('personne/_delete_form.html.twig') }}
 {% endblock %}
