@@ -19,9 +19,15 @@ class ChambreController extends AbstractController
     public function index(ChambreRepository $chambreRepository, UserInterface $user, PersonneRepository $personneRepository): Response
     {
         $utilisateur = $personneRepository->findOneBy(['numeroBeneficiaire' => $user->getUserIdentifier()]);
+        // $chambres = $chambreRepository->findAll();
+        // $bail = $bailRepository->findAll();
+        $chambres = $chambreRepository->findAllChambre();
+
+
         return $this->render('chambre/index.html.twig', [
-            'chambres' => $chambreRepository->findAll(),
-            'utilisateur' => $utilisateur
+            'chambres' => $chambres,
+            // 'bails' => $bail,
+            'utilisateur' => $utilisateur,
         ]);
     }
 

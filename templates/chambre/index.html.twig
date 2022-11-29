@@ -8,36 +8,77 @@
 
 {% block body %}
 <main id="main" class="main">
-    <h1>Chambre index</h1>
+    <div class="container"  id="chambreContainer">
+        <div class="row">
+            <div class="col-lg-3">
+        <!-- Card with header and footer -->
+                <div class="card">
+                    <div class="card-header bg-success text-white">Chambres libre</div>
+                    <div class="card-body">
+                        <h5  class="card-title">10</h5>
+                    </div>
+                </div><!-- End Card with header and footer -->
+            </div>
+            <div class="col-lg-3">
+    <!-- Card with header and footer -->
+                <div class="card">
+                    <div class="card-header bg-danger text-white">Chambres occupées</div>
+                    <div class="card-body">
+                        <h5 class="card-title">45</h5>
+                    </div>
+                </div><!-- End Card with header and footer -->
+            </div>
+            <div class="col-lg-3">
+        <!-- Card with header and footer -->
+                <div class="card">
+                    <div class="card-header bg-warning text-white">Chambres réservées</div>
+                    <div class="card-body">
+                        <h5 class="card-title">5</h5>
+                    </div>
+                </div><!-- End Card with header and footer -->
+            </div>
+            <div class="col-lg-3">
+        <!-- Card with header and footer -->
+                <div class="card">
+                    <div class="card-header bg-black text-white">Chambres comdamnées</div>
+                    <div class="card-body">
+                        <h5 class="card-title">5</h5>
+                    </div>
+                </div><!-- End Card with header and footer -->
+            </div>
+        </div>
+        <!-- Recent Sales -->
+        <div class="card recent-sales overflow-auto">
+            <div class="card-body">
+                <div class="container d-flex align-items-center justify-content-between">
+                    <h5 class="card-title">Chambres</h5>
+                    <a href="#" id="addChambre"><h3><i class="bi bi-plus-circle iconAdd"></i></h3></a>
+                </div>
+                <table class="table table-borderless datatable">
+                    <thead>
+                        <tr>
+                            <th scope="col">Numéro</th>
+                            <th scope="col">Hébergé</th>
+                            <th scope="col">clef de chambre</th>
+                            <th scope="col">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {# {% for bail in chambres %}
+                    {{dump(chambre)}} #}
+                        {# <tr>
+                            <th scope="row">{{chambre.numeroChambre}}</th>
+                            
+                                        {# <td>{{bail.idPersonne.nom}}</td> #}
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>NumeroChambre</th>
-                <th>NumeroClefs</th>
-                <th>Condamne</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for chambre in chambres %}
-            <tr>
-                <td>{{ chambre.numeroChambre }}</td>
-                <td>{{ chambre.numeroClefs }}</td>
-                <td>{{ chambre.condamne ? 'Yes' : 'No' }}</td>
-                <td>
-                    <a href="{{ path('app_chambre_show', {'numeroChambre': chambre.numeroChambre}) }}">show</a>
-                    <a href="{{ path('app_chambre_edit', {'numeroChambre': chambre.numeroChambre}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_chambre_new') }}">Create new</a>
+                            {# <td>{{chambre.numeroClefs}}</td> #}
+                            {# <td><span class="badge bg-danger">{{chambre.condamne}}</span></td> #}
+                        {# </tr>  #}
+                    {# {% endfor %} #}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </main>
 {% endblock %}
