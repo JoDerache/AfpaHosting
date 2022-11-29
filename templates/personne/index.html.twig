@@ -1,78 +1,21 @@
 {% include 'base.html.twig' %}
 {% include 'shared/header.html.twig' %}
 {% include 'shared/sidebar.html.twig' %}
-    
 
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css">
 
-{% block title %}Personne index{% endblock %}
+{% block stylesheets %}
+    {{ encore_entry_link_tags('app') }}
+    {{ encore_entry_link_tags('dataTable') }}
+{% endblock %}
+
 
 {% block body %}
-<main id="main" class="main">
-    <div class="container" id="hebergeContainer">
-    <!-- Barre de recherche + bouton ajouté -->
-        <div class="row justify-content-end">
-            <div class="col-lg-5 mt-4">
-                <input class="form-control me-2" type="search" placeholder="Search" id="searchBar">
-            </div>
-            <div class="col-lg-3 text-center d-flex align-items-center mt-3">
-            <a href="#"  data-bs-toggle="modal" data-bs-target="#modal_ajouter">
-                <h1><i class="bi bi-person-plus iconAdd"></h1></i>
-            </a>
-            </div>
-        </div>
-    <!-- barre de filtre -->
-        <div class="container mt-5" id="filtre">
-            <div class="row">
-                <div class="col-lg-7">
-                    <ul>
-                        <li>
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">Présent cette semaine
-                        </li>
-                        <li>
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">Présent ce mois
-                        </li>
-                        <li>
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">Présent cette année
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-lg-4">
-                    <select class="form-select">
-                        <option selected>Choisir un financeur</option>
-                        <option value="1">Tous</option>
-                        <option value="2">Exemple 1</option>
-                        <option value="3">Exemple 2</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-    <!--Affichage des hébergés  -->
-        <div class="container mt-5 d-flex flex-wrap justify-content-center">
-            {% for bail in bails %}
-                <div class="col-lg-4">
-                    {% include "shared/_cardPersonne.html.twig" %}
-                </div>
-                {% include "shared/_modalPersonne.html.twig" %}
-            {% endfor %}
-        </div>
-        {% for message in app.flashes('success') %}
-            <div class="alert alert-success">
-                {{ message }}
-            </div>
-        {% endfor %}
-        {% for message in app.flashes('error') %}
-            <div class="alert alert-danger">
-                {{ message }}
-            </div>
-        {% endfor %}
-    </div>
+    <main id="main" class="main mt-3">
 
-        
-</main>
-    {% endblock %}
-
-
-<div class="modal fade" id="modal_ajouter" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        {# <div class="modal fade" id="modal_ajouter" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
         <div class="modal-header">
@@ -99,4 +42,70 @@
         </div>
         </div>
     </div>
-</div>
+</div> #}
+
+        <div class="container my-5 d-flex flex-wrap justify-content-center" id="hebergeContainer">
+            <div class="table-responsive mt-2">
+                <div class="table-title">
+                    <div class="row mb-5 mx-auto d-flex flex-wrap justify-content-center">
+                        <div class="col-sm-8 title"><h1>Tous les hébergés</h1></div>
+                    </div>
+                </div>
+                <div class="table-wrapper justify-content-center d-flex flex-wrap">
+                    <table id="dataTable" class="table table-striped justify-content-center flex-wrap mt-5">
+                        <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Nom</th>
+                            <th>Prénom</th>
+                            <th>Numéro de badge</th>
+                            <th>Numéro de bénéficiaire</th>
+                            <th>Téléphone</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for personne in personnes %}
+                            <tr>
+                                <td>{{ personne.idPersonne }}</td>
+                                <td>{{ personne.nom }}</td>
+                                <td>{{ personne.prenom }}</td>
+                                <td>{{ personne.badge }}</td>
+                                <td>{{ personne.numeroBeneficiaire }}</td>
+                                <td>{{ personne.telephone }}</td>
+                                <td>
+                                    <a href="{# {{ path('app_personne_show', {'id': personne.idPersonne}) }} #}"
+                                       class="view" title="Voir" data-toggle="tooltip"><i
+                                                class="material-icons viewIcon">&#xE417;</i></a>
+                                    <a href="{# {{ path('app_personne_edit', {'id': personne.idPersonne}) }} #}"
+                                       class="edit" title="Editer" data-toggle="tooltip"><i
+                                                class="material-icons editIcon">&#xE254;</i></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#dataTable').DataTable({
+                language: {
+                    url: "https://cdn.datatables.net/plug-ins/1.13.1/i18n/fr-FR.json"
+                }
+            });
+        });
+    </script>
+
+    {% block javascripts %}
+        {{ encore_entry_script_tags('dataTable') }}
+    {% endblock %}
+
+{% endblock %}
+

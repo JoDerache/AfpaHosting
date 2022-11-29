@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Bail;
 use App\Entity\Personne;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -39,6 +40,14 @@ class PersonneRepository extends ServiceEntityRepository
         }
     }
 
+    public function findAllPersonne(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->innerJoin(Bail::class, 'b', 'WITH', 'b.idPersonne = p.idPersonne')
+            ->addSelect('b')
+            ->getQuery()
+            ->getResult();
+    }
 //    /**
 //     * @return Personne[] Returns an array of Personne objects
 //     */

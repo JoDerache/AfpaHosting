@@ -1,0 +1,62 @@
+{% include 'base.html.twig' %}
+{% include 'shared/header.html.twig' %}
+{% include 'shared/sidebar.html.twig' %}
+
+{% block title %}Personne index{% endblock %}
+
+{% block body %}
+<main id="main" class="main mt-3">
+<div class="container" id="hebergeContainer">
+
+    <!-- Barre de recherche + bouton ajouté -->
+    <div class="row justify-content-center">
+        <div class="col-lg-6 text-center d-flex align-items-center justify-content-center mt-4">
+            <input class="form-control me-2" type="search" placeholder="Search" id="searchBar">
+            <div class="mt-2">
+               <a href="#" id="addIncident"><h1><i class="bi bi-person-plus iconAdd"></i></h1></a>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- barre de filtre -->
+    <div class="container mt-5" id="filtre">
+        <div class="row">
+            <div class="col-lg-7">
+                <ul>
+                    <li><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">Présent cette
+                        semaine
+                    </li>
+                    <li><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">Présent ce
+                        mois
+                    </li>
+                    <li><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">Présent cette
+                        année
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-lg-4">
+                <select class="form-select">
+                    <option selected>Choisir un financeur</option>
+                    <option value="1">Tous</option>
+                    <option value="2">Exemple 1</option>
+                    <option value="3">Exemple 2</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!--Affichage des hébergés  -->
+    <div class="container mt-5 d-flex flex-wrap justify-content-center">
+
+        {% for bail in bails %}
+            <div class="col-lg-4">
+                {% include "shared/_cardPersonne.html.twig" %}
+            </div>
+            {% include "shared/_modalPersonne.html.twig" %}
+        {% endfor %}
+    </div>
+</div>
+</main>
+    {% endblock %}
