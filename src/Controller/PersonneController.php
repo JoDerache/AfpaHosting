@@ -6,8 +6,8 @@ use App\Entity\Bail;
 use App\Entity\Login;
 use App\Entity\Personne;
 use App\Form\PersonneType;
-use App\Form\UserFormType;
 use App\Form\UpdatePasswordType;
+use App\Form\UserFormType;
 use App\Form\UpdatePersonneType;
 use App\Repository\BailRepository;
 use App\Repository\LoginRepository;
@@ -21,7 +21,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-#[Route('/admin/personne')]
+#[Route('/personne')]
 class PersonneController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
@@ -35,7 +35,6 @@ class PersonneController extends AbstractController
     }
 
 
-
     #[Route('/', name: 'app_personne_index')]
     public function index(Request $request,PersonneRepository $personneRepository, BailRepository $bailRepository, UserInterface $user): Response
     {
@@ -47,7 +46,7 @@ class PersonneController extends AbstractController
 
     try {
         if ($form->isSubmitted() && $form->isValid()) {
-        
+
         $login->setMdp(password_hash('Afpa'.$login->getNumeroBeneficiaire().'!', PASSWORD_ARGON2I));
         $this->entityManager->persist($login);
         $personne->setNumeroBeneficiaire($login->getNumeroBeneficiaire());
@@ -68,10 +67,21 @@ class PersonneController extends AbstractController
 
         return $this->renderForm('personne/index.html.twig', [
             'personnes' => $personneRepository->findAll(),
-            'bails' => $bailRepository->findAll(),
             'utilisateur' => $utilisateur,
             'personne' => $personne,
             'form' => $form,
+        ]);
+    }
+
+    #[Route('/byBail', name: 'app_personne_indexByBail', methods: ['GET'])]
+    public function indexByBail(PersonneRepository $personneRepository, BailRepository $bailRepository, UserInterface $user): Response
+    {
+        $utilisateur = $personneRepository->findOneBy(['numeroBeneficiaire' => $user->getUserIdentifier()]);
+
+        return $this->render('personne/indexByBail.html.twig', [
+            'personnes' => $personneRepository->findAll(),
+            'bails' => $bailRepository->findAll(),
+            'utilisateur' => $utilisateur
         ]);
     }
 
@@ -83,8 +93,9 @@ class PersonneController extends AbstractController
         ]);
     }
 
-    #[Route('/{idPersonne}', name: 'app_personne_show', methods: ['GET', 'POST'])]
-    public function showStudent(Personne $personne, PersonneRepository $personneRepository, ParticipationRepository $participationRepository, Request $request, LoginRepository $loginRepository, UserPasswordHasherInterface $hasher, EntityManagerInterface $manager, ): Response
+    #[Route('/{id}', name: 'app_personne_show', methods: ['GET', 'POST'])]
+    public function showStudent(Personne $personne, PersonneRepository $personneRepository, ParticipationRepository $participationRepository, Request $request, EntityManagerInterface $manager): Response
+
     {
         // ##########Pour la mise à jours des information deprofil#####
 
@@ -111,7 +122,7 @@ class PersonneController extends AbstractController
 
         $form2=$this->createForm(UpdatePasswordType::class, $loginUser);
         $form2->handleRequest($request);
-       
+
         if ($form2->isSubmitted() && $form2->isValid()) {
             $data = $form2->getData();
             // dd($data);
@@ -147,7 +158,6 @@ class PersonneController extends AbstractController
         return $this->renderForm('personne/profil_Herberge.html.twig', [
             'personne' => $personne,
             'participation' => $participe2,
-            'form2' => $form2,
             'form' => $form
         ]);
     }
@@ -214,7 +224,7 @@ class PersonneController extends AbstractController
     #[Route('/{idPersonne}', name: 'app_personne_delete', methods: ['POST'])]
     public function delete(Request $request, Personne $personne, PersonneRepository $personneRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$personne->getIdPersonne(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $personne->getIdPersonne(), $request->request->get('_token'))) {
             $personneRepository->remove($personne, true);
         }
 
