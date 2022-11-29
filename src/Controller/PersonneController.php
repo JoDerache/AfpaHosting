@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-#[Route('/personne')]
+#[Route('/admin/personne')]
 class PersonneController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
@@ -46,13 +46,9 @@ class PersonneController extends AbstractController
 
     try {
         if ($form->isSubmitted() && $form->isValid()) {
-            
-
-
-
+        
         $login->setMdp(password_hash('Afpa'.$login->getNumeroBeneficiaire().'!', PASSWORD_ARGON2I));
         $this->entityManager->persist($login);
-
         $personne->setNumeroBeneficiaire($login->getNumeroBeneficiaire());
         $personne->setIdLogin($login);
         $personne->setIsBlacklisted(false);
@@ -89,20 +85,14 @@ class PersonneController extends AbstractController
     #[Route('/{idPersonne}', name: 'app_personne_show', methods: ['GET', 'POST'])]
     public function showStudent(Personne $personne, PersonneRepository $personneRepository, ParticipationRepository $participationRepository, Request $request, EntityManagerInterface $manager, ): Response
     {
-        // dd($participationRepository->findBy(['idPersonne'=>491]));
-    $participe = $participationRepository->findBy(['idPersonne'=>$personne->getIdPersonne()]);
-    $participe2=end($participe);
-    // dd($participe);
+        $participe = $participationRepository->findBy(['idPersonne'=>$personne->getIdPersonne()]);
+        $participe2=end($participe);
 
         $form = $this->createForm(UpdatePersonneType::class, $personne);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $personneRepository->save($personne, true);
-
-            // $personne = $form->getData();
-            // $manager->persist($personne);
-            // $manager->flush();
 
             return $this->renderForm('personne/profil_Herberge.html.twig', [
                 'personne' => $personne,

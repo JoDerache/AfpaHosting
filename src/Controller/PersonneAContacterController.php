@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/personne/a/contacter')]
+#[Route('/admin/personne/a/contacter')]
 class PersonneAContacterController extends AbstractController
 {
     #[Route('/', name: 'app_personne_a_contacter_index', methods: ['GET'])]

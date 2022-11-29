@@ -2,9 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\Bail;
 use App\Entity\Chambre;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Chambre>
@@ -39,20 +40,14 @@ class ChambreRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Chambre[] Returns an array of Chambre objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('c.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function findAllChambre(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->innerJoin(Bail::class, 'b', 'WITH', 'b.numeroChambre = p.numeroChambre')
+            ->addSelect('b')
+            ->getQuery()
+            ->getResult();
+    }
 
 //    public function findOneBySomeField($value): ?Chambre
 //    {

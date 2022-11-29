@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-#[Route('/incident')]
+#[Route('/admin/incident')]
 class IncidentController extends AbstractController
 {
     #[Route('/', name: 'app_incident_index', methods: ['GET'])]

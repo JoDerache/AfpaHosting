@@ -12,16 +12,22 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-#[Route('/chambre')]
+#[Route('/admin/chambre')]
 class ChambreController extends AbstractController
 {
     #[Route('/', name: 'app_chambre_index', methods: ['GET'])]
     public function index(ChambreRepository $chambreRepository, UserInterface $user, PersonneRepository $personneRepository): Response
     {
         $utilisateur = $personneRepository->findOneBy(['numeroBeneficiaire' => $user->getUserIdentifier()]);
+        // $chambres = $chambreRepository->findAll();
+        // $bail = $bailRepository->findAll();
+        $chambres = $chambreRepository->findAllChambre();
+
+
         return $this->render('chambre/index.html.twig', [
-            'chambres' => $chambreRepository->findAll(),
-            'utilisateur' => $utilisateur
+            'chambres' => $chambres,
+            // 'bails' => $bail,
+            'utilisateur' => $utilisateur,
         ]);
     }
 

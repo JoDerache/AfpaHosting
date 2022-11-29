@@ -27,7 +27,7 @@ class Login implements UserInterface, PasswordAuthenticatedUserInterface, Passwo
     /**
      * @var int
      *
-     * @ORM\Column(name="numero_beneficiaire", type="integer", nullable=false,  unique=true)
+     * @ORM\Column(name="numero_beneficiaire", type="integer", nullable=false)
      */
     private $numeroBeneficiaire;
 
@@ -45,7 +45,50 @@ class Login implements UserInterface, PasswordAuthenticatedUserInterface, Passwo
      */
     private $role;
 
-    //--------- UserInterface
+    public function getIdLogin(): ?int
+    {
+        return $this->idLogin;
+    }
+
+    public function getNumeroBeneficiaire(): ?int
+    {
+        return $this->numeroBeneficiaire;
+    }
+
+    public function setNumeroBeneficiaire(int $numeroBeneficiaire): self
+    {
+        $this->numeroBeneficiaire = $numeroBeneficiaire;
+
+        return $this;
+    }
+
+    public function getMdp(): ?string
+    {
+        return $this->mdp;
+    }
+
+    public function setMdp(string $mdp): self
+    {
+        $this->mdp = $mdp;
+
+        return $this;
+    }
+
+    public function getRole(): ?string
+    {
+        return $this->role;
+    }
+
+    public function setRole(string $role): self
+    {
+        $this->role = $role;
+
+        return $this;
+    }
+
+
+
+         //--------- UserInterface
     
     
     
@@ -81,7 +124,7 @@ class Login implements UserInterface, PasswordAuthenticatedUserInterface, Passwo
     
             // guarantee every user at least has ROLE_USER
     
-            $roles[] = 'ROLE_USER';
+            $roles[] = $this->role;
     
             return array_unique($roles);
     
@@ -153,44 +196,4 @@ class Login implements UserInterface, PasswordAuthenticatedUserInterface, Passwo
     
         }
 
-        public function getIdLogin(): ?int
-        {
-            return $this->idLogin;
-        }
-
-        public function getNumeroBeneficiaire(): ?int
-        {
-            return $this->numeroBeneficiaire;
-        }
-
-        public function setNumeroBeneficiaire(int $numeroBeneficiaire): self
-        {
-            $this->numeroBeneficiaire = $numeroBeneficiaire;
-
-            return $this;
-        }
-
-        public function getMdp(): ?string
-        {
-            return $this->mdp;
-        }
-
-        public function setMdp(string $mdp): self
-        {
-            $this->mdp = $mdp;
-
-            return $this;
-        }
-
-        public function getRole(): ?string
-        {
-            return $this->role;
-        }
-
-        public function setRole(string $role): self
-        {
-            $this->role = $role;
-
-            return $this;
-        }
 }

@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/travaux')]
+#[Route('/admin/travaux')]
 class TravauxController extends AbstractController
 {
     #[Route('/', name: 'app_travaux_index', methods: ['GET'])]
