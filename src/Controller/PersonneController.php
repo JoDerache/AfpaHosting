@@ -100,7 +100,7 @@ class PersonneController extends AbstractController
     // public function showStudent(Personne $personne, PersonneRepository $personneRepository, ParticipationRepository $participationRepository, Request $request, EntityManagerInterface $manager): Response
 
     // {
-    //     // ##########Pour la mise à jours des information deprofil#####
+    //     // ##########Pour la mise à jours des information deprofil####
     //     $utilisateur = $personneRepository->findOneBy(['numeroBeneficiaire' => $user->getUserIdentifier()]);
 
     //     $participe = $participationRepository->findBy(['idPersonne'=>$personne->getIdPersonne()]);
