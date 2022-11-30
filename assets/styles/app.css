@@ -684,7 +684,7 @@ h6 {
 }
 
 .sidebar-nav .nav-link i {
-    font-size: 16px;
+    font-size: 20px;
     margin-right: 10px;
     color: white;
 }
@@ -1388,4 +1388,57 @@ bi-plus-circle {
 
 .select_choice{
     width: 300px
+}
+
+/*=================================Modal ajout personne======================================*/
+#modal_ajouter .form-control {
+    margin-top: 5px;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+#modal_ajouter label {
+    font-size: 17px;
+    font-weight: bold;
+}
+
+#modal_ajouter .form-select {
+    margin-top: 5px;
+    margin-bottom: 20px;
+}
+
+#user_form_user_dateNaissance select {
+    margin-top: 5px;
+    margin-bottom: 20px;
+    margin-right: 8px;
+    border-radius: 5px;
+    border-color: #d0cdcd;
+}
+
+.formAjout {
+    margin-top: 15px;
+}
+
+.titre {
+    height: 70px;
+    background-color: #87bb34;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+
+}
+
+.titreHeberge {
+    font-weight: bolder;
+    color: white;
+    margin: auto;
+    display: inline-flex;
+    font-size: 25px;
+}
+
+#modal_ajouter .endFooter {
+    margin-top: 0px;
+    margin-bottom: 15px;
+    border: none;
+    display: flex;
+    justify-content: space-evenly;
 }

@@ -1,0 +1,30 @@
+<div class="modal fade" id="modal_ajouter" tabindex="-1" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header titre">
+                <h1 class="modal-title titreHeberge" id="exampleModalLabel">AJOUTER UN HÉBERGÉ</h1>
+            </div>
+            <div class="modal-body formAjout">
+                {{ form_start(form) }}
+                {{ form_row(form.login.numeroBeneficiaire) }}
+                {{ form_row(form.login.role) }}
+                {{ form_row(form.user.nom) }}
+                {{ form_row(form.user.prenom) }}
+                {{ form_row(form.user.adressePostale) }}
+                {{ form_row(form.user.telephone) }}
+                {{ form_row(form.user.mail) }}
+                {{ form_row(form.user.dateNaissance) }}
+                {{ form_row(form.user.badge) }}
+                {{ form_row(form.user.lieuNaissance) }}
+            </div>
+            <div class="modal-footer endFooter">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    Fermer
+                </button>
+                {{ form_row(form.submit) }}
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+</div>

@@ -39,7 +39,7 @@ class PersonneController extends AbstractController
 
 
     #[Route('/', name: 'app_personne_index')]
-    public function index(Request $request,PersonneRepository $personneRepository, BailRepository $bailRepository, UserInterface $user): Response
+    public function index(Request $request,PersonneRepository $personneRepository, UserInterface $user): Response
     {
         $utilisateur = $personneRepository->findOneBy(['numeroBeneficiaire' => $user->getUserIdentifier()]);
         $personne = new Personne();
@@ -77,14 +77,40 @@ class PersonneController extends AbstractController
     }
 
     #[Route('/byBail', name: 'app_personne_indexByBail', methods: ['GET'])]
-    public function indexByBail(PersonneRepository $personneRepository, BailRepository $bailRepository, UserInterface $user): Response
+    public function indexByBail(EntityManagerInterface $em, Request $request, PersonneRepository $personneRepository, BailRepository $bailRepository, UserInterface $user): Response
     {
         $utilisateur = $personneRepository->findOneBy(['numeroBeneficiaire' => $user->getUserIdentifier()]);
+        $personne = new Personne();
+        $login = new Login();
+        $form = $this->createForm(UserFormType::class, ['user' => $personne, 'login' => $login]);
+        $form->handleRequest($request);
 
-        return $this->render('personne/indexByBail.html.twig', [
+        try {
+            if ($form->isSubmitted() && $form->isValid()) {
+
+                $login->setMdp(password_hash('Afpa'.$login->getNumeroBeneficiaire().'!', PASSWORD_ARGON2I));
+                $this->entityManager->persist($login);
+                $personne->setNumeroBeneficiaire($login->getNumeroBeneficiaire());
+                $personne->setIdLogin($login);
+                $personne->setIsBlacklisted(false);
+
+                $this->entityManager->persist($personne);
+                $this->entityManager->flush();
+
+
+                $this->addFlash('success', 'Nouvel hébergé ajouté !');
+                return $this->redirectToRoute('app_personne_index', [], Response::HTTP_SEE_OTHER);
+            }
+        } catch (\Throwable $th) {
+            $this->addFlash('error', 'Le numéro de bénéficiaire est déjà attribué !');
+            return $this->redirectToRoute('app_personne_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('personne/indexByBail.html.twig', [
             'personnes' => $personneRepository->findAll(),
             'bails' => $bailRepository->findAll(),
-            'utilisateur' => $utilisateur
+            'utilisateur' => $utilisateur,
+            'form' => $form
         ]);
     }
 
