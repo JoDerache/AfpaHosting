@@ -1,154 +1,167 @@
 {% include 'base.html.twig' %}
 {% include 'shared/header.html.twig' %}
 {% include 'shared/sidebar.html.twig' %}
-{% block title %}Mon espaces{% endblock %}
+{% block title %}Mon espaces
+{% endblock %}
 
 {% block body %}
-<main id="main" class="main">
-    <div class="pagetitle">
-      <h1>Mon espace</h1>
-      
-    </div><!-- End Page Title -->
+	<main id="main" class="main">
+		<div class="pagetitle">
+			<h1>Mon espace</h1>
 
-    <section class="section profile">
-      <div class="row">
-        <div class="col-xl">
-          <div class="card">
-            <div class="card-body pt-3">
-              <!-- Bordered Tabs -->
-                <ul class="nav nav-tabs nav-tabs-bordered">
-                    <li class="nav-item">
-                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Profile</button>
-                    </li>
-                    <li class="nav-item">
-                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Modifier Profile</button>
-                    </li>
-                    <li class="nav-item">
-                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">Modifier mot de passe</button>
-                    </li>
-                </ul>
+		</div>
+		<!-- End Page Title -->
+		{% for message in app.flashes('warning') %}
+			<div class="alert alert-warning mt-4">
+				{{ message }}
+			</div>
+		{% endfor %}
 
-            <div class="tab-content pt-2">
-                <div class="tab-pane fade show active profile-overview" id="profile-overview">
-                            
-                    <h5 class="card-title">Détail du Profile</h5>
-                    <div class="card-body profile-card pt-4 d-flex flex-column">
-                    {# <img src="assets/img/profile-img.jpg" alt="Profile"> #}
-                    </div>
-                    
-                    <div class="row">
-                    <div class="col-lg-3 col-md-4 label ">Nom et Prénom</div>
-                    <div class="col-lg-9 col-md-8">{{ personne.prenom }} {{ personne.nom }}</div>
-                    </div>
+		{% for message in app.flashes('success') %}
+			<div class="alert alert-success">
+				{{ message }}
+			</div>
+		{% endfor %}
 
-                    <div class="row">
-                    <div class="col-lg-3 col-md-4 label">Date de Naissance</div>
-                    <div class="col-lg-9 col-md-8">{{personne.dateNaissance ? personne.dateNaissance|date('d/m/Y') : '' }}</div>
-                    </div>
+		<section class="section profile">
+			<div class="row">
+				<div class="col-xl">
+					<div class="card">
+						<div
+							class="card-body pt-3">
+							<!-- Bordered Tabs -->
+							<ul class="nav nav-tabs nav-tabs-bordered">
+								<li class="nav-item">
+									<button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Profile</button>
+								</li>
+								<li class="nav-item">
+									<button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Modifier Profile</button>
+								</li>
+								<li class="nav-item">
+									<button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">Modifier mot de passe</button>
+								</li>
+							</ul>
 
-                    <div class="row">
-                    <div class="col-lg-3 col-md-4 label">Formation</div>
-                    <div class="col-lg-9 col-md-8">{{participation.idFormation.nomFormation}}</div>
-                    </div>
+							<div class="tab-content pt-2">
+								<div class="tab-pane fade show active profile-overview" id="profile-overview">
 
-                    <div class="row">
-                    <div class="col-lg-3 col-md-4 label">Date d'entrée en formation</div>
-                    <div class="col-lg-9 col-md-8">{{participation.dateEntree ? participation.dateEntree|date('d/m/Y') : '' }}</div>
-                    </div>
+									<h5 class="card-title">Détail du Profile</h5>
+									<div
+										class="card-body profile-card pt-4 d-flex flex-column">{# <img src="assets/img/profile-img.jpg" alt="Profile"> #}
+									</div>
 
-                    <div class="row">
-                    <div class="col-lg-3 col-md-4 label">Date de fin de formation</div>
-                    <div class="col-lg-9 col-md-8">{{participation.dateSortie ? participation.dateSortie|date('d/m/Y') : '' }}</div>
-                    </div>
+									<div class="row">
+										<div class="col-lg-3 col-md-4 label ">Nom et Prénom</div>
+										<div class="col-lg-9 col-md-8">{{ personne.prenom }}
+											{{ personne.nom }}</div>
+									</div>
 
-                    <div class="row">
-                    <div class="col-lg-3 col-md-4 label">Téléphone</div>
-                    <div class="col-lg-9 col-md-8">{{ personne.telephone }}</div>
-                    </div>
+									<div class="row">
+										<div class="col-lg-3 col-md-4 label">Date de Naissance</div>
+										<div class="col-lg-9 col-md-8">{{personne.dateNaissance ? personne.dateNaissance|date('d/m/Y') : '' }}</div>
+									</div>
 
-                    <div class="row">
-                    <div class="col-lg-3 col-md-4 label">Email</div>
-                    <div class="col-lg-9 col-md-8">{{ personne.mail }}</div>
-                    </div>
+									<div class="row">
+										<div class="col-lg-3 col-md-4 label">Formation</div>
+										<div class="col-lg-9 col-md-8">{{participation.idFormation.nomFormation}}</div>
+									</div>
 
-                    <div class="row">
-                    <div class="col-lg-3 col-md-4 label">Lieu de résidence</div>
-                    <div class="col-lg-9 col-md-8">{{ personne.adressePostale }}</div>
-                    </div>
+									<div class="row">
+										<div class="col-lg-3 col-md-4 label">Date d'entrée en formation</div>
+										<div class="col-lg-9 col-md-8">{{participation.dateEntree ? participation.dateEntree|date('d/m/Y') : '' }}</div>
+									</div>
 
-                </div>
-                <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+									<div class="row">
+										<div class="col-lg-3 col-md-4 label">Date de fin de formation</div>
+										<div class="col-lg-9 col-md-8">{{participation.dateSortie ? participation.dateSortie|date('d/m/Y') : '' }}</div>
+									</div>
 
-                  <!-- Profile Edit Form -->
-                  <form name="personne" method="post">
-                  {{ form_start(form) }}
-                    <div class="row mb-3">
-                      <label for="Address" class="col-md-4 col-lg-3 col-form-label">{{form_label(form.adressePostale)}}</label>
-                      <div class="col-md-8 col-lg-9">
-                        {{form_widget(form.adressePostale)}}
-                      </div>
-                    </div>
+									<div class="row">
+										<div class="col-lg-3 col-md-4 label">Téléphone</div>
+										<div class="col-lg-9 col-md-8">{{ personne.telephone }}</div>
+									</div>
 
-                    <div class="row mb-3">
-                      <label for="Phone" class="col-md-4 col-lg-3 col-form-label">{{form_label(form.telephone)}}</label>
-                      <div class="col-md-8 col-lg-9">
-                        {{form_widget(form.telephone)}}
-                      </div>
-                    </div>
+									<div class="row">
+										<div class="col-lg-3 col-md-4 label">Email</div>
+										<div class="col-lg-9 col-md-8">{{ personne.mail }}</div>
+									</div>
 
-                    <div class="row mb-3">
-                      <label for="Email" class="col-md-4 col-lg-3 col-form-label">{{form_label(form.mail)}}</label>
-                      <div class="col-md-8 col-lg-9">
-                      {{form_widget(form.mail)}}
-                      </div>
-                    </div>
-                    <div class="text-center">
-                    </div>
-                  {{ form_end(form) }}
-                  </form><!-- End Profile Edit Form -->
+									<div class="row">
+										<div class="col-lg-3 col-md-4 label">Lieu de résidence</div>
+										<div class="col-lg-9 col-md-8">{{ personne.adressePostale }}</div>
+									</div>
 
-                </div>
+								</div>
+								<div
+									class="tab-pane fade profile-edit pt-3" id="profile-edit">
 
-                <div class="tab-pane fade pt-3" id="profile-change-password">
-                  <!-- Change Password Form -->
-                  {{ form_start(form2) }}
+									<!-- Profile Edit Form -->
+									<form name="personne" method="post">
+										{{ form_start(form) }}
+										<div class="row mb-3">
+											<label for="Address" class="col-md-4 col-lg-3 col-form-label">{{form_label(form.adressePostale)}}</label>
+											<div class="col-md-8 col-lg-9">
+												{{form_widget(form.adressePostale)}}
+											</div>
+										</div>
 
-                    <div class="row mb-3">
-                        <label for="Email" class="col-md-4 col-lg-3 col-form-label">{{form_label(form2.oldMdpEmp)}}</label>
-                        <div class="col-md-8 col-lg-9">
-                        {{form_widget(form2.oldMdpEmp)}}
-                        </div>
-                    </div>
+										<div class="row mb-3">
+											<label for="Phone" class="col-md-4 col-lg-3 col-form-label">{{form_label(form.telephone)}}</label>
+											<div class="col-md-8 col-lg-9">
+												{{form_widget(form.telephone)}}
+											</div>
+										</div>
 
-                    <div class="row mb-3">
-                        <label for="Email" class="col-md-4 col-lg-3 col-form-label">{{form_label(form2.mdpEmp.first)}}</label>
-                        <div class="col-md-8 col-lg-9">
-                        {{form_widget(form2.mdpEmp.first)}}
-                        </div>
-                    </div>
+										<div class="row mb-3">
+											<label for="Email" class="col-md-4 col-lg-3 col-form-label">{{form_label(form.mail)}}</label>
+											<div class="col-md-8 col-lg-9">
+												{{form_widget(form.mail)}}
+											</div>
+										</div>
+										<div class="text-center"></div>
+										{{ form_end(form) }}
+									</form>
+									<!-- End Profile Edit Form -->
 
-                    <div class="row mb-3">
-                        <label for="Email" class="col-md-4 col-lg-3 col-form-label">{{form_label(form2.mdpEmp.second)}}</label>
-                        <div class="col-md-8 col-lg-9">
-                        {{form_widget(form2.mdpEmp.second)}}
-                        </div>
-                    </div>
+								</div>
 
-                    {{ form_end(form2) }}
+								<div
+									class="tab-pane fade pt-3" id="profile-change-password">
+									<!-- Change Password Form -->
 
-                </div>
-            </div>
-            </div>
+									{{ form_start(form2) }}
 
-            </div>
-            </div>
-      </div>
-    </section>
-</main>
+									<div class="row mb-3">
+										<label for="Email" class="col-md-4 col-lg-3 col-form-label">{{form_label(form2.oldMdpEmp)}}</label>
+										<div class="col-md-8 col-lg-9">
+											{{form_widget(form2.oldMdpEmp)}}
+										</div>
+									</div>
 
-    <a href="{{ path('app_personne_index') }}">back to list</a>
+									<div class="row mb-3">
+										<label for="Email" class="col-md-4 col-lg-3 col-form-label">{{form_label(form2.mdpEmp.first)}}</label>
+										<div class="col-md-8 col-lg-9">
+											{{form_widget(form2.mdpEmp.first)}}
+										</div>
+									</div>
 
-    {# <a href="{{ path('app_personne_edit', {'idPersonne': personne.idPersonne}) }}">edit</a> #}
+									<div class="row mb-3">
+										<label for="Email" class="col-md-4 col-lg-3 col-form-label">{{form_label(form2.mdpEmp.second)}}</label>
+										<div class="col-md-8 col-lg-9">
+											{{form_widget(form2.mdpEmp.second)}}
+										</div>
+									</div>
 
-    {{ include('personne/_delete_form.html.twig') }}
+									{{ form_end(form2) }}
+
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
+
 {% endblock %}
