@@ -6,49 +6,26 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css">
 
+
 {% block stylesheets %}
-    {{ encore_entry_link_tags('app') }}
     {{ encore_entry_link_tags('dataTable') }}
 {% endblock %}
 
 
 {% block body %}
     <main id="main" class="main mt-3">
-
-        {# <div class="modal fade" id="modal_ajouter" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-        <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">Ajouter un hébergé</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            {{ form_start(form) }}
-                {{form_row(form.login.numeroBeneficiaire)}}
-                {{form_row(form.login.role)}}
-                {{form_row(form.user.nom)}}
-                {{form_row(form.user.prenom)}}
-                {{form_row(form.user.adressePostale)}}
-                {{form_row(form.user.telephone)}}
-                {{form_row(form.user.mail)}}
-                {{form_row(form.user.dateNaissance)}}
-                {{form_row(form.user.badge)}}
-                {{form_row(form.user.lieuNaissance)}}
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-            {{form_row(form.submit)}}
-            {{ form_end(form) }}
-        </div>
-        </div>
-    </div>
-</div> #}
-
         <div class="container my-5 d-flex flex-wrap justify-content-center" id="hebergeContainer">
             <div class="table-responsive mt-2">
                 <div class="table-title">
                     <div class="row mb-5 mx-auto d-flex flex-wrap justify-content-center">
-                        <div class="col-sm-8 title"><h1>Tous les hébergés</h1></div>
+                        <div class="col-sm-8 d-flex align-items-center justify-content-start"><h1>Tous les hébergés</h1>
+                            <div class="ms-5">
+                                <a href="#" data-bs-toggle="modal"
+                                   data-bs-target="#modal_ajouter">
+                                    <h1><i class="bi bi-person-plus iconAdd"></i></h1>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="table-wrapper justify-content-center d-flex flex-wrap">
@@ -74,10 +51,10 @@
                                 <td>{{ personne.numeroBeneficiaire }}</td>
                                 <td>{{ personne.telephone }}</td>
                                 <td>
-                                    <a href="{# {{ path('app_personne_show', {'id': personne.idPersonne}) }} #}"
+                                    <a href=" {#{{ path('app_personne_show', {'id': personne.idPersonne}) }}#} "
                                        class="view" title="Voir" data-toggle="tooltip"><i
                                                 class="material-icons viewIcon">&#xE417;</i></a>
-                                    <a href="{# {{ path('app_personne_edit', {'id': personne.idPersonne}) }} #}"
+                                    <a href=" {#{{ path('app_personne_edit', {'id': personne.idPersonne}) }}#} "
                                        class="edit" title="Editer" data-toggle="tooltip"><i
                                                 class="material-icons editIcon">&#xE254;</i></a>
                                 </td>
@@ -89,6 +66,9 @@
             </div>
         </div>
     </main>
+
+    <!-- modale d'ajout personne  -->
+    {% include "shared/_modalAjoutPersonne.html.twig" %}
 
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
@@ -106,6 +86,6 @@
     {% block javascripts %}
         {{ encore_entry_script_tags('dataTable') }}
     {% endblock %}
-
 {% endblock %}
+
 
