@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Personne;
+use App\Repository\BailRepository;
 use App\Repository\LoginRepository;
 use App\Repository\PersonneRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -48,12 +49,18 @@ class MainController extends AbstractController
             'utilisateur' => $utilisateur
         ]);
     }
+
     #[Route('/user/main', name: 'main_user')]
-    public function indexUser(PersonneRepository $personneRepository, Request $request, UserInterface $user): Response
+    public function indexUser(PersonneRepository $personneRepository, Request $request, BailRepository $bailRepository, UserInterface $user): Response
     {
         $utilisateur = $personneRepository->findOneBy(['numeroBeneficiaire' => $user->getUserIdentifier()]);
+        
+        $bail=$bailRepository->findAll();
+        // dd($bail);
+
         return $this->render('main/heberger_main.html.twig', [
             'controller_name' => 'MainController',
+            'bail'=>end($bail),
             'utilisateur' => $utilisateur
         ]);
     }
