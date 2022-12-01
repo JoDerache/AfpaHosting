@@ -52,13 +52,13 @@
 
 									<div class="row">
 										<div class="col-lg-3 col-md-4 label ">Nom et Prénom</div>
-										<div class="col-lg-9 col-md-8">{{ personne.prenom }}
-											{{ personne.nom }}</div>
+										<div class="col-lg-9 col-md-8">{{ utilisateur.prenom }}
+											{{ utilisateur.nom }}</div>
 									</div>
 
 									<div class="row">
 										<div class="col-lg-3 col-md-4 label">Date de Naissance</div>
-										<div class="col-lg-9 col-md-8">{{personne.dateNaissance ? personne.dateNaissance|date('d/m/Y') : '' }}</div>
+										<div class="col-lg-9 col-md-8">{{utilisateur.dateNaissance ? utilisateur.dateNaissance|date('d/m/Y') : '' }}</div>
 									</div>
 
 									<div class="row">
@@ -78,17 +78,17 @@
 
 									<div class="row">
 										<div class="col-lg-3 col-md-4 label">Téléphone</div>
-										<div class="col-lg-9 col-md-8">{{ personne.telephone }}</div>
+										<div class="col-lg-9 col-md-8">{{ utilisateur.telephone }}</div>
 									</div>
 
 									<div class="row">
 										<div class="col-lg-3 col-md-4 label">Email</div>
-										<div class="col-lg-9 col-md-8">{{ personne.mail }}</div>
+										<div class="col-lg-9 col-md-8">{{ utilisateur.mail }}</div>
 									</div>
 
 									<div class="row">
 										<div class="col-lg-3 col-md-4 label">Lieu de résidence</div>
-										<div class="col-lg-9 col-md-8">{{ personne.adressePostale }}</div>
+										<div class="col-lg-9 col-md-8">{{ utilisateur.adressePostale }}</div>
 									</div>
 
 								</div>

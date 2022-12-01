@@ -72,62 +72,44 @@ class ProfilController extends AbstractController
                 'warning',
                 'Une erreur c\'est produite');
         }
-        
-        return $this->renderForm('personne/profil_Herberge.html.twig', [
-            'personne' => $utilisateur,
-            'participation' => $participe2,
-            'form2' => $form2,
-            'form' => $form,
-            'utilisateur' => $utilisateur
-        ]);
-        
 
         /**
          * Pour l'édition du mot de passe
          */
+        $loginUser = $loginRepository->find($utilisateur->getIdLogin());
 
-        // dd($personne);
-        $idlogin = $utilisateur->getIdLogin();
-        $loginUser = $loginRepository->find($idlogin);
-        $login = $loginUser;
-
-        // $form2=$this->createForm(UpdatePasswordType::class, $loginUser);
         $form2->handleRequest($request);
 
         if ($form2->isSubmitted() && $form2->isValid()) {
             $data = $form2->getData();
-            // dd($hasher->isPasswordValid($login,$data['oldMdpEmp']));
-            if ($hasher->isPasswordValid($login, $data['oldMdpEmp'])) {
+
+            if ($hasher->isPasswordValid($loginUser, $data['oldMdpEmp'])) {
                 $hash = $hasher->hashPassword($loginUser, $data['mdpEmp']);
                 $loginUser->setMdp($hash);
                 $manager->persist($loginUser);
                 $manager->flush();
-                // $loginRepository->save($loginUser, true);
+
                 $this->addFlash(
                     'success',
                     'Les informations de votre compte ont bien été modifiées.'
                 );
-
             } else {
                 $this->addFlash(
                     'warning',
                     'Le mot de passe actuelle renseigné est incorrect.');
             }
-
         } else if (($form2->isSubmitted() && !$form2->isValid())) {
+            dd($utilisateur);
             $this->addFlash(
                 'warning',
                 'Les deux mots de passe doivent correspondre.');
-        }
+            }
+
         return $this->renderForm('personne/profil_Herberge.html.twig', [
-            'personne' => $utilisateur,
+            'utilisateur' => $utilisateur,
             'participation' => $participe2,
-            'form2' => $form2,
             'form' => $form,
-            'utilisateur' => $utilisateur
+            'form2' => $form2,
         ]);
     }
-
-    
-    
 }
