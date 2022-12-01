@@ -21,18 +21,46 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-#[Route('/profil')]
+
 class ProfilController extends AbstractController
 
-{
-    #[Route('/', name: 'app_profil_show', methods: ['GET', 'POST'])]
+{  
+    private EntityManagerInterface $entityManager;
+
+    /**
+     * @param EntityManagerInterface $entityManager
+     */
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
+    #[Route('/profil', name: 'app_profil_show')]
+    public function redirection(PersonneRepository $personneRepository, Request $request, UserInterface $user): Response
+    {
+        $utilisateur = $personneRepository->findOneBy(['numeroBeneficiaire' => $user->getUserIdentifier()]);
+        $role = $utilisateur->getIdLogin()->getRole();
+
+        if($role == 'ROLE_ADMIN'){
+            return $this->redirectToRoute('app_profil_admin_show');
+        }
+        else{
+            return $this->redirectToRoute('app_profil_user_show');
+        }
+    }
+
+
+
+
+    #[Route('/admin/profil', name: 'app_profil_admin_show', methods: ['GET', 'POST'])]
+    #[Route('/user/profil', name: 'app_profil_user_show', methods: ['GET', 'POST'])]
     public function showStudent(PersonneRepository $personneRepository, ParticipationRepository $participationRepository, Request $request, LoginRepository $loginRepository, UserPasswordHasherInterface $hasher, EntityManagerInterface $manager, UserInterface $user,): Response
     {
         /**
          * récupération de 'identité de l'utilisateur
          */
         $utilisateur = $personneRepository->findOneBy(['numeroBeneficiaire' => $user->getUserIdentifier()]);
-
+        $role = $utilisateur->getIdLogin()->getRole();
 
         /**
          * Création du formulaire pour la modification du mot de passe 
@@ -110,6 +138,7 @@ class ProfilController extends AbstractController
             'participation' => $participe2,
             'form' => $form,
             'form2' => $form2,
+            'role' => $role
         ]);
     }
 }

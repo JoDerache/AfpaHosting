@@ -2,6 +2,11 @@
 {% include 'shared/header.html.twig' %}
 {% include 'shared/sidebar_Heberge.html.twig' %}
 
+{% block title %}
+ <title>Hebegement Roubaix</title>
+    {% endblock %}
+
+{% block body %}
 <main id="main" class="main">
 
     <div id="bandeau">
@@ -15,8 +20,8 @@
     </div><!-- End Page Title -->
 
     
-      <div class="d-flex justify-content-center my-3 fs-1">Bonjour {{utilisateur.prenom}}.</div> 
-      <div class="d-flex justify-content-center mb-5 fs-3">Votre chambre est la {{bail.numeroChambre.numeroChambre}}.</div>
+      <div class="d-flex justify-content-center my-3 fs-1">Bonjour {{utilisateur.prenom}}</div> 
+      <div class="d-flex justify-content-center mb-5 fs-3">Votre chambre est la {{bail.numeroChambre.numeroChambre}}</div>
 
       <section class="section">
         <div class="row align-items-top">
@@ -90,3 +95,4 @@
             </div>
           </div><!-- End Card with an image on left -->
           </main>
+{% endblock %}

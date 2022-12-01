@@ -1,8 +1,19 @@
 {% include 'base.html.twig' %}
 {% include 'shared/header.html.twig' %}
+{% if role == 'ROLE_ADMIN' %}
 {% include 'shared/sidebar.html.twig' %}
-{% block title %}Mon espaces
-{% endblock %}
+
+{% else  %}
+{% include 'shared/sidebar_Heberge.html.twig' %}
+{% endif %}
+
+{# {% block title %}Mon espaces
+{% endblock %} #}
+
+{% block title %}
+ <title>Hebegement Roubaix - Profile</title>
+    {% endblock %}
+
 
 {% block body %}
 	<main id="main" class="main">
