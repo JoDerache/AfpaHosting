@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Personne;
 use App\Repository\BailRepository;
+use App\Repository\ConsigneHebergementRepository;
 use App\Repository\LoginRepository;
 use App\Repository\PersonneRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -51,17 +52,21 @@ class MainController extends AbstractController
     }
 
     #[Route('/user/main', name: 'main_user')]
-    public function indexUser(PersonneRepository $personneRepository, Request $request, BailRepository $bailRepository, UserInterface $user): Response
+    public function indexUser(PersonneRepository $personneRepository, Request $request, BailRepository $bailRepository, UserInterface $user, ConsigneHebergementRepository $consigneHebergementRepository): Response
     {
         $utilisateur = $personneRepository->findOneBy(['numeroBeneficiaire' => $user->getUserIdentifier()]);
         
+        // dd($utilisateur);
         $bail=$bailRepository->findAll();
         // dd($bail);
 
+        $consignes=$consigneHebergementRepository->findAll();
+        // dd($consigne);
         return $this->render('main/heberger_main.html.twig', [
             'controller_name' => 'MainController',
             'bail'=>end($bail),
-            'utilisateur' => $utilisateur
+            'utilisateur' => $utilisateur,
+            'consignes'=>$consignes,
         ]);
     }
 }
