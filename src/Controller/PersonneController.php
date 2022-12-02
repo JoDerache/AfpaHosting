@@ -7,6 +7,7 @@ use App\Entity\Login;
 use App\Entity\Personne;
 use App\Form\PersonneType;
 use App\Form\UpdatePasswordType;
+use App\Form\UpdatePersonneAdminType;
 use App\Form\UserFormType;
 use App\Form\UpdatePersonneType;
 use App\Repository\BailRepository;
@@ -114,11 +115,43 @@ class PersonneController extends AbstractController
         ]);
     }
 
-    #[Route('/{idPersonne}', name: 'app_personne_show', methods: ['GET'])]
-    public function show(Personne $personne): Response
+    #[Route('/{id}', name: 'app_personne_show', methods: ['GET', 'POST'])]
+    public function show(PersonneRepository $personneRepository, ParticipationRepository $participationRepository, UserInterface $user, Request $request): Response
     {
-        return $this->render('personne/show.html.twig', [
-            'personne' => $personne,
+
+        /**
+         * récupération de 'identité de l'utilisateur
+         */
+        $utilisateur = $personneRepository->findOneBy(['numeroBeneficiaire' => $user->getUserIdentifier()]);
+
+        /**
+         * Pour la mise à jour des informations de profil
+         */
+        $participe = $participationRepository->findBy(['idPersonne' => $utilisateur->getIdPersonne()]);
+        $participe2 = end($participe);
+
+        $form = $this->createForm(UpdatePersonneAdminType::class, $utilisateur);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $personneRepository->save($utilisateur, true);
+          
+            $this->addFlash(
+                'success',
+                'Les informations de profil ont bien été modifiées.'
+            );
+
+        } else if (($form->isSubmitted() && !$form->isValid())) {
+            $this->addFlash(
+                'warning',
+                'Une erreur s\'est produite');
+        }
+
+        return $this->renderForm('personne/show.html.twig', [
+            'personne' => $utilisateur,
+            'participation' => $participe2,
+            'form' => $form,
+            'utilisateur' => $utilisateur
         ]);
     }
 
