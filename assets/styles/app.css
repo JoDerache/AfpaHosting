@@ -1332,9 +1332,6 @@ bi-plus-circle {
     display: none;
 }
 
-#chambreContainer {
-    margin-top: -100px;
-}
 
 #hebergeContainer {
     background-color: white;
@@ -1348,9 +1345,7 @@ bi-plus-circle {
     margin-top: -100px;
 }
 
-#chambreContainer {
-    margin-top: -100px;
-}
+
 
 #factureContainer {
     margin-top: -100px;

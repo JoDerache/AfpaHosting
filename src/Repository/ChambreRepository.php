@@ -43,11 +43,12 @@ class ChambreRepository extends ServiceEntityRepository
     public function findAllChambre(): array
     {
         return $this->createQueryBuilder('p')
-            ->innerJoin(Bail::class, 'b', 'WITH', 'b.numeroChambre = p.numeroChambre')
+            ->leftJoin(Bail::class, 'b', 'WITH', 'b.numeroChambre = p.numeroChambre')
             ->addSelect('b')
             ->getQuery()
             ->getResult();
     }
+
 
 //    public function findOneBySomeField($value): ?Chambre
 //    {

@@ -27,3 +27,9 @@ h1 {
     --bs-btn-hover-bg: #8e8d8d;
     --bs-btn-hover-border-color: #8e8d8d;
 }
+
+#position_add_chambre {
+    position: relative;
+    left: 82%;
+    color: #87BB34;
+    }
