@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\ConsigneHebergement;
 use Faker\Factory;
 use Faker\Generator;
 use App\Entity\Personne;
@@ -108,6 +109,17 @@ class AppFixtures extends Fixture
             $etatDesLieux-> setNomEtatLieux($nameEL);
             $manager->persist($etatDesLieux);
         }
+
+
+        $titreConsignes=["Consigne de Sécurité", "Consigne Cusine", "Consignes Laverie", "Consigne Lingerie", "Consigne Covid", "Bandeau"];
+        foreach($titreConsignes as $TC){
+            $consigne = new ConsigneHebergement;
+            $consigne -> setNom($TC)
+                -> setTexte($this->faker->text());
+            $manager->persist($consigne);
+        }
+        
+
         $manager->flush();
     }
 }
