@@ -25,7 +25,7 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-#[Route('/personne')]
+#[Route('/admin/personne')]
 class PersonneController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
@@ -41,7 +41,8 @@ class PersonneController extends AbstractController
 
     #[Route('/', name: 'app_personne_index')]
     public function index(Request $request,PersonneRepository $personneRepository, UserInterface $user): Response
-    {
+    {   
+        
         $utilisateur = $personneRepository->findOneBy(['numeroBeneficiaire' => $user->getUserIdentifier()]);
         $personne = new Personne();
         $login = new Login();

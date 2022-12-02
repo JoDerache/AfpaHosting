@@ -30,9 +30,9 @@ class Chambre
     /**
      * @var bool
      *
-     * @ORM\Column(name="condamne", type="boolean", nullable=false)
+     * @ORM\Column(name="status", type="string", length=100,nullable=false)
      */
-    private $condamne;
+    private $status;
 
     /**
      * @var \Etage
@@ -61,14 +61,14 @@ class Chambre
         return $this;
     }
 
-    public function isCondamne(): ?bool
+    public function getStatus(): ?string
     {
-        return $this->condamne;
+        return $this->status;
     }
 
-    public function setCondamne(bool $condamne): self
+    public function setStatus(string $status): self
     {
-        $this->condamne = $condamne;
+        $this->status = $status;
 
         return $this;
     }
@@ -84,6 +84,9 @@ class Chambre
 
         return $this;
     }
-
+    public function __toString(): string
+    {
+        return $this->numeroChambre;
+    }
 
 }

@@ -1,0 +1,25 @@
+<div class="modal fade" id="modal_attribuer" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header titre">
+                <h1 class="modal-title titreHeberge" id="exampleModalLabel">EDITER UNE CHAMBRE</h1>
+            </div>
+            <div class="modal-body formAjout">
+                {{ form_start(form) }}
+                {{ form_row(form.bail.idPersonne) }}
+                {{ form_row(form.bail.dateEntree) }}
+                {{ form_row(form.bail.dateSortie) }}
+                {{ form_row(form.chambre.numeroClefs) }}
+                {{ form_row(form.chambre.status) }}
+            </div>
+            <div class="modal-footer endFooter">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    Fermer
+                </button>
+                {{ form_row(form.submit) }}
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+</div>

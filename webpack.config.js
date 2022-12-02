@@ -24,6 +24,7 @@ Encore
 
     // entrée pour le style de la dataTable
     .addEntry('dataTable', './assets/dataTable.js')
+    .addEntry('dataTableChambre', './assets/dataTableChambre.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')

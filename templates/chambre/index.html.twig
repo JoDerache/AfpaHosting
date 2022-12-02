@@ -2,9 +2,16 @@
 {% include 'shared/header.html.twig' %}
 {% include 'shared/sidebar.html.twig' %}
 
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css">
 
 
 {% block title %}Chambre index{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('dataTable') }}
+{% endblock %}
 
 {% block body %}
 <main id="main" class="main">
@@ -15,7 +22,7 @@
                 <div class="card">
                     <div class="card-header bg-success text-white">Chambres libre</div>
                     <div class="card-body">
-                        <h5  class="card-title">10</h5>
+                        <h5  class="card-title">{{chambreLibre}}</h5>
                     </div>
                 </div><!-- End Card with header and footer -->
             </div>
@@ -24,7 +31,7 @@
                 <div class="card">
                     <div class="card-header bg-danger text-white">Chambres occupées</div>
                     <div class="card-body">
-                        <h5 class="card-title">45</h5>
+                        <h5 class="card-title">{{chambreOccupe}}</h5>
                     </div>
                 </div><!-- End Card with header and footer -->
             </div>
@@ -33,7 +40,7 @@
                 <div class="card">
                     <div class="card-header bg-warning text-white">Chambres réservées</div>
                     <div class="card-body">
-                        <h5 class="card-title">5</h5>
+                        <h5 class="card-title">{{chambreReserve}}</h5>
                     </div>
                 </div><!-- End Card with header and footer -->
             </div>
@@ -47,38 +54,79 @@
                 </div><!-- End Card with header and footer -->
             </div>
         </div>
+        {# <a href="#" id="position_add_chambre" data-bs-toggle="modal" data-bs-target="#modal_attribuer" title="Voir" data-toggle="tooltip"><i class="ri-add-line ri-2x"></i></a> #}
         <!-- Recent Sales -->
-        <div class="card recent-sales overflow-auto">
-            <div class="card-body">
-                <div class="container d-flex align-items-center justify-content-between">
-                    <h5 class="card-title">Chambres</h5>
-                    <a href="#" id="addChambre"><h3><i class="bi bi-plus-circle iconAdd"></i></h3></a>
-                </div>
-                <table class="table table-borderless datatable">
-                    <thead>
+        <div class="table-wrapper justify-content-center d-flex flex-wrap">
+            <table id="dataTable" class="table table-striped justify-content-center flex-wrap mt-5">
+                <thead>
+                    <tr>
+                        <th scope="col">Numéro</th>
+                        <th scope="col">Nom Hébergé</th>
+                        <th scope="col">Prénom Hébergé</th>
+                        <th scope="col">Date d'entrée</th>
+                        <th scope="col">Date de sortie</th>
+                        <th scope="col">clef de chambre</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for chambre in chambres  %}
                         <tr>
-                            <th scope="col">Numéro</th>
-                            <th scope="col">Hébergé</th>
-                            <th scope="col">clef de chambre</th>
-                            <th scope="col">Status</th>
+                            <td>{{chambre.numero_chambre}}</td>
+                            <td>{{chambre.nom}}</td>
+                            <td>{{chambre.prenom}}</td>
+                            {% if chambre.date_entree is not null %}
+                            <td>{{chambre.date_entree|date("d/m/Y")}}</td>
+                            {% else %}
+                            <td></td>
+                            {% endif %}
+                            {% if chambre.date_sortie is not null %}
+                            <td scope="row">{{chambre.date_sortie|date("d/m/Y")}}</td>
+                            {% else %}
+                            <td></td>
+                            {% endif %}
+                            <td>{{chambre.numero_clefs}}</td>
+                            <td>{{chambre.status}}</td>
+                            <td>
+                                {% if chambre.status is same as "En travaux" %}
+                                <a href=""
+                                    class="view" title="Voir" data-toggle="tooltip"><i
+                                    class="material-icons viewIcon">&#xE417;</i>
+                                </a>
+                                {% endif %}
+                                <a href="#"
+                                    data-bs-toggle="modal" data-bs-target="#modal_attribuer"
+                                    data-id="{{ chambre.numero_chambre}}"
+                                    data-editer
+                                    class="edit" title="Editer"><i
+                                    class="material-icons editIcon">&#xE254;</i>
+                                </a>
+                                {% set test = 1 %}
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                    {# {% for bail in chambres %}
-                    {{dump(chambre)}} #}
-                        {# <tr>
-                            <th scope="row">{{chambre.numeroChambre}}</th>
-                            
-                                        {# <td>{{bail.idPersonne.nom}}</td> #}
-
-                            {# <td>{{chambre.numeroClefs}}</td> #}
-                            {# <td><span class="badge bg-danger">{{chambre.condamne}}</span></td> #}
-                        {# </tr>  #}
-                    {# {% endfor %} #}
-                    </tbody>
-                </table>
-            </div>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
+        {# MODAL EDITER #}
+        {% include "shared/_modalEditerChambre.html.twig" %}
     </div>
 </main>
 {% endblock %}
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#dataTable').DataTable({
+            language: {
+                url: "https://cdn.datatables.net/plug-ins/1.13.1/i18n/fr-FR.json"
+            }
+        });
+    });
+</script>
+    {% block javascripts %}
+        {{ encore_entry_script_tags('dataTableChambre') }}
+    {% endblock %}
