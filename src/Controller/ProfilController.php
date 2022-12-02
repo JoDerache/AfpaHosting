@@ -98,7 +98,7 @@ class ProfilController extends AbstractController
         } else if (($form->isSubmitted() && !$form->isValid())) {
             $this->addFlash(
                 'warning',
-                'Une erreur c\'est produite');
+                'Une erreur s\'est produite');
         }
 
         /**

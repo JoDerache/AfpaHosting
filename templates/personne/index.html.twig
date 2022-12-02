@@ -51,12 +51,9 @@
                                 <td>{{ personne.numeroBeneficiaire }}</td>
                                 <td>{{ personne.telephone }}</td>
                                 <td>
-                                    <a href=" {#{{ path('app_personne_show', {'id': personne.idPersonne}) }}#} "
+                                    <a href=" {{ path('app_personne_show', {'id': personne.idPersonne}) }} "
                                        class="view" title="Voir" data-toggle="tooltip"><i
                                                 class="material-icons viewIcon">&#xE417;</i></a>
-                                    <a href=" {#{{ path('app_personne_edit', {'id': personne.idPersonne}) }}#} "
-                                       class="edit" title="Editer" data-toggle="tooltip"><i
-                                                class="material-icons editIcon">&#xE254;</i></a>
                                 </td>
                             </tr>
                         {% endfor %}

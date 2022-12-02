@@ -10,7 +10,54 @@
                         aria-label="Fermer"></button>
             </div>
             <div class="modal-body">
-                <div class="input-group mb-3">
+                <section class="section profile">
+                    <div class="row">
+                        <div class="col-xl">
+                                <div class="tab-content pt-2">
+                                    <div class="tab-pane fade show active profile-overview" id="profile-overview">
+
+                                        <div class="row">
+                                            <div class="col-lg-4 col-md-4 label">Numéro de badge</div>
+                                            <div class="col-lg-6 col-md-8">{{ bail.idPersonne.badge }}</div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-lg-4 col-md-4 label">Numéro de bénéficiaire</div>
+                                            <div class="col-lg-6 col-md-8">{{ bail.idPersonne.numeroBeneficiaire }}</div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-lg-4 col-md-4 label">Lieu de résidence</div>
+                                            <div class="col-lg-6 col-md-8">{{ bail.idPersonne.adressePostale }}</div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-lg-4 col-md-4 label">Date de Naissance</div>
+                                            <div class="col-lg-6 col-md-8">{{ bail.idPersonne.dateNaissance ? bail.idPersonne.dateNaissance|date('d-m-Y') : '' }}</div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-lg-4 col-md-4 label">Lieu de Naissance</div>
+                                            <div class="col-lg-6 col-md-8">{{ bail.idPersonne.lieuNaissance }}</div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-lg-4 col-md-4 label">Téléphone</div>
+                                            <div class="col-lg-6 col-md-8">{{ bail.idPersonne.telephone }}</div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-lg-4 col-md-4 label">Email</div>
+                                            <div class="col-lg-6 col-md-8">{{ bail.idPersonne.mail }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            {# <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-addon1">Adresse</span>
                     <input type="text" class="form-control" readonly="readonly"
                            placeholder="{{ bail.idPersonne.adressePostale }}"
@@ -49,13 +96,13 @@
                     <input type="text" class="form-control" readonly="readonly"
                            placeholder="{{ bail.idPersonne.numeroBeneficiaire }}"
                            aria-describedby="basic-addon1">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary"
-                            data-bs-dismiss="modal">Fermer
-                    </button>
-                </div>
+                </div> #}
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                        data-bs-dismiss="modal">Fermer
+                </button>
             </div>
         </div>
     </div>
+</div>
 </div>

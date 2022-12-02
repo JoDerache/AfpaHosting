@@ -248,8 +248,10 @@ h6 {
 }
 
 .card-btn {
-    background-color: #E3007E;
-
+    --bs-btn-bg: #87bb34;
+    --bs-btn-border-color: #87bb34;
+    --bs-btn-hover-bg: #77a52c;
+    --bs-btn-hover-border-color: #77a52c;
 }
 
 .alert-heading {
@@ -335,13 +337,13 @@ h6 {
 
 .nav-tabs-bordered .nav-link:hover,
 .nav-tabs-bordered .nav-link:focus {
-    color: #E8124B;
+    color: #888;
 }
 
 .nav-tabs-bordered .nav-link.active {
     background-color: #fff;
-    color: #E8124B;
-    border-bottom: 2px solid #E8124B;
+    color: #44A33D;
+    border-bottom: 2px solid #44A33D;
 }
 
 /*--------------------------------------------------------------
@@ -1030,12 +1032,12 @@ h6 {
 
 .profile .profile-overview .label {
     font-weight: 600;
-    color: rgba(1, 41, 112, 0.6);
+    color:  #8e8d8d;
 }
 
 .profile .profile-edit label {
     font-weight: 600;
-    color: rgba(1, 41, 112, 0.6);
+    color: #8e8d8d;
 }
 
 .profile .profile-edit img {
@@ -1380,6 +1382,14 @@ bi-plus-circle {
     --bs-btn-border-color: #87bb34;
     --bs-btn-hover-bg: #77a52c;
     --bs-btn-hover-border-color: #77a52c;
+    --bs-btn-focus-shadow-rgb: 196,196,196;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #77a52c;
+    --bs-btn-active-border-color: #77a52c;
+    --bs-btn-active-shadow: inset 0 3px 5px rgb(196, 196, 196);
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: #77a52c;
+    --bs-btn-disabled-border-color: #77a52c;
 }
 .btn-secondary {
     --bs-btn-bg: #b5b3b3;
@@ -1392,6 +1402,14 @@ bi-plus-circle {
     width: 300px
 }
 
+.endFooter {
+    margin-top: 40px;
+    margin-bottom: 5px;
+    margin-left: 20px;
+    border: none;
+    display: flex;
+    gap: 30px;
+}
 /*=================================Modal ajout personne======================================*/
 #modal_ajouter .form-control {
     margin-top: 5px;
@@ -1442,5 +1460,6 @@ bi-plus-circle {
     margin-bottom: 15px;
     border: none;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
+    gap: 30px;
 }

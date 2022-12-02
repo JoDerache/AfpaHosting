@@ -3,7 +3,7 @@
 {% include 'shared/sidebar.html.twig' %}
 
 {% block title %}
- <title>Hebegement Roubaix - Bails</title>
+ <title>Hébergement Roubaix - Bails</title>
     {% endblock %}
 
 {% block body %}
@@ -56,7 +56,7 @@
     <div class="container mt-5 d-flex flex-wrap justify-content-center">
 
         {% for bail in bails %}
-            <div class="col-lg-4">
+            <div>
                 {% include "shared/_cardPersonne.html.twig" %}
             </div>
             {% include "shared/_modalPersonne.html.twig" %}

@@ -45,8 +45,12 @@ class PersonneType extends AbstractType
                 ],
                 'label' => 'Adresse Email'
             ])
-            ->add('dateNaissance', BirthdayType::class, [
-                'label' => 'Date de Naissance'
+            ->add('dateNaissance', DateType::class, [
+                'label' => 'Date de Naissance',
+                'widget' => 'single_text',
+                'attr' => [
+                    'class' => 'form-control',
+                ],
             ])
             ->add('badge', IntegerType::class, [
                 'attr' => [
@@ -55,14 +59,14 @@ class PersonneType extends AbstractType
                 'label' => 'Numéro de Badge'
                 
             ])
-            // ->add('numeroBeneficiaire')
-            // ->add('isBlacklisted')
             ->add('lieuNaissance', TextType::class, [
                 'attr' => [
                     'class' => 'form-control'],
                     'label' => 'Lieu de Naissance'
             ])
             // ->add('idLogin')
+            // ->add('numeroBeneficiaire')
+            // ->add('isBlacklisted')
         ;
     }
 
