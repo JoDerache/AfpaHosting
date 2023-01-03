@@ -61,7 +61,7 @@ class PersonneType extends AbstractType
             ])
             ->add('lieuNaissance', TextType::class, [
                 'attr' => [
-                    'class' => 'form-select'],
+                    'class' => 'form-control'],
                     'label' => 'Lieu de Naissance'
             ])
             // ->add('idLogin')

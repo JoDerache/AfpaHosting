@@ -1,22 +1,46 @@
 <div class="modal fade" id="modal_ajouter" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header titre">
                 <h1 class="modal-title titreHeberge" id="exampleModalLabel">AJOUTER UN HÉBERGÉ</h1>
             </div>
             <div class="modal-body formAjout">
                 {{ form_start(form) }}
-                {{ form_row(form.login.numeroBeneficiaire) }}
-                {{ form_row(form.login.role) }}
-                {{ form_row(form.user.nom) }}
-                {{ form_row(form.user.prenom) }}
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-4">
+                            {{ form_row(form.login.numeroBeneficiaire) }}
+                        </div>
+                        <div class="col-md-4 ">
+                            {{ form_row(form.user.badge) }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form_row(form.login.role) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        {{ form_row(form.user.nom) }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form_row(form.user.prenom) }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 ms-auto">
+                        {{ form_row(form.user.telephone) }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_row(form.user.dateNaissance) }}
+                    </div>
+                    <div class="col-md-4 ms-auto">
+                        {{ form_row(form.user.lieuNaissance) }}
+                    </div>
+                </div>
                 {{ form_row(form.user.adressePostale) }}
-                {{ form_row(form.user.telephone) }}
                 {{ form_row(form.user.mail) }}
-                {{ form_row(form.user.dateNaissance) }}
-                {{ form_row(form.user.badge) }}
-                {{ form_row(form.user.lieuNaissance) }}
             </div>
             <div class="modal-footer endFooter">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">

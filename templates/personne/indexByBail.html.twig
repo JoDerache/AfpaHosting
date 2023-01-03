@@ -2,69 +2,103 @@
 {% include 'shared/header.html.twig' %}
 {% include 'shared/sidebar.html.twig' %}
 
-{% block title %}
- <title>Hébergement Roubaix - Bails</title>
-    {% endblock %}
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css">
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('dataTable') }}
+{% endblock %}
 
 {% block body %}
-<main id="main" class="main mt-3">
-<div class="container my-5 d-flex flex-wrap justify-content-center" id="hebergeContainer">
+    <main id="main" class="main mt-3">
+        <div class="container my-5 d-flex flex-wrap justify-content-center" id="hebergeContainer">
+            <div class="d-flex flex-column mt-2 mb-5">
+                <h1>Hébergés ayant un bail</h1>
+            </div>
 
-    <!-- Barre de recherche + bouton ajouté -->
-    <div class="row justify-content-center">
-        <div class="col-lg-6 text-center d-flex align-items-center justify-content-center mt-4">
-            <input class="form-control me-2" type="search" placeholder="Rechercher" id="searchBar">
-            <div class="mt-2">
-                <a href="#" data-bs-toggle="modal"
-                   data-bs-target="#modal_ajouter">
-                    <h1><i class="bi bi-person-plus iconAdd"></i></h1>
-                </a>
+            <!-- barre de filtre -->
+            <div class="container mt-5" id="filtre">
+                <div class="row">
+                    <div class="col-lg-7">
+                        <ul>
+                            <li class="me-4"><input class="form-check-input me-1" type="checkbox" value=""
+                                                    id="flexCheckDefault">Présent cette semaine
+                            </li>
+                            <li class="me-4"><input class="form-check-input me-1" type="checkbox" value=""
+                                                    id="flexCheckDefault">Présent ce mois
+                            </li>
+                            <li class="me-4"><input class="form-check-input me-1" type="checkbox" value=""
+                                                    id="flexCheckDefault">Présent cette année
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <select class="form-select">
+                            <option selected>Choisir un financeur</option>
+                            <option value="1">Tous</option>
+                            <option value="2">Exemple 1</option>
+                            <option value="3">Exemple 2</option>
+                        </select>
+                    </div>
+                </div>
             </div>
         </div>
-
-    </div>
-
-    <!-- barre de filtre -->
-    <div class="container mt-5" id="filtre">
-        <div class="row">
-            <div class="col-lg-7">
-                <ul>
-                    <li><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">Présent cette
-                        semaine
-                    </li>
-                    <li><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">Présent ce
-                        mois
-                    </li>
-                    <li><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">Présent cette
-                        année
-                    </li>
-                </ul>
-            </div>
-
-            <div class="col-lg-4">
-                <select class="form-select">
-                    <option selected>Choisir un financeur</option>
-                    <option value="1">Tous</option>
-                    <option value="2">Exemple 1</option>
-                    <option value="3">Exemple 2</option>
-                </select>
+        <div>
+            <div class="table-wrapper justify-content-center mx-4">
+                <table id="dataTable" class="table table-striped justify-content-center">
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Nom</th>
+                        <th>Prénom</th>
+                        <th>Numéro de badge</th>
+                        <th>Numéro de bénéficiaire</th>
+                        <th>Téléphone</th>
+                        <th class="d-flex justify-content-center">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for bail in bails %}
+                        <tr>
+                            <td>{{ bail.idPersonne }}</td>
+                            <td>{{ bail.idPersonne.nom }}</td>
+                            <td>{{ bail.idPersonne.prenom }}</td>
+                            <td>{{ bail.idPersonne.badge }}</td>
+                            <td>{{ bail.idPersonne.numeroBeneficiaire }}</td>
+                            <td>{{ bail.idPersonne.telephone }}</td>
+                            <td class="eyeIcon">
+                                <a href="{{ path('app_personne_show', { 'id': bail.idPersonne.idPersonne }) }}"
+                                   class="view" title="Voir"
+                                   data-toggle="tooltip">
+                                    <i class="material-icons viewIcon">&#xE417;</i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
-    </div>
+    </main>
 
-    <!--Affichage des hébergés  -->
-    <div class="container mt-5 d-flex flex-wrap justify-content-center">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#dataTable').DataTable({
+                language: {
+                    url: "https://cdn.datatables.net/plug-ins/1.13.1/i18n/fr-FR.json"
+                }
+            });
+        });
+    </script>
 
-        {% for bail in bails %}
-            <div>
-                {% include "shared/_cardPersonne.html.twig" %}
-            </div>
-            {% include "shared/_modalPersonne.html.twig" %}
-        {% endfor %}
-    </div>
-</div>
-</main>
-    <!-- modale d'ajout personne  -->
-    {% include "shared/_modalAjoutPersonne.html.twig" %}
-
+    {% block javascripts %}
+        {{ encore_entry_script_tags('dataTable') }}
     {% endblock %}
+
+{% endblock %}
