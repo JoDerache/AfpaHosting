@@ -13,53 +13,52 @@
 
 
 {% block body %}
-    <main id="main" class="main mt-3">
+    <main id="main" class="main mt-5">
         <div class="container my-5 d-flex flex-wrap justify-content-center" id="hebergeContainer">
-            <div class="table-responsive mt-2">
-                <div class="table-title">
-                    <div class="row mb-5 mx-auto d-flex flex-wrap justify-content-center">
-                        <div class="col-sm-8 d-flex align-items-center justify-content-start"><h1>Tous les hébergés</h1>
-                            <div class="ms-5">
-                                <a href="#" data-bs-toggle="modal"
-                                    data-bs-target="#modal_ajouter">
-                                    <h1><i class="bi bi-person-plus iconAdd"></i></h1>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="table-wrapper justify-content-center d-flex flex-wrap">
-                    <table id="dataTable" class="table table-striped justify-content-center flex-wrap mt-5">
-                        <thead>
+            <div class="d-flex">
+                <h1 class="me-4">Tous les hébergés</h1>
+                <a href="#" data-bs-toggle="modal"
+                   data-bs-target="#modal_ajouter">
+                    <h1><i class="bi bi-person-plus iconAdd"></i></h1>
+                </a>
+            </div>
+        </div>
+        <div>
+            <div class="table-wrapper justify-content-center mx-4">
+                <table id="dataTable" class="table table-striped justify-content-center">
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Nom</th>
+                        <th>Prénom</th>
+                        <th>Numéro de badge</th>
+                        <th>Numéro de bénéficiaire</th>
+                        <th>Téléphone</th>
+                        <th class="d-flex justify-content-center">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for personne in personnes %}
                         <tr>
-                            <th>Id</th>
-                            <th>Nom</th>
-                            <th>Prénom</th>
-                            <th>Numéro de badge</th>
-                            <th>Numéro de bénéficiaire</th>
-                            <th>Téléphone</th>
-                            <th>Actions</th>
+                            <td>{{ personne.idPersonne }}</td>
+                            <td>{{ personne.nom }}</td>
+                            <td>{{ personne.prenom }}</td>
+                            <td>{{ personne.badge }}</td>
+                            <td>{{ personne.numeroBeneficiaire }}</td>
+                            <td>{{ personne.telephone }}</td>
+                            <td class="eyeIcon">
+                                <a href="#"
+                                   class="view" title="Voir"
+                                   data-show
+                                   data-id="{{ personne.idPersonne }}"
+                                   data-toggle="tooltip">
+                                    <i class="material-icons viewIcon">&#xE417;</i>
+                                </a>
+                            </td>
                         </tr>
-                        </thead>
-                        <tbody>
-                        {% for personne in personnes %}
-                            <tr>
-                                <td>{{ personne.idPersonne }}</td>
-                                <td>{{ personne.nom }}</td>
-                                <td>{{ personne.prenom }}</td>
-                                <td>{{ personne.badge }}</td>
-                                <td>{{ personne.numeroBeneficiaire }}</td>
-                                <td>{{ personne.telephone }}</td>
-                                <td>
-                                    <a href=" {{ path('app_personne_show', {'id': personne.idPersonne}) }} "
-                                       class="view" title="Voir" data-toggle="tooltip"><i
-                                                class="material-icons viewIcon">&#xE417;</i></a>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
+                    {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
     </main>

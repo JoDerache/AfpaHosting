@@ -2,8 +2,8 @@
 {% include 'shared/header.html.twig' %}
 {% include 'shared/sidebar.html.twig' %}
 
-{#<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-<link href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css" rel="stylesheet" type="text/css" />#}
+{# <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<link href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css" rel="stylesheet" type="text/css" /> #}
 
 {% block stylesheets %}
     {{ encore_entry_link_tags('app') }}
@@ -51,20 +51,29 @@
                                         <div class="col-lg-9 col-md-8">{{ personne.dateNaissance ? personne.dateNaissance|date('d/m/Y') : '' }}</div>
                                     </div>
 
-                                    <div class="row">
-                                        <div class="col-lg-3 col-md-4 label">Formation</div>
-                                        <div class="col-lg-9 col-md-8">{{ participation.idFormation.nomFormation }}</div>
-                                    </div>
+                                    {% if participation.idFormation is defined %}
 
-                                    <div class="row">
-                                        <div class="col-lg-3 col-md-4 label">Date d'entrée en formation</div>
-                                        <div class="col-lg-9 col-md-8">{{ participation.dateEntree ? participation.dateEntree|date('d/m/Y') : '' }}</div>
-                                    </div>
+                                        <div class="row">
+                                            <div class="col-lg-3 col-md-4 label">Formation</div>
+                                            <div class="col-lg-9 col-md-8">{{ participation.idFormation.nomFormation }}</div>
+                                        </div>
 
-                                    <div class="row">
-                                        <div class="col-lg-3 col-md-4 label">Date de fin de formation</div>
-                                        <div class="col-lg-9 col-md-8">{{ participation.dateSortie ? participation.dateSortie|date('d/m/Y') : '' }}</div>
-                                    </div>
+                                        <div class="row">
+                                            <div class="col-lg-3 col-md-4 label">Date d'entrée en formation</div>
+                                            <div class="col-lg-9 col-md-8">{{ participation.dateEntree ? participation.dateEntree|date('d/m/Y') : '' }}</div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-lg-3 col-md-4 label">Date de fin de formation</div>
+                                            <div class="col-lg-9 col-md-8">{{ participation.dateSortie ? participation.dateSortie|date('d/m/Y') : '' }}</div>
+                                        </div>
+
+                                    {% else %}
+                                        <div class="row">
+                                            <div class="col-lg-3 col-md-4 label">Formation</div>
+                                            <div class="col-lg-9 col-md-8 textInfo">Pas de formation en cours</div>
+                                        </div>
+                                    {% endif %}
 
                                     <div class="row">
                                         <div class="col-lg-3 col-md-4 label">Téléphone</div>
@@ -144,24 +153,17 @@
                                         <div class="text-center"></div>
                                         <div class="endFooter">
                                             {{ form_end(form) }}
-                                            <a href="{{ path('app_personne_index') }}" class="btn btn-secondary" role="button">Retour</a>
+                                            <a href="{{ path('app_personne_index') }}" class="btn btn-secondary"
+                                               role="button">Retour</a>
                                         </div>
                                     </form>
                                 </div>
-
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
         </section>
     </main>
-
-  {#  {% block javascripts %}
-        {{ encore_entry_script_tags('datePicker') }}
-    {% endblock %}
-
-    <script src="https://unpkg.com/gijgo@1.9.14/js/gijgo.min.js" type="text/javascript"></script>#}
 
 {% endblock %}

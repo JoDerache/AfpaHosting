@@ -1277,8 +1277,6 @@ bi-plus-circle {
     width: 19%;
 }
 
-
-
 .switch {
     display: inline-block;
     position: relative;
@@ -1361,10 +1359,13 @@ bi-plus-circle {
 }
 
 .iconAdd {
-    color: black;
+    color: #87bb34;
 }
 
-
+.textInfo {
+    color: #87bb34;
+    font-weight: bold;
+}
 /*===============================LOGIN==================================*/
 #div_login {
     margin-top: -200px;

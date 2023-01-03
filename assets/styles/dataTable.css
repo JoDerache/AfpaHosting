@@ -6,14 +6,31 @@ i.viewIcon {
     color:  #87BB34;
 }
 
-#dataTables_wrapper>row {
-    background: #2eca6a;
-}
-
 h1 {
     text-align: center;
 }
 
+.dataTables_length {
+    margin-bottom: 20px;
+}
+
+.col-md-5 {
+    margin-top: 30px;
+    margin-bottom: 5px;
+}
+
+#dataTable_paginate {
+    margin-top: 30px;
+    margin-bottom: 5px;
+}
+
+.eyeIcon {
+    text-align: center;
+}
+
+.title {
+    text-align: center;
+}
 /*=================================BTN======================================*/
 .btn-primary {
     --bs-btn-bg: #87bb34;

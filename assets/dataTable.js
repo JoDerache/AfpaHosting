@@ -12,3 +12,16 @@ import './styles/dataTable.css';
 // start the Stimulus application
 import './bootstrap';
 
+document.querySelectorAll("[data-show]").forEach((element) => {
+    element.addEventListener("click", function() {
+        var idPersonne = [this.dataset.id]
+        var url = document.location.href
+        var index = url.indexOf('#')
+        if (index != -1) {
+            var url = url.substr(0, index)
+        }
+        location.href = url + idPersonne
+    });
+});
+
+
