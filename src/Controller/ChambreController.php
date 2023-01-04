@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use DateTime;
 use App\Entity\Bail;
+use DateTimeImmutable;
 use App\Entity\Chambre;
 use App\Form\ChambreType;
+use App\Form\ModifierBailType;
 use App\Form\AttribuerChambreType;
 use App\Repository\BailRepository;
 use App\Repository\ChambreRepository;
@@ -45,29 +47,34 @@ class ChambreController extends AbstractController
         // Requête permettant de récupérer toutes les chambres ET d'y ajouté les bails correspondant 
         $chambres = $doctrine->getConnection();
         $sql = '
-        SELECT c.*, b.id_personne,b.date_entree,b.date_sortie, p.prenom, p.nom
+        SELECT DISTINCT c.*, b.id_personne,b.date_entree,b.date_sortie, p.prenom, p.nom
         FROM `chambre` as c 
-        left join bail as b ON c.numero_chambre = b.numero_chambre AND b.date_sortie >"'.$date.'" AND b.date_entree <"'.$date.'"
+        left join bail as b ON c.numero_chambre = b.numero_chambre AND ((b.date_sortie >"'.$date.'" AND b.date_entree <"'.$date.'")
+        OR (b.date_sortie >"'.$date.'" AND b.date_entree >"'.$date.'")
+        )
         left join personne as p ON b.id_personne = p.id_personne 
         ';
         $stmt = $chambres->prepare($sql);
         $resultSet = $stmt->executeQuery();
         $allChambres = ($resultSet->fetchAll());
-
         $chambreMax = $chambreRepository->findAll();
         $bails = $bailRepository->findAll();
         $bailEnCours = 0;
         $chambreReserve = 0;
+        $chambreInutilisable = $chambreRepository->findBy(['status' => ['local technique', 'néant']]);
+        $chambreInutilisable = count($chambreInutilisable);
 
-            foreach($bails as $bail){
+        foreach($bails as $bail){
                 if (($bail->getDateEntree()->format('Y-m-d') < $date) && ($bail->getDateSortie()->format('Y-m-d') > $date))
                     $bailEnCours = $bailEnCours + 1;
+                $this->entityManager->flush();
                 if (($bail->getDateEntree()->format('Y-m-d') > $date)){
                     $chambreReserve = $chambreReserve + 1;
                 }
                 }
-        $chambreLibre = count($chambreMax) - $bailEnCours;
-        $chambreOccupe = count($chambreMax) - $chambreLibre;
+
+        $chambreLibre = count($chambreMax) - $bailEnCours - $chambreInutilisable;
+        $chambreOccupe = count($chambreMax) - $chambreLibre - $chambreInutilisable;
 
 
         // FORMULAIRE ATTRIBUTION DE CHAMBRE
@@ -88,7 +95,8 @@ class ChambreController extends AbstractController
                     'chambreLibre' => $chambreLibre,
                     'chambreOccupe' => $chambreOccupe,
                     'chambreReserve' => $chambreReserve,
-                    'form' => $form
+                    'chambreCondamne' => $chambreInutilisable,
+                    'form' => $form,
                 ]);
             }
 
@@ -98,7 +106,8 @@ class ChambreController extends AbstractController
             'chambreLibre' => $chambreLibre,
             'chambreOccupe' => $chambreOccupe,
             'chambreReserve' => $chambreReserve,
-            'form' => $form
+            'chambreCondamne' => $chambreInutilisable,
+            'form' => $form,
         ]);
     }
 
@@ -161,23 +170,73 @@ class ChambreController extends AbstractController
 
 
     #[Route('/attribuer/{numeroChambre}', name: 'attribuer')]
-    public function attribuer($numeroChambre, ChambreRepository $chambreRepository, Request $request): Response
+    public function attribuer($numeroChambre,BailRepository $bailRepository, ChambreRepository $chambreRepository, Request $request): Response
     {
                // FORMULAIRE ATTRIBUTION DE CHAMBRE
+        $date = new DateTimeImmutable;
         $bail = new Bail();
         $chambre = $chambreRepository->findOneBy(['numeroChambre' => $numeroChambre]);
+        $compteurError = 0;
+
         $form = $this->createForm(AttribuerChambreType::class, ['bail' => $bail, 'chambre' => $chambre]);
         $form->handleRequest($request);
         
             if ($form->isSubmitted() && $form->isValid()) {
                 $bail->setNumeroChambre($chambre);
-                
+                if($bail->getDateEntree() > $date){
+                    $chambre->setStatus('Réservée');
+                }
+                if($bail->getDateEntree() < $date && $bail->getDateSortie() > $date){
+                    $chambre->setStatus('Occupée');
+                }
                 $this->entityManager->persist($bail);
-                $this->entityManager->persist($chambre);
-                $this->entityManager->flush();
-                return $this->redirectToRoute('app_chambre_index');
+
+                $bails = $bailRepository->findBy(['numeroChambre' => $bail->getNumeroChambre()]);
+                foreach($bails as $b){
+                    if (($b->getDateEntree() < $bail->getDateEntree()) && ($b->getDateSortie() > $bail->getDateEntree())
+                    || ($b->getDateEntree() < $bail->getDateSortie()) && ($b->getDateSortie() > $bail->getDateSortie())
+                    || ($b->getDateEntree() > $bail->getDateEntree()) && ($b->getDateSortie() < $bail->getDateSortie())
+                    ){
+                        $compteurError = $compteurError +1;
+                    }
+                }
+                if($compteurError > 0){
+                    $this->addFlash('error', 'Il y a déjà un hébergé dans cette chambre pour la période choisie, celui-ci n\'a donc pas été ajouté !');
+                    return $this->redirectToRoute('app_chambre_index');
+                }
+                else {
+                    $this->entityManager->persist($chambre);
+                    $this->entityManager->flush();
+                    return $this->redirectToRoute('app_chambre_index');
+                }
             }
-            
             return $this->renderForm('chambre/index.html.twig');
     }
+
+
+
+    #[Route('/modifier/{numeroChambre}', name: 'modifier')]
+    public function modifier($numeroChambre, ChambreRepository $chambreRepository, BailRepository $bailRepository, Request $request): Response
+    {
+
+    $chambre = $chambreRepository->findOneBy(['numeroChambre' => $numeroChambre]);
+    $date = new DateTimeImmutable;
+    $bails = $bailRepository->findBy(['numeroChambre' => $numeroChambre]);
+    // FORMULAIRE MODIFICATION DE CHAMBRE
+    $dateEntree = new DateTimeImmutable($_POST['date_entree']);
+    $dateSortie = new DateTimeImmutable($_POST['date_sortie']);
+
+    foreach($bails as $bail){
+        if($bail->getDateSortie() > $date){
+
+            $bail->setDateEntree($dateEntree);
+            $bail->setDateSortie($dateSortie);
+            $this->entityManager->persist($bail);
+            $this->entityManager->flush();
+        };
+    }
+    return $this->redirectToRoute('app_chambre_index', [
+    ]);
+    }
+
 }
