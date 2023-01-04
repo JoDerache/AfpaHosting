@@ -1,0 +1,24 @@
+<div class="modal fade" id="addModalIncident" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header titre">
+                <h5 class="modal-title" id="exampleModalLabel">Ajout d'un incident</h5>
+            </div>
+            <div class="modal-body formAjout">
+                {{ form_start(form) }}
+                    {{form_row(form.date)}}
+                    {{form_row(form.commentaire)}}
+                    {{form_row(form.idBail)}}
+                    {{form_row(form.idTypeIncident)}}
+            </div>
+            <div class="modal-footer endFooter">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    Fermer
+                </button>
+                {{ form_row(form.submit) }}
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+</div>

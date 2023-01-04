@@ -3,18 +3,15 @@
 {% block title %}Incident{% endblock %}
 
 {% block body %}
-    <h1>Incident</h1>
+    <h1>Description de l'incident</h1>
 
     <table class="table">
         <tbody>
             <tr>
-                <th>IdIncident</th>
-                <td>{{ incident.idIncident }}</td>
+                
+                <td>{{ incident.idBail.idPersonne.nom}} {{ incident.idBail.idPersonne.prenom}}, le {{ incident.date ? incident.date|date('Y-m-d') : '' }}</td>
             </tr>
-            <tr>
-                <th>Date</th>
-                <td>{{ incident.date ? incident.date|date('Y-m-d') : '' }}</td>
-            </tr>
+            
             <tr>
                 <th>Commentaire</th>
                 <td>{{ incident.commentaire }}</td>

@@ -2,33 +2,60 @@
 {% include 'shared/header.html.twig' %}
 {% include 'shared/sidebar.html.twig' %}
 
+{# <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css"> #}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css">
+
 
 {% block title %}Incident index{% endblock %}
 
 {% block body %}
+<br><br>
+{# <br><br><br><br><br><br><br><br><br><br> #}
 <main id="main" class="main">
-    <h1>Incident index</h1>
+  <div class="container" id="incidentContainer">
+    <div class="container d-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center">
+            <h5 class="card-title m-2">Incidents</h5>
+            <label class="switch">
+                <input type="checkbox" id="toggleIncident"/>
+                <span></span>
+            </label>
+            <h5 class="card-title m-2">Avertissement</h5>
+        </div>
+            <a href="#" id="addIncident" data-bs-toggle="modal" data-bs-target="#addModalIncident"><h3><i class="bi bi-plus-circle iconAdd"></i></h3></a>
+    </div>
 
-    <table class="table">
+    <div class="container mt-5" id="tableau-incidents">
+        <!-- Recent Sales -->
+        <div class="col-12">
+            <div class="card recent-sales overflow-auto">
+                <div class="card-body table-wrapper justify-content-center flex-wrap">
+                    <table id="dataTable" class="table table-borderless datatable">
         <thead>
             <tr>
-                <th>IdIncident</th>
+                <th>Hébergé</th>
+                <th>Type Incident</th>
                 <th>Date</th>
-                <th>Commentaire</th>
+                {# <th>Commentaire</th> #}
                 <th>actions</th>
             </tr>
         </thead>
         <tbody>
         {% for incident in incidents %}
             <tr>
-                <td>{{ incident.idIncident }}</td>
+                <td>{{ incident.idBail.idPersonne.nom}} {{ incident.idBail.idPersonne.prenom}}</td>
+                <td>{{ incident.idTypeIncident.nomTypeIncident}}</td>
                 <td>{{ incident.date ? incident.date|date('Y-m-d') : '' }}</td>
-                <td>{{ incident.commentaire }}</td>
+                {# <td>{{ incident.commentaire }}</td> #}
                 <td>
-                    <a href="{{ path('app_incident_show', {'idIncident': incident.idIncident}) }}">show</a>
-                    <a href="{{ path('app_incident_edit', {'idIncident': incident.idIncident}) }}">edit</a>
+                <button type="button" class="btn btn-outline-success" data-bs-toggle="modal"
+                data-bs-target="#exampleModal{{ loop.index }}">Détail
+        </button>
+                    {# <a href="{{ path('app_incident_show', {'idIncident': incident.idIncident}) }}">Détail</a> #}
+                    {# <a href="{{ path('app_incident_edit', {'idIncident': incident.idIncident}) }}">edit</a> #}
                 </td>
             </tr>
+            {% include "incident/_modalDetailIncident.html.twig"%}
         {% else %}
             <tr>
                 <td colspan="4">no records found</td>
@@ -36,7 +63,36 @@
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('app_incident_new') }}">Create new</a>
+    {% include "incident/_modalAjoutIncident.html.twig" %}
+    {# <a href="{{ path('app_incident_new') }}">Create new</a> #}
+    
     </main>
 {% endblock %}
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+<script>
+    $(document).ready(function () {
+        $('#dataTable').DataTable({
+            language: {
+                url: "https://cdn.datatables.net/plug-ins/1.13.1/i18n/fr-FR.json"
+            }
+        });
+        var date_input=$('input[name="date"]'); //our date input has the name "date"
+        var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+        var options={
+            format: 'mm/dd/yyyy',
+            container: container,
+            todayHighlight: true,
+            autoclose: true,
+        };
+        date_input.datepicker(options);
+    
+    });
+</script>
+    {% block javascripts %}
+        {{ encore_entry_script_tags('dataTableChambre') }}
+    {% endblock %}

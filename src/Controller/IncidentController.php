@@ -15,14 +15,24 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 #[Route('/admin/incident')]
 class IncidentController extends AbstractController
 {
-    #[Route('/', name: 'app_incident_index', methods: ['GET'])]
-    public function index(IncidentRepository $incidentRepository, UserInterface $user, PersonneRepository $personneRepository): Response
+    #[Route('/', name: 'app_incident_index', methods: ['GET', 'POST'])]
+    public function index(Request $request, IncidentRepository $incidentRepository, UserInterface $user, PersonneRepository $personneRepository): Response
     {
         $utilisateur = $personneRepository->findOneBy(['numeroBeneficiaire' => $user->getUserIdentifier()]);
+        $incident = new Incident();
+        $form = $this->createForm(IncidentType::class, $incident);
+        // $form ->setData([['date'=>new \DateTimeImmutable()]]);
+        $form->handleRequest($request);
 
-        return $this->render('incident/index.html.twig', [
+        if ($form->isSubmitted() && $form->isValid()) {
+            $incidentRepository->save($incident, true);
+
+            return $this->redirectToRoute('app_incident_index', [], Response::HTTP_SEE_OTHER);
+        }
+        return $this->renderForm('incident/index.html.twig', [
             'incidents' => $incidentRepository->findAll(),
-            'utilisateur' => $utilisateur
+            'utilisateur' => $utilisateur,
+            'form' => $form,
         ]);
     }
 
