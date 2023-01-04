@@ -16,6 +16,11 @@
 {% block body %}
 <main id="main" class="main">
     <div class="container"  id="chambreContainer">
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger">
+            {{ message }}
+        </div>
+    {% endfor %}
         <div class="row">
             <div class="col-lg-3">
         <!-- Card with header and footer -->
@@ -47,9 +52,9 @@
             <div class="col-lg-3">
         <!-- Card with header and footer -->
                 <div class="card">
-                    <div class="card-header bg-black text-white">Chambres comdamnées</div>
+                    <div class="card-header bg-black text-white">Chambres inutilsable</div>
                     <div class="card-body">
-                        <h5 class="card-title">5</h5>
+                        <h5 class="card-title">{{chambreCondamne}}</h5>
                     </div>
                 </div><!-- End Card with header and footer -->
             </div>
@@ -89,17 +94,26 @@
                             <td>{{chambre.numero_clefs}}</td>
                             <td>{{chambre.status}}</td>
                             <td>
-                                {% if chambre.status is same as "En travaux" %}
-                                <a href=""
-                                    class="view" title="Voir" data-toggle="tooltip"><i
-                                    class="material-icons viewIcon">&#xE417;</i>
-                                </a>
-                                {% endif %}
                                 <a href="#"
                                     data-bs-toggle="modal" data-bs-target="#modal_attribuer"
                                     data-id="{{ chambre.numero_chambre}}"
                                     data-editer
                                     class="edit" title="Editer"><i
+                                    class="material-icons editIcon">&#xE145;</i>
+                                </a>
+                                {% if chambre.status is same as "En travaux" %}
+                                <a href="#"
+                                    class="view" title="Voir" data-toggle="tooltip"><i
+                                    class="material-icons viewIcon">&#xE417;</i>
+                                </a>
+                                {% endif %}
+                                <a
+                                    href="#"
+                                    {# href="{{ path('modifier', { 'numeroChambre': chambre.numero_chambre }) }}" #}
+                                    data-bs-toggle="modal" data-bs-target="#modal_modifier"
+                                    data-id="{{ chambre.numero_chambre}}"
+                                    data-modifier
+                                    class="modif" title="Modifier"><i
                                     class="material-icons editIcon">&#xE254;</i>
                                 </a>
                                 {% set test = 1 %}
@@ -109,8 +123,10 @@
                 </tbody>
             </table>
         </div>
-        {# MODAL EDITER #}
-        {% include "shared/_modalEditerChambre.html.twig" %}
+        {# MODAL ATTRIBUER #}
+        {% include "shared/_modalAttribuerChambre.html.twig" %}
+        {# MODAL MODIFIER #}
+        {% include "shared/_modalModifierChambre.html.twig" %}
     </div>
 </main>
 {% endblock %}

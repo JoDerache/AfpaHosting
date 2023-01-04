@@ -1,0 +1,70 @@
+<div class="modal fade" id="modal_modifier" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header titre">
+                <h1 class="modal-title titreHeberge" id="exampleModalLabel">MODIFIER UNE CHAMBRE</h1>
+            </div>
+            <div class="modal-body formAjout">
+                <form action="{{ path('modifier', { 'numeroChambre': '301' }) }}" method="POST"  class="row g-3 needs-validation">
+                    <div class="col-12">
+                        <label for="dateEntree" class="form-label">Date d'entrée</label>
+                        <div class="input-group has-validation">
+                            <input type="date" name="date_entree" class="form-control" id="dateEntree">
+                            <div class="invalid-feedback">Entrez votre numéro de bénéficiaire</div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <label for="dateSortie" class="form-label">Date de sortie</label>
+                        <input type="date" name="date_sortie" class="form-control" id="dateSortie">
+                    </div>
+                    <div class="col-12">
+                        <label for="status" class="form-label">Status de la chambre</label>
+                        <select name="status" class="form-control" id="status">
+                            <option value="">-- Choisissez un status --</option>
+                            <option value="libre">Libre</option>
+                            <option value="occupe">Occupée</option>
+                            <option value="reserve">Réservée</option>
+                            <option value="neant">Néant</option>
+                            <option value="local_technique">Local Technique</option>
+                            <option value="travaux">En travaux</option>
+                        </select>
+                    </div>
+                <input type="hidden" name="_target_path" value="{{ path('app_chambre_index') }}"/>
+            </div>
+            <div class="modal-footer endFooter">
+                <button type="button" class="btn btn-secondary" id="fermerAttributionChambre" data-bs-dismiss="modal">
+                    Fermer
+                </button>
+                <button type="submit" class="btn btn-primary" id="fermerAttributionChambre" data-bs-dismiss="modal">
+                    Enregistrer
+                </button>
+            </form>
+
+                {# {{ form_row(formModif.submit) }} #}
+                {# {{ form_end(formModif) }} #}
+            </div>
+        </div>
+    </div>
+</div>
+
+{# <div class="modal fade" id="valid-formulaire" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header titre">
+                <h1 class="modal-title titreHeberge" id="exampleModalLabel">Validation</h1>
+            </div>
+            <div class="modal-body formAjout">
+                <div id="recapForm"></div>
+            </div>
+            <div class="modal-footer endFooter">
+                <button type="button" class="btn btn-secondary" id="fermerValidationAttributionChambre" data-bs-dismiss="modal">
+                    Fermer
+                </button>
+                {{ form_row(form.submit) }}
+                {{ form_end(formModif) }}
+            </div>
+        </div>
+    </div>
+</div> #}
