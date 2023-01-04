@@ -72,7 +72,7 @@ class ChambreController extends AbstractController
 
         // FORMULAIRE ATTRIBUTION DE CHAMBRE
         $bail = new Bail();
-        $chambre = $chambreRepository->findOneBy(['numeroChambre' => '302']);
+        $chambre = $chambreRepository->findOneBy(['numeroChambre' => '501']);
         $form = $this->createForm(AttribuerChambreType::class, ['bail' => $bail, 'chambre' => $chambre]);
         $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
