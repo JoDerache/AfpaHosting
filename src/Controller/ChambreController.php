@@ -6,11 +6,14 @@ use DateTime;
 use App\Entity\Bail;
 use DateTimeImmutable;
 use App\Entity\Chambre;
+use App\Entity\Travaux;
 use App\Form\ChambreType;
+use App\Form\TravauxType;
 use App\Form\ModifierBailType;
 use App\Form\AttribuerChambreType;
 use App\Repository\BailRepository;
 use App\Repository\ChambreRepository;
+use App\Repository\TravauxRepository;
 use App\Repository\PersonneRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -37,44 +40,105 @@ class ChambreController extends AbstractController
 
 
     #[Route('/', name: 'app_chambre_index')]
-    public function index(ManagerRegistry $doctrine,BailRepository $bailRepository, ChambreRepository $chambreRepository, UserInterface $user, PersonneRepository $personneRepository,Request $request): Response
+    public function index(ManagerRegistry $doctrine,TravauxRepository $travauxRepository,BailRepository $bailRepository, ChambreRepository $chambreRepository, UserInterface $user, PersonneRepository $personneRepository,Request $request): Response
     {
         
         $utilisateur = $personneRepository->findOneBy(['numeroBeneficiaire' => $user->getUserIdentifier()]);
         $date = new DateTime();
         $date = $date->format('Y-m-d');
-        
+        $travauxListes = $travauxRepository->findAll();
         // Requête permettant de récupérer toutes les chambres ET d'y ajouté les bails correspondant 
         $chambres = $doctrine->getConnection();
+
         $sql = '
-        SELECT DISTINCT c.*, b.id_personne,b.date_entree,b.date_sortie, p.prenom, p.nom
+        SELECT c.numero_chambre,c.numero_etage,c.numero_clefs,c.etat,
+        id_bail,b.id_personne,b.date_entree,b.date_sortie,b.status,
+        p.prenom, p.nom,
+        t.id_travaux,tt.nom_travaux,t.date_debut,t.date_fin,t.commentaire_travaux
         FROM `chambre` as c 
         left join bail as b ON c.numero_chambre = b.numero_chambre AND ((b.date_sortie >"'.$date.'" AND b.date_entree <"'.$date.'")
         OR (b.date_sortie >"'.$date.'" AND b.date_entree >"'.$date.'")
         )
-        left join personne as p ON b.id_personne = p.id_personne 
+        left join personne as p ON b.id_personne = p.id_personne
+        left join travaux as t on c.numero_chambre = t.numero_chambre
+        left join type_travaux as tt on t.id_travaux_type_travaux = tt.id_travaux
+        order by c.numero_chambre ASC, t.date_fin DESC
         ';
         $stmt = $chambres->prepare($sql);
         $resultSet = $stmt->executeQuery();
         $allChambres = ($resultSet->fetchAll());
-        $chambreMax = $chambreRepository->findAll();
+        $chambreMax = count($chambreRepository->findAll());
+        $goodChambres = [];
+        for($i =0 ; $i < count($allChambres); $i++){
+            $numeroChambre = $allChambres[$i]['numero_chambre'];
+            if($i > 0){
+                if($allChambres[$i -1]['numero_chambre'] == $numeroChambre){
+                    if($goodChambres[$numeroChambre]['date_entree'] > $allChambres[$i]['date_entree']){
+                        $goodChambres[$numeroChambre] = $allChambres[$i];
+                    }
+                }
+                else{
+                    $goodChambres[$numeroChambre] = $allChambres[$i];
+                }
+            }
+            else{
+                $goodChambres[$numeroChambre] = $allChambres[$i];
+            }
+        }
+
+
+        $tab = [];
+        foreach($travauxRepository->findAll() as $t){
+            
+                    if(($t->getDateDebut()->format('Y-m-d') <= $date
+                        && $t->getDateFin()->format('Y-m-d') > $date)){
+                            array_push($tab, $t);
+                            $numCh = $t->getNumeroChambre()->getNumeroChambre();
+                            if(isset($goodChambres[$numCh])){
+                                $goodChambres[$numCh]['etat'] = "En travaux";
+                            }
+                        }
+                        else {
+                        }
+                }
+
+
+
         $bails = $bailRepository->findAll();
         $bailEnCours = 0;
         $chambreReserve = 0;
-        $chambreInutilisable = $chambreRepository->findBy(['status' => ['local technique', 'néant']]);
+        $chambreInutilisable = $bailRepository->findBy(['status' => ['local technique', 'néant']]);
         $chambreInutilisable = count($chambreInutilisable);
 
-        foreach($bails as $bail){
-                if (($bail->getDateEntree()->format('Y-m-d') < $date) && ($bail->getDateSortie()->format('Y-m-d') > $date))
+        if($bails){
+            foreach($bails as $bail){
+                if (($bail->getDateEntree()->format('Y-m-d') < $date) && ($bail->getDateSortie()->format('Y-m-d') > $date)){
                     $bailEnCours = $bailEnCours + 1;
+                    $bail->setStatus('Occupé');
                 $this->entityManager->flush();
-                if (($bail->getDateEntree()->format('Y-m-d') > $date)){
+                }
+                elseif (($bail->getDateEntree()->format('Y-m-d') > $date)){
                     $chambreReserve = $chambreReserve + 1;
+                    $bail->setStatus('Réservé');
                 }
+                else{
+                    $bail->setStatus('Libre');
                 }
+                    }
+                    
+                $this->entityManager->persist($bail);
+        }
 
-        $chambreLibre = count($chambreMax) - $bailEnCours - $chambreInutilisable;
-        $chambreOccupe = count($chambreMax) - $chambreLibre - $chambreInutilisable;
+                $this->entityManager->persist($t);
+                $this->entityManager->flush();
+
+        $chambreLibre = $chambreMax - $bailEnCours - $chambreInutilisable;
+        $chambreOccupe = $chambreMax - $chambreLibre - $chambreInutilisable;
+        
+        $pourcentChambrelibre = ($chambreLibre*100)/$chambreMax;
+        $pourcentChambreOccupe= ($chambreOccupe*100)/$chambreMax;
+        $pourcentChambreReserve = ($chambreReserve*100)/$chambreMax;
+        $pourcentChambreInutilisable= ($chambreInutilisable*100)/$chambreMax;
 
 
         // FORMULAIRE ATTRIBUTION DE CHAMBRE
@@ -90,24 +154,44 @@ class ChambreController extends AbstractController
                 $this->entityManager->flush();
 
                 return $this->redirectToRoute('app_chambre_index', [
-                    'chambres' => $allChambres,
+                    'chambres' => $goodChambres,
+                    'pourcentLibre' => $pourcentChambrelibre,
+                    'pourcentOccupe' => $pourcentChambreOccupe,
+                    'pourcentReserve' => $pourcentChambreReserve,
+                    'pourcentInutilisable' => $pourcentChambreInutilisable,
                     'utilisateur' => $utilisateur,
                     'chambreLibre' => $chambreLibre,
                     'chambreOccupe' => $chambreOccupe,
                     'chambreReserve' => $chambreReserve,
                     'chambreCondamne' => $chambreInutilisable,
                     'form' => $form,
+                    'formTravaux' => $formTravaux,
+                    'travaux' => $travauxListes
                 ]);
             }
-
+        
+        // FORMULAIRE DE TRAVAUX DE CHAMBRE 
+        $travaux = new Travaux();
+        $formTravaux = $this->createForm(TravauxType::class, $travaux);
+        $formTravaux->handleRequest($request);
+        if($formTravaux->isSubmitted() && $form->isValid()){
+            $this->entityManager->persist($travaux);
+            $this->entityManager->flush();
+        };
         return $this->renderForm('chambre/index.html.twig', [
-            'chambres' => $allChambres,
+            'chambres' => $goodChambres,
+            'pourcentLibre' => $pourcentChambrelibre,
+            'pourcentOccupe' => $pourcentChambreOccupe,
+            'pourcentReserve' => $pourcentChambreReserve,
+            'pourcentInutilisable' => $pourcentChambreInutilisable,
             'utilisateur' => $utilisateur,
             'chambreLibre' => $chambreLibre,
             'chambreOccupe' => $chambreOccupe,
             'chambreReserve' => $chambreReserve,
             'chambreCondamne' => $chambreInutilisable,
             'form' => $form,
+            'formTravaux' => $formTravaux,
+            'travaux' => $travauxListes
         ]);
     }
 
@@ -184,10 +268,13 @@ class ChambreController extends AbstractController
             if ($form->isSubmitted() && $form->isValid()) {
                 $bail->setNumeroChambre($chambre);
                 if($bail->getDateEntree() > $date){
-                    $chambre->setStatus('Réservée');
+                    $bail->setStatus('Réservé');
                 }
-                if($bail->getDateEntree() < $date && $bail->getDateSortie() > $date){
-                    $chambre->setStatus('Occupée');
+                if($form->getData()['bail']->getDateEntree() < $date && $form->getData()['bail']->getDateSortie() > $date){
+                    $bail->setStatus('Occupé');
+                }
+                if($form->getData()['bail']->getDateEntree() < $date && $form->getData()['bail']->getDateSortie() < $date){
+                    $bail->setStatus('Libre');
                 }
                 $this->entityManager->persist($bail);
 
@@ -210,33 +297,51 @@ class ChambreController extends AbstractController
                     return $this->redirectToRoute('app_chambre_index');
                 }
             }
-            return $this->renderForm('chambre/index.html.twig');
+            return $this->redirectToRoute('app_chambre_index');
     }
 
 
 
-    #[Route('/modifier/{numeroChambre}', name: 'modifier')]
-    public function modifier($numeroChambre, ChambreRepository $chambreRepository, BailRepository $bailRepository, Request $request): Response
+    #[Route('/modifier/{numeroBail}', name: 'modifier')]
+    public function modifier($numeroBail, ChambreRepository $chambreRepository, BailRepository $bailRepository, Request $request): Response
     {
-
-    $chambre = $chambreRepository->findOneBy(['numeroChambre' => $numeroChambre]);
+    // $chambre = $chambreRepository->findOneBy(['numeroChambre' => $numeroChambre]);
     $date = new DateTimeImmutable;
-    $bails = $bailRepository->findBy(['numeroChambre' => $numeroChambre]);
+    $bail = $bailRepository->findBy(['idBail' => $numeroBail]);
     // FORMULAIRE MODIFICATION DE CHAMBRE
-    $dateEntree = new DateTimeImmutable($_POST['date_entree']);
-    $dateSortie = new DateTimeImmutable($_POST['date_sortie']);
-
-    foreach($bails as $bail){
-        if($bail->getDateSortie() > $date){
-
-            $bail->setDateEntree($dateEntree);
-            $bail->setDateSortie($dateSortie);
-            $this->entityManager->persist($bail);
+    $dateEntree = new DateTimeImmutable($request->get('date_entree'));
+    $dateSortie = new DateTimeImmutable($request->get('date_sortie'));
+        if(current($bail)->getDateSortie() > $date){
+            current($bail)->setDateEntree($dateEntree);
+            current($bail)->setDateSortie($dateSortie);
+            $this->entityManager->persist(current($bail));
             $this->entityManager->flush();
         };
-    }
     return $this->redirectToRoute('app_chambre_index', [
     ]);
     }
+
+    #[Route('/travaux/{numeroChambre}', name: 'travaux')]
+    public function travaux($numeroChambre, ChambreRepository $chambreRepository, BailRepository $bailRepository, Request $request): Response
+    {
+        $chambre = $chambreRepository->findOneBy(['numeroChambre' => $numeroChambre]);
+        $date = new DateTimeImmutable;
+
+        $travaux = new Travaux();
+        $formTravaux = $this->createForm(TravauxType::class, $travaux);
+        $formTravaux->handleRequest($request);
+        if($formTravaux->isSubmitted() && $formTravaux->isValid()){
+            $travaux->setNumeroCHambre($chambre);
+            if($travaux->getDateDebut() <= $date){
+                $chambre->setEtat('En travaux');
+            }
+
+            $this->entityManager->persist($travaux);
+            $this->entityManager->flush();
+        };
+    return $this->redirectToRoute('app_chambre_index', [
+    ]);
+    }
+    
 
 }
