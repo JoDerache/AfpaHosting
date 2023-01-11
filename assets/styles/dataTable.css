@@ -50,3 +50,52 @@ h1 {
     left: 82%;
     color: #87BB34;
     }
+
+#isTravaux {
+    margin-top: 6px;
+}
+.pourcentSize{
+    font-size: 16px;
+}
+.historiqueLien{
+    color: grey;
+    font-size: 14px;
+}
+.enTravaux{
+    color : #87bb34
+}
+.hideValue{
+    opacity:0;
+}
+
+/*TEEEEEEESSSSSSTT*/
+.circular-progress, .circular-progressOccupe, .circular-progressReserve, .circular-progressInutilisable{
+    position: relative;
+    margin-left: 100px;
+    height: 80px;
+    width: 80px;
+    /* background-color: green; */
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+}
+.circular-progress:before, .circular-progressOccupe:before, .circular-progressReserve:before, .circular-progressInutilisable:before{
+    content:"";
+    position: absolute;
+    height: 84%;
+    width: 84%;
+    background-color: #ffff;
+    border-radius: 50%;
+}
+.value-container, .value-containerOccupe, .value-containerReserve, .value-containerInutilisable{
+    position: relative;
+    font-size: 25px;
+    color: black;
+}
+
+.hiddenPourcentage{
+    visibility: hidden;
+}
+.card-header{
+    font-size: 25px ;
+}

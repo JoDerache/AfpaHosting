@@ -27,12 +27,6 @@ class Chambre
      */
     private $numeroClefs;
 
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="status", type="string", length=100,nullable=false)
-     */
-    private $status;
 
     /**
      * @var \Etage
@@ -43,6 +37,11 @@ class Chambre
      * })
      */
     private $numeroEtage;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $etat;
 
     public function getNumeroChambre(): ?int
     {
@@ -61,17 +60,6 @@ class Chambre
         return $this;
     }
 
-    public function getStatus(): ?string
-    {
-        return $this->status;
-    }
-
-    public function setStatus(string $status): self
-    {
-        $this->status = $status;
-
-        return $this;
-    }
 
     public function getNumeroEtage(): ?Etage
     {
@@ -87,6 +75,18 @@ class Chambre
     public function __toString(): string
     {
         return $this->numeroChambre;
+    }
+
+    public function getEtat(): ?string
+    {
+        return $this->etat;
+    }
+
+    public function setEtat(?string $etat): self
+    {
+        $this->etat = $etat;
+
+        return $this;
     }
 
 }
