@@ -28,7 +28,7 @@ class IncidentType extends AbstractType
 {
     public function __construct(private BailRepository $bail)
     {
-        
+    
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options, ): void

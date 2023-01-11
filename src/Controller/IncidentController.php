@@ -74,7 +74,6 @@ class IncidentController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $incidentRepository->save($incident, true);
-
             return $this->redirectToRoute('app_incident_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -90,7 +89,6 @@ class IncidentController extends AbstractController
         if ($this->isCsrfTokenValid('delete'.$incident->getIdIncident(), $request->request->get('_token'))) {
             $incidentRepository->remove($incident, true);
         }
-
         return $this->redirectToRoute('app_incident_index', [], Response::HTTP_SEE_OTHER);
     }
 }

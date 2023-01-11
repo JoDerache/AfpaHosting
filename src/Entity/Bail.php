@@ -112,5 +112,4 @@ class Bail
     {
         return $this->getIdPersonne();
     }
-
 }
