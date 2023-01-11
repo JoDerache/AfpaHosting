@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use DateTime;
 use App\Entity\Incident;
 use App\Form\IncidentType;
 use App\Repository\IncidentRepository;
@@ -20,8 +21,8 @@ class IncidentController extends AbstractController
     {
         $utilisateur = $personneRepository->findOneBy(['numeroBeneficiaire' => $user->getUserIdentifier()]);
         $incident = new Incident();
+        $incident->setDate(new DateTime('2023-02-25 12:00:00'));
         $form = $this->createForm(IncidentType::class, $incident);
-        // $form ->setData([['date'=>new \DateTimeImmutable()]]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -40,6 +41,8 @@ class IncidentController extends AbstractController
     public function new(Request $request, IncidentRepository $incidentRepository): Response
     {
         $incident = new Incident();
+        $incident->setDate(new DateTime());
+        //ajouter dater artificellement à la main
         $form = $this->createForm(IncidentType::class, $incident);
         $form->handleRequest($request);
 
@@ -71,7 +74,6 @@ class IncidentController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $incidentRepository->save($incident, true);
-
             return $this->redirectToRoute('app_incident_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -87,7 +89,6 @@ class IncidentController extends AbstractController
         if ($this->isCsrfTokenValid('delete'.$incident->getIdIncident(), $request->request->get('_token'))) {
             $incidentRepository->remove($incident, true);
         }
-
         return $this->redirectToRoute('app_incident_index', [], Response::HTTP_SEE_OTHER);
     }
 }

@@ -50,5 +50,4 @@ class TypeIncident
         return $this->getnomTypeIncident();
     }
 
-
 }

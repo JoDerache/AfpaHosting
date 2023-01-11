@@ -3,8 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Incident;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Incident>
@@ -53,7 +54,7 @@ class IncidentRepository extends ServiceEntityRepository
 //            ->getResult()
 //        ;
 //    }
-
+    
 //    public function findOneBySomeField($value): ?Incident
 //    {
 //        return $this->createQueryBuilder('i')
