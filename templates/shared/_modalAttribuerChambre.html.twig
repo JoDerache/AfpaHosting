@@ -1,9 +1,9 @@
-<div class="modal fade" id="modal_attribuer" tabindex="-1" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="modal_attribuer" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header titre">
-                <h1 class="modal-title titreHeberge" id="exampleModalLabel">EDITER UNE CHAMBRE</h1>
+                <h1 class="modal-title titreHeberge" id="exampleModalLabel">ATTRIBUER UNE CHAMBRE</h1>
             </div>
             <div class="modal-body formAjout">
                 {{ form_start(form) }}
@@ -12,7 +12,7 @@
                 {{ form_row(form.bail.dateSortie,{'id': 'dateSortie'}) }}
             </div>
             <div class="modal-footer endFooter">
-                <button type="button" class="btn btn-secondary" id="fermerAttributionChambre" data-bs-dismiss="modal">
+                <button type="button" class="btn btn-secondary fermerAttribution" data-bs-dismiss="modal">
                     Fermer
                 </button>
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#valid-formulaire" id="validForm">
@@ -23,7 +23,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="valid-formulaire" tabindex="-1" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="valid-formulaire" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -34,7 +34,7 @@
                 <div id="recapForm"></div>
             </div>
             <div class="modal-footer endFooter">
-                <button type="button" class="btn btn-secondary" id="fermerValidationAttributionChambre" data-bs-dismiss="modal">
+                <button type="button" class="btn btn-secondary fermerValidationAttribution" data-bs-dismiss="modal">
                     Fermer
                 </button>
                 {{ form_row(form.submit) }}

@@ -1,0 +1,93 @@
+<div class="modal fade" id="modal_infoTravaux{{chambre.numero_chambre}}" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header titre">
+                <h1 class="modal-title titreHeberge" id="exampleModalLabel">CHAMBRE {{chambre.numero_chambre}}</h1>
+            </div>
+            <div class="modal-body formAjout" id="accordionTravaux">
+                <div class="accordion" id="accordionExample">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            En cours
+                        </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Date de début</th>
+                                            <th scope="col">Date de fin</th>
+                                            <th scope="col">Type de travaux</th>
+                                            <th scope="col">Commentaire</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>{{chambre.date_debut|date("d/m/Y")}}</td>
+                                            <td>{{chambre.date_fin|date("d/m/Y")}}</td>
+                                            <td>{{chambre.nom_travaux}}</td>
+                                            <td data-bs-toggle="tooltip"
+                                            {% if chambre.commentaire_travaux is not null %}
+                                                data-bs-placement="top"
+                                                data-bs-title="{{chambre.commentaire_travaux}}"
+                                            {% endif %}>
+                                                {{chambre.commentaire_travaux|u.truncate(10, '...')}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingTwo">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                Historique
+                            </button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                {# HISTORIQUE DES TRAVAUX SOUS FORME DE DATATABLE #}
+                                
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Date de début</th>
+                                            <th scope="col">Date de fin</th>
+                                            <th scope="col">Type</th>
+                                            <th scope="col">Commentaire</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for travail in travaux %}
+                                        {% if travail.numeroChambre.numeroChambre is same as chambre.numero_chambre %}
+                                        <tr>
+                                            <td>{{travail.dateDebut|date("d/m/Y")}}</td>
+                                            <td>{{travail.dateFin|date("d/m/Y")}}</td>
+                                            <td>{{travail.idTravauxTypeTravaux.nomTravaux}}</td>
+                                            <td data-bs-toggle="tooltip"
+                                            {% if travail.commentaireTravaux is not null %}
+                                                data-bs-placement="top"
+                                                data-bs-title="{{travail.commentaireTravaux}}"
+                                            {% endif %}>
+                                            {{travail.commentaireTravaux|u.truncate(10, '...')}}</td>
+                                        </tr>
+                                        {% endif %}
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer endFooter">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Fermer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>

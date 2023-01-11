@@ -1,0 +1,25 @@
+<div class="modal fade" id="modal_travaux" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header titre">
+                <h1 class="modal-title titreHeberge" id="exampleModalLabel">CHANTIER À RÉALISER</h1>
+            </div>
+            <div class="modal-body formAjout" id="selectTravaux">
+                {{ form_start(formTravaux) }}
+                {{ form_row(formTravaux.idTravauxTypeTravaux) }}
+                {{ form_row(formTravaux.dateDebut) }}
+                {{ form_row(formTravaux.dateFin) }}
+
+                {{ form_row(formTravaux.commentaireTravaux) }}
+            </div>
+                <div class="modal-footer endFooter">
+                <button type="button" class="btn btn-secondary fermerValidationAttribution" data-bs-dismiss="modal">
+                    Fermer
+                </button>
+                {{ form_row(formTravaux.submit) }}
+                {{ form_end(formTravaux) }}
+            </div>
+        </div>
+    </div>
+</div>

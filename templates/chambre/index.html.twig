@@ -25,53 +25,68 @@
             <div class="col-lg-3">
         <!-- Card with header and footer -->
                 <div class="card">
-                    <div class="card-header bg-success text-white">Chambres libre</div>
-                    <div class="card-body">
+                    <div class="card-header bg-success text-white">Libres</div>
+                    <div class="card-body d-flex">
                         <h5  class="card-title">{{chambreLibre}}</h5>
+                            <div class="circular-progress">
+                                <div class="value-container hiddenPourcentage">{{pourcentLibre}}</div>
+                            </div>
                     </div>
                 </div><!-- End Card with header and footer -->
             </div>
             <div class="col-lg-3">
     <!-- Card with header and footer -->
                 <div class="card">
-                    <div class="card-header bg-danger text-white">Chambres occupées</div>
-                    <div class="card-body">
+                    <div class="card-header bg-danger text-white">Occupées</div>
+                    <div class="card-body d-flex">
                         <h5 class="card-title">{{chambreOccupe}}</h5>
+                        <div class="circular-progressOccupe">
+                            <div class="value-containerOccupe hiddenPourcentage">{{pourcentOccupe}}</div>
+                        </div>
                     </div>
                 </div><!-- End Card with header and footer -->
             </div>
             <div class="col-lg-3">
         <!-- Card with header and footer -->
                 <div class="card">
-                    <div class="card-header bg-warning text-white">Chambres réservées</div>
-                    <div class="card-body">
+                    <div class="card-header bg-warning text-white">Réservées</div>
+                    <div class="card-body d-flex">
                         <h5 class="card-title">{{chambreReserve}}</h5>
+                        <div class="circular-progressReserve">
+                            <div class="value-containerReserve hiddenPourcentage">{{pourcentReserve}}</div>
+                        </div>
                     </div>
                 </div><!-- End Card with header and footer -->
             </div>
             <div class="col-lg-3">
         <!-- Card with header and footer -->
                 <div class="card">
-                    <div class="card-header bg-black text-white">Chambres inutilsable</div>
-                    <div class="card-body">
+                    <div class="card-header bg-black text-white">Inutilsables</div>
+                    <div class="card-body d-flex">
                         <h5 class="card-title">{{chambreCondamne}}</h5>
+                        <div class="circular-progressInutilisable">
+                            <div class="value-containerInutilisable hiddenPourcentage">{{pourcentInutilisable}}</div>
+                        </div>
                     </div>
                 </div><!-- End Card with header and footer -->
             </div>
         </div>
+    </div>
         {# <a href="#" id="position_add_chambre" data-bs-toggle="modal" data-bs-target="#modal_attribuer" title="Voir" data-toggle="tooltip"><i class="ri-add-line ri-2x"></i></a> #}
         <!-- Recent Sales -->
-        <div class="table-wrapper justify-content-center d-flex flex-wrap">
+    <div>
+        <div class="table-wrapper justify-content-center my-5">
             <table id="dataTable" class="table table-striped justify-content-center flex-wrap mt-5">
                 <thead>
                     <tr>
                         <th scope="col">Numéro</th>
-                        <th scope="col">Nom Hébergé</th>
-                        <th scope="col">Prénom Hébergé</th>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Prénom</th>
                         <th scope="col">Date d'entrée</th>
                         <th scope="col">Date de sortie</th>
-                        <th scope="col">clef de chambre</th>
+                        <th scope="col">Clef</th>
                         <th scope="col">Status</th>
+                        <th scope="col">État</th>
                         <th scope="col">Actions</th>
                     </tr>
                 </thead>
@@ -92,31 +107,54 @@
                             <td></td>
                             {% endif %}
                             <td>{{chambre.numero_clefs}}</td>
-                            <td>{{chambre.status}}</td>
+                            {% if chambre.status != null %}
+                                {% if chambre.status == "Occupé" %}
+                                    <td><span class="badge rounded-pill bg-danger">{{chambre.status}}</span></td>
+                                {% endif %}
+                                {% if chambre.status == "Réservé" %}
+                                    <td><span class="badge rounded-pill bg-warning">{{chambre.status}}</span></td>
+                                {% endif %}
+                            {% else %}
+                                <td><span class="badge rounded-pill bg-success">Libre</span></td>
+                            {% endif %}
+                            <td>
+                                <a href="#"
+                                    data-bs-toggle="modal" data-bs-target="#modal_infoTravaux{{chambre.numero_chambre}}">
+                                    {% if chambre.etat %}
+                                        <span class="enTravaux">{{chambre.etat}}</span>
+                                    {% else %}
+                                        <span class="historiqueLien">Pas de travaux en cours</span>
+                                    {% endif %}
+                                </a>
+                                {% include "shared/_modalInfoTravaux.html.twig" %}
+                            </td>
                             <td>
                                 <a href="#"
                                     data-bs-toggle="modal" data-bs-target="#modal_attribuer"
                                     data-id="{{ chambre.numero_chambre}}"
                                     data-editer
-                                    class="edit" title="Editer"><i
+                                    class="edit" title="Attribuer"><i
                                     class="material-icons editIcon">&#xE145;</i>
                                 </a>
-                                {% if chambre.status is same as "En travaux" %}
                                 <a href="#"
-                                    class="view" title="Voir" data-toggle="tooltip"><i
-                                    class="material-icons viewIcon">&#xE417;</i>
-                                </a>
-                                {% endif %}
-                                <a
-                                    href="#"
-                                    {# href="{{ path('modifier', { 'numeroChambre': chambre.numero_chambre }) }}" #}
                                     data-bs-toggle="modal" data-bs-target="#modal_modifier"
-                                    data-id="{{ chambre.numero_chambre}}"
+                                    {% if chambre.id_bail is defined %}
+                                    data-id="{{ chambre.id_bail}}"
+                                    {% else %}
+                                    data-id= '1'
+                                    {% endif %}
                                     data-modifier
                                     class="modif" title="Modifier"><i
                                     class="material-icons editIcon">&#xE254;</i>
+                                    
                                 </a>
-                                {% set test = 1 %}
+                                <a href="#"
+                                    data-bs-toggle="modal" data-bs-target="#modal_travaux"
+                                    data-id="{{ chambre.numero_chambre}}"
+                                    data-travaux
+                                    class="view" title="Travaux" data-toggle="tooltip"><i
+                                    class="material-icons viewIcon">&#xF10B;</i>
+                                </a>
                             </td>
                         </tr>
                     {% endfor %}
@@ -127,6 +165,9 @@
         {% include "shared/_modalAttribuerChambre.html.twig" %}
         {# MODAL MODIFIER #}
         {% include "shared/_modalModifierChambre.html.twig" %}
+        {# MODAL TRAVAUX #}
+        {% include "shared/_modalTravaux.html.twig" %}
+
     </div>
 </main>
 {% endblock %}
@@ -134,6 +175,8 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.js"></script>
+
 <script>
     $(document).ready(function () {
         $('#dataTable').DataTable({

@@ -199,6 +199,7 @@
     "isobject": "^3.0.1",
     "jest-util": "^29.3.1",
     "jest-worker": "^29.3.1",
+    "js-circle-progress": "^0.2.4",
     "js-tokens": "^4.0.0",
     "jsesc": "^2.5.2",
     "json-parse-even-better-errors": "^2.3.1",
