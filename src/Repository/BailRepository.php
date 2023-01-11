@@ -3,8 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Bail;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Bail>
@@ -53,7 +54,14 @@ class BailRepository extends ServiceEntityRepository
 //            ->getResult()
 //        ;
 //    }
-
+    public function Heberge($date) :array
+    {
+        return $this ->createQueryBuilder('b')
+        -> where ("b.dateSortie >'".$date."' AND b.dateEntree <'".$date."'")
+        ->orderBy('b.idPersonne', "ASC")
+        ->getQuery()
+        ->getResult();
+    }
 //    public function findOneBySomeField($value): ?Bail
 //    {
 //        return $this->createQueryBuilder('b')

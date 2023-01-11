@@ -7,10 +7,11 @@
             </div>
             <div class="modal-body formAjout">
                 {{ form_start(form) }}
+                    {# {{ form_widget(form) }} #}
                     {{form_row(form.date)}}
-                    {{form_row(form.commentaire)}}
                     {{form_row(form.idBail)}}
                     {{form_row(form.idTypeIncident)}}
+                    {{form_row(form.commentaire)}}
             </div>
             <div class="modal-footer endFooter">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">

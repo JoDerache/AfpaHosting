@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use DateTime;
 use App\Entity\Incident;
 use App\Form\IncidentType;
 use App\Repository\IncidentRepository;
@@ -20,8 +21,8 @@ class IncidentController extends AbstractController
     {
         $utilisateur = $personneRepository->findOneBy(['numeroBeneficiaire' => $user->getUserIdentifier()]);
         $incident = new Incident();
+        $incident->setDate(new DateTime('2023-02-25 12:00:00'));
         $form = $this->createForm(IncidentType::class, $incident);
-        // $form ->setData([['date'=>new \DateTimeImmutable()]]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -40,6 +41,8 @@ class IncidentController extends AbstractController
     public function new(Request $request, IncidentRepository $incidentRepository): Response
     {
         $incident = new Incident();
+        $incident->setDate(new DateTime());
+        //ajouter dater artificellement à la main
         $form = $this->createForm(IncidentType::class, $incident);
         $form->handleRequest($request);
 

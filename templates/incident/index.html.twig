@@ -43,7 +43,7 @@
         <tbody>
         {% for incident in incidents %}
             <tr>
-                <td>{{ incident.idBail.idPersonne.nom}} {{ incident.idBail.idPersonne.prenom}}</td>
+                <td>{{ incident.idBail}} </td>
                 <td>{{ incident.idTypeIncident.nomTypeIncident}}</td>
                 <td>{{ incident.date ? incident.date|date('Y-m-d') : '' }}</td>
                 {# <td>{{ incident.commentaire }}</td> #}
@@ -64,7 +64,7 @@
         </tbody>
     </table>
     {% include "incident/_modalAjoutIncident.html.twig" %}
-    {# <a href="{{ path('app_incident_new') }}">Create new</a> #}
+    <a href="{{ path('app_incident_new') }}">Create new</a>
     
     </main>
 {% endblock %}
@@ -91,6 +91,35 @@
         };
         date_input.datepicker(options);
     
+    })
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        const dateSelect = document.getElementById('incident_date');
+        dateSelect.addEventListener('change', function(e) {
+            const formI = dateSelect.closest('form'); //recupére la partie formulaire
+            let date=dateSelect.value
+            dateSelect.setAttribute('value', date)
+            console.log(dateSelect.value)
+            fetch(formI.action, {
+                method: formI.method,
+                body: new FormData(formI)
+            })
+            dateSelect.setAttribute('value', date)
+            console.log(dateSelect.value)
+            .then(response => response.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const newCityFormFieldEl = doc.getElementById('incident_idBail');
+                newCityFormFieldEl.addEventListener('change', function(e) {
+                    e.target.classList.remove('is-invalid');
+                });
+                document.getElementById('incident_idBail').replaceWith(newCityFormFieldEl);
+            })
+            .catch(function (err) {
+                console.warn('Something went wrong.', err);
+            });
+        })
     });
 </script>
     {% block javascripts %}
