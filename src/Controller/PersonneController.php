@@ -10,6 +10,7 @@ use App\Repository\BailRepository;
 use App\Repository\PersonneRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\ParticipationRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -71,13 +72,39 @@ class PersonneController extends AbstractController
     }
 
     #[Route('/byBail', name: 'app_personne_indexByBail', methods: ['GET'])]
-    public function indexByBail(EntityManagerInterface $em, Request $request, PersonneRepository $personneRepository, BailRepository $bailRepository, UserInterface $user): Response
+    public function indexByBail(Request $request, PersonneRepository $personneRepository, BailRepository $bailRepository, ManagerRegistry $doctrine, UserInterface $user): Response
     {
         $utilisateur = $personneRepository->findOneBy(['numeroBeneficiaire' => $user->getUserIdentifier()]);
         $personne = new Personne();
         $login = new Login();
         $form = $this->createForm(UserFormType::class, ['user' => $personne, 'login' => $login]);
         $form->handleRequest($request);
+
+
+        //Requête pour récupérer toutes les infos liées aux hebergés ayant un bail et une formation
+        $connection = $doctrine->getConnection();
+
+        $sql = 'SELECT b.id_bail,
+                       pe.id_personne,
+                       pe.badge, 
+                       pe.nom,
+                       pe.prenom,
+                       b.date_entree,
+                       b.date_sortie,
+                       b.numero_chambre,
+                       p.date_entree AS debut_formation,
+                       p.date_sortie AS fin_formation,
+                       f.nom AS financeur,
+                       fo.nom_formation AS formation
+                FROM hebergementafpa.bail AS b
+                INNER JOIN hebergementafpa.participation AS p ON p.id_personne = b.id_personne
+                INNER JOIN hebergementafpa.financeur AS f ON f.id_financeur = p.id_financeur
+                INNER JOIN hebergementafpa.formations AS fo ON fo.id_formation = p.id_formation
+                INNER JOIN hebergementafpa.personne AS pe ON pe.id_personne = b.id_personne';
+
+        $stmt = $connection->prepare($sql);
+        $resultSet = $stmt->executeQuery();
+        $heberges = $resultSet->fetchAll();
 
         try {
             if ($form->isSubmitted() && $form->isValid()) {
@@ -104,7 +131,8 @@ class PersonneController extends AbstractController
             'personnes' => $personneRepository->findAll(),
             'bails' => $bailRepository->findAll(),
             'utilisateur' => $utilisateur,
-            'form' => $form
+            'form' => $form,
+            'heberges' => $heberges,
         ]);
     }
 

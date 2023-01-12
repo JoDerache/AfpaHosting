@@ -5,7 +5,10 @@
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/datetime/1.2.0/css/dataTables.dateTime.min.css">
+<link rel="stylesheet" href="https://nightly.datatables.net/css/jquery.dataTables.css" rel="stylesheet" type="text/css"/>
+
 
 {% block stylesheets %}
     {{ encore_entry_link_tags('dataTable') }}
@@ -14,88 +17,231 @@
 {% block body %}
     <main id="main" class="main mt-3">
         <div class="container my-5 d-flex flex-wrap justify-content-center" id="hebergeContainer">
-            <div class="d-flex flex-column mt-2 mb-5">
+            <div class="d-flex flex-column mt-2 mb-4">
                 <h1>Hébergés ayant un bail</h1>
             </div>
 
             <!-- barre de filtre -->
             <div class="container mt-5" id="filtre">
-                <div class="row">
-                    <div class="col-lg-7">
-                        <ul>
-                            <li class="me-4"><input class="form-check-input me-1" type="checkbox" value=""
-                                                    id="flexCheckDefault">Présent cette semaine
-                            </li>
-                            <li class="me-4"><input class="form-check-input me-1" type="checkbox" value=""
-                                                    id="flexCheckDefault">Présent ce mois
-                            </li>
-                            <li class="me-4"><input class="form-check-input me-1" type="checkbox" value=""
-                                                    id="flexCheckDefault">Présent cette année
-                            </li>
-                        </ul>
+                <div class="row justify-content-around">
+                    <div class="col-md-3">
+                        <h5 for="name">Date d'entrée</h5>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text text-white" id="basic-addon1"><i
+                                            class="bi bi-calendar3 fs-5"></i></span>
+                            </div>
+                            <input type="text" class="form-control" id="min" name="min">
+                        </div>
                     </div>
-
-                    <div class="col-lg-4">
-                        <select class="form-select">
-                            <option selected>Choisir un financeur</option>
-                            <option value="1">Tous</option>
-                            <option value="2">Exemple 1</option>
-                            <option value="3">Exemple 2</option>
-                        </select>
+                    <div class="col-md-3">
+                        <h5 for="name">Date de sortie</h5>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text text-white" id="basic-addon1"><i
+                                            class="bi bi-calendar3 fs-5"></i></span>
+                            </div>
+                            <input type="text" class="form-control" id="max" name="max">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <h5 for="name">Financeur</h5>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <div id="search"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+
         <div>
-            <div class="table-wrapper justify-content-center mx-4">
-                <table id="dataTable" class="table table-striped justify-content-center">
-                    <thead>
+            <table id="dataTable" class="table table-striped justify-content-center">
+                <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Badge</th>
+                    <th>Chambre</th>
+                    <th>Financeur</th>
+                    <th>Formation</th>
+                    <th>Bail</th>
+                    <th>Date d'entrée</th>
+                    <th>Date de sortie</th>
+                    <th class="d-flex justify-content-center">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                {% for heberge in heberges %}
                     <tr>
-                        <th>Id</th>
-                        <th>Nom</th>
-                        <th>Prénom</th>
-                        <th>Numéro de badge</th>
-                        <th>Numéro de bénéficiaire</th>
-                        <th>Téléphone</th>
-                        <th class="d-flex justify-content-center">Actions</th>
+                        <td>{{ heberge.nom }}</td>
+                        <td>{{ heberge.prenom }}</td>
+                        <td>{{ heberge.badge }}</td>
+                        <td>{{ heberge.numero_chambre }}</td>
+                        <td>{{ heberge.financeur }}</td>
+                        <td>{{ heberge.formation }}</td>
+
+                        {% if heberge.date_entree <= ("now"|date("Y-m-d")) and heberge.date_sortie >= ("now"|date("Y-m-d")) %}
+                            <td><span class="badge rounded-pill bg-success">En cours</span></td>
+
+                        {% elseif heberge.date_entree > ("now"|date("Y-m-d")) and heberge.date_sortie >= ("now"|date("Y-m-d")) %}
+                            <td><span class="badge rounded-pill bg-info">A venir</span></td>
+
+                        {% else %}
+                            <td><span class="badge rounded-pill bg-secondary">Terminé</span></td>
+
+                        {% endif %}
+
+                        <td>{{ heberge.date_entree }}</td>
+                        <td>{{ heberge.date_sortie }}</td>
+                        <td class="eyeIcon">
+                            <a href="{{ path('app_personne_show', { 'id': heberge.id_personne }) }}"
+                               class="view" title="Voir"
+                               data-toggle="tooltip">
+                                <i class="material-icons viewIcon">&#xE417;</i>
+                            </a>
+                        </td>
                     </tr>
-                    </thead>
-                    <tbody>
-                    {% for bail in bails %}
-                        <tr>
-                            <td>{{ bail.idPersonne }}</td>
-                            <td>{{ bail.idPersonne.nom }}</td>
-                            <td>{{ bail.idPersonne.prenom }}</td>
-                            <td>{{ bail.idPersonne.badge }}</td>
-                            <td>{{ bail.idPersonne.numeroBeneficiaire }}</td>
-                            <td>{{ bail.idPersonne.telephone }}</td>
-                            <td class="eyeIcon">
-                                <a href="{{ path('app_personne_show', { 'id': bail.idPersonne.idPersonne }) }}"
-                                   class="view" title="Voir"
-                                   data-toggle="tooltip">
-                                    <i class="material-icons viewIcon">&#xE417;</i>
-                                </a>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
         </div>
     </main>
 
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.2/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/datetime/1.2.0/js/dataTables.dateTime.min.js"></script>
+    <script type="text/javascript" src="https://nightly.datatables.net/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.3.2/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.html5.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.print.min.js"></script>
+
     <script>
+        var minDate, maxDate;
+        var exportColumns = {columns: [0, 1, 2, 3, 4, 5, 6]};
+
+        // Custom filtering function which will search data in columns date_entree and date_sortie
+        $.fn.dataTable.ext.search.push(
+            function (settings, data, dataIndex) {
+                var min = minDate.val();
+                var max = maxDate.val();
+                var dateEntree = new Date(data[7]);
+                var dateSortie = new Date(data[8]);
+
+                if (
+                    (min === null) ||
+                    (max === null) ||
+                    (dateSortie >= min && dateEntree <= max)
+                ) {
+                    return true;
+                }
+                return false;
+            }
+        );
+
+        // Initialisation dataTable
         $(document).ready(function () {
-            $('#dataTable').DataTable({
+            // Create date inputs
+            minDate = new DateTime($('#min'), {
+                format: 'DD-MM-yyyy'
+            });
+            maxDate = new DateTime($('#max'), {
+                format: 'DD-MM-yyyy'
+            });
+
+            var table = $('#dataTable').DataTable({
+                // Translate dataTable in french
                 language: {
                     url: "https://cdn.datatables.net/plug-ins/1.13.1/i18n/fr-FR.json"
+                },
+
+                // hide columns date_entree & date_sortie but still searchable
+                columnDefs: [
+                    {
+                        target: 7,
+                        visible: false,
+                        searchable: true
+                    },
+                    {
+                        target: 8,
+                        visible: false,
+                        searchable: true,
+                    },
+                ],
+
+                // Export buttons
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'print',
+                        text: '<i class="bi bi-printer exportIcons"><span class="exportTitle"> Imprimer</span></i>',
+                        exportOptions: exportColumns,
+                        className: 'btn btn-outline-success exportButton'
+                    },
+                    {
+                        extend: 'excelHtml5',
+                        text: '<i class="bi bi-file-earmark-excel-fill exportIcons"><span class="exportTitle"> Excel</span></i>',
+                        exportOptions: exportColumns,
+                        className: 'btn btn-outline-success exportButton'
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        text: '<i class="bi bi-file-earmark-pdf-fill exportIcons"><span class="exportTitle"> Pdf</span></i>',
+                        exportOptions: exportColumns,
+                        className: 'btn btn-outline-success exportButton'
+                    }
+                ],
+
+                // Default number of rows per page
+                "pageLength": 50,
+
+                // Filtre pour les financeurs
+                initComplete: function () {
+                    this.api().columns([4]).every(function () {
+                        var column = this;
+                        var select = $('<select class="form-select"><option value=""></option></select>')
+                            .appendTo($('#search'))
+                            .on('change', function () {
+                                var val = $.fn.dataTable.util.escapeRegex(
+                                    $(this).val()
+                                );
+
+                                column
+                                    .search(val ? '^' + val + '$' : '', true, false)
+                                    .draw();
+                            });
+
+                        column.data().unique().sort().each(function (d, j) {
+                            select.append('<option value="' + d + '">' + d + '</option>')
+                        });
+                    });
+                }
+            });
+
+            // Refilter the table
+            $('#min, #max').on('change', function () {
+                table.draw();
+
+                // Reload the dataTable on a delete event
+                if ($('#min').val() || $('#max').val) {
+                    $('#min, #max').keyup(function (e) {
+                        if (e.keyCode == 46 || e.keyCode == 8) {
+                            table.draw();
+                        }
+                    });
                 }
             });
         });
     </script>
+
 
     {% block javascripts %}
         {{ encore_entry_script_tags('dataTable') }}

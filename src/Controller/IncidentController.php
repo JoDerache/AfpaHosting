@@ -21,7 +21,7 @@ class IncidentController extends AbstractController
     {
         $utilisateur = $personneRepository->findOneBy(['numeroBeneficiaire' => $user->getUserIdentifier()]);
         $incident = new Incident();
-        $incident->setDate(new DateTime('2023-02-25 12:00:00'));
+        $incident->setDate(new DateTime());
         $form = $this->createForm(IncidentType::class, $incident);
         $form->handleRequest($request);
 

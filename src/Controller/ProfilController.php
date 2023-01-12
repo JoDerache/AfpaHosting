@@ -83,7 +83,6 @@ class ProfilController extends AbstractController
          */
         $participe = $participationRepository->findBy(['idPersonne' => $utilisateur->getIdPersonne()]);
         $participe2 = end($participe);
-        // dd($utilisateur);
 
         $form = $this->createForm(UpdatePersonneType::class, $utilisateur);
         $form->handleRequest($request);
