@@ -31,6 +31,39 @@ h1 {
 .title {
     text-align: center;
 }
+
+#dataTable_info {
+    margin-top: 34px;
+    display: inline-flex;
+    color:#666666;
+}
+
+#dataTable_filter {
+    margin-bottom: 30px;
+}
+
+.exportIcons {
+    font-size: 18px;
+}
+
+.exportTitle {
+    font-size: 16px;
+    margin: auto;
+}
+
+#basic-addon1 {
+    background-color: #77a52c;
+}
+
+#search .form-select {
+    height: 43px;
+}
+
+.dt-buttons {
+    display: inline-flex;
+    gap: 10px;
+}
+
 /*=================================BTN======================================*/
 .btn-primary {
     --bs-btn-bg: #87bb34;
@@ -50,6 +83,14 @@ h1 {
     left: 82%;
     color: #87BB34;
     }
+
+.exportButton {
+    --bs-btn-border-color: #87bb34;
+    --bs-btn-hover-bg: #77a52c;
+    --bs-btn-hover-border-color: #77a52c;
+    color: #87BB34;
+}
+
 
 #isTravaux {
     margin-top: 6px;

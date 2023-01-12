@@ -36,7 +36,7 @@ class TravauxType extends AbstractType
                 'attr' => [
                     'placeholder' => 'Ajoutez les détails des travaux en cours...',
                     'class' => 'mt-4 mx-4',
-                    'cols' => '55',
+                    'cols' => '45',
                     'rows' => '5'
                 ],
                 

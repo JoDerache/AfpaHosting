@@ -26,6 +26,7 @@
     "test": "tests"
   },
   "dependencies": {
+    "@popperjs/core": "^2.11.6",
     "accepts": "^1.3.8",
     "acorn": "^8.8.1",
     "acorn-import-assertions": "^1.8.0",
@@ -230,6 +231,7 @@
     "mini-css-extract-plugin": "^2.7.0",
     "minimalistic-assert": "^1.0.1",
     "minimatch": "^3.1.2",
+    "moment": "^2.29.4",
     "ms": "^2.1.2",
     "multicast-dns": "^7.2.5",
     "nanoid": "^3.3.4",
